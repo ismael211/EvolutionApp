@@ -161,34 +161,3 @@
       });
     });
 </script>
-
-
-
-
-<!--
-
-
-  Modal quitar fatura com prazo
-    <div class="modal fade" id="modal_processando" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-
-          </div>
-          <div class="modal-body">
-            <span id="status_erro"></span>
-            <center><img src="/public/images/loader.gif" width="100px" /></center>
-            
-
-          </div>
-          <div class="modal-footer">
-
-          </div>
-        </div> /.modal-content 
-      </div>< /.modal-dialog 
-    </div> /.modal 
-
-  </body>
-
-  </html>
--->
