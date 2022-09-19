@@ -1,0 +1,67 @@
+{% extends 'cliente/base_cliente.html' %}
+
+{% block conteudo %}
+
+<div id="page-wrapper">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Fatura <small>Visualizar Fatura</small></h1>
+      <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Painel</a></li>
+        <li class="active"><i class="fa fa-dollar"></i> Visualizar Fatura</li>
+      </ol>
+
+      <!-- ################# LOCAL DE ALERTA ####################### -->
+
+    </div>
+  </div><!-- /.row -->
+
+
+
+  <div class="row">
+      <div class="col-lg-12">
+
+          <form class="form-horizontal">
+            
+          {% if fatura|length ==  1 %}
+          {% for valor in fatura %}
+
+            <div class="form-group form-group-sm">
+              <label class="col-sm-2 control-label" for="formGroupInputSmall">Data Vencimento: </label>
+              <div class="col-sm-10" style="margin-top:6px;">
+                <p>{{ valor.data_vencimento }}</p>
+              </div>
+            </div>
+            <div class="form-group form-group-sm">
+              <label class="col-sm-2 control-label" for="formGroupInputSmall">Valor: </label>
+              <div class="col-sm-10" style="margin-top:6px;">
+                <p>{{ valor.valor }}</p>
+              </div>
+            </div>
+            <div class="form-group form-group-sm">
+              <label class="col-sm-2 control-label" for="formGroupInputSmall">Descrição: </label>
+              <div class="col-sm-10" style="margin-top:6px;">
+                <p>{{ valor.descricao }}</p>
+              </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+              <label class="col-sm-2 control-label" for="formGroupInputSmall">Dados para Pagamento: </label>
+              <div class="col-sm-10" style="margin-top:6px;">
+                 {{ forma_pagamento|raw }}
+              </div>
+            </div>
+
+          {% endfor %}
+          {% endif %}
+
+          </form>
+
+      </div>
+  </div><!-- /.row -->
+
+
+</div><!-- /#page-wrapper -->
+
+{% endblock %}

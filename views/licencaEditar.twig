@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+ <div id="page-wrapper">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>Licença <small>Editar Licença</small></h1>
+        <ol class="breadcrumb">
+          <li><a href="index.html"><i class="fa fa-dashboard"></i> Painel</a></li>
+          <li class="active"><i class="fa fa-edit"></i> Editar Licença</li>
+        </ol>
+       
+      </div>
+    </div><!-- /.row -->
+
+
+    <div class="row">
+      <div class="col-lg-12">
+
+      {% if licenca|length == 1 %}
+      {% for valor in licenca %}
+
+        <form role="form" id="enviaEditarLicenca">
+            <input type="hidden" name="idlicenca" id="idlicenca" value="{{ valor.id }}">
+          <div class="form-group">
+            <label>Cliente</label>
+              <select class="form-control" id="clientef" name="clientef">
+
+                <option value="{{ valor.codigo_cliente }}" selected="selected" >{{ valor.nome_cliente }}</option>
+
+              </select>
+          </div>
+
+          <div class="form-group" id="tipo_cliente" style="display:none;">
+                <span id="resultado_tp_cli"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Sub-domínio</label>
+            <input class="form-control" type="text" name="sub_dominio" id="sub_dominio" value="{{ valor.sub_dominio }}">
+          </div>
+
+          <div class="form-group">
+            <label>Key</label>
+            <input class="form-control key_mascara" type="text" name="key_sub" id="key_sub" value="{{ valor.key_licenca }}">
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+              <select class="form-control" id="status_sub" name="status_sub">
+                <option value="0" {% if valor.status == "0" %} selected="selected" {% endif %}>Desativar</option>
+                <option value="1" {% if valor.status == "1" %} selected="selected" {% endif %} >Ativar</option>
+              </select>
+          </div>
+
+          <div class="well">
+            <button type="button" class="btn btn-primary" id="bt_editar_licenca">Editar</button>  
+          </div>
+
+        </form>
+
+        {% endfor %}
+        {% endif %}
+
+      </div>
+
+    </div><!-- /#page-wrapper -->
+
+{% endblock %}

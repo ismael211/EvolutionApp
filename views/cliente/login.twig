@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Painel Gerenciavel Cliente Isistem</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/public/css/bootstrap.css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="/public/js/jquery-1.10.2.js"></script>
+    <script src="/public/js/bootstrap.js"></script>
+    <script src="/public/js/jquery.maskedinput.js"></script>
+
+    
+    <script src="/public/js/funcoes.js"></script>
+
+
+  </head>
+
+  <body>
+	 
+    <div id="wrapper" style="margin-top:200px;">
+	<div class="container">
+	    <div class="row vertical-offset-100">
+	    	<div class="col-md-4 col-md-offset-4">
+	    		<div class="panel panel-default">
+				  	<div class="panel-heading">
+				    	<h3 class="panel-title"><img src="/public/images/logo_pequena.png" width="30">  Login</h3>
+				 	</div>
+				  	<div class="panel-body">
+             <div id="status"></div>
+				    	<form role="form" action="javascript:func()" method="POST">
+	                    <fieldset>
+				    	  	<div class="form-group">
+				    		    <input class="form-control" placeholder="Email Principal" name="username" id="username" type="text">
+				    		</div>
+				    		<div class="form-group">
+				    			<input class="form-control" placeholder="Senha" name="password" id="password" type="password" value="">
+				    		</div>
+				    	
+				    		<button class="btn btn-lg btn-success btn-block" id="login_bt_cliente">Entrar</button>
+				    	</fieldset>
+				      	</form>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+    <!-- Modal quitar fatura com prazo-->
+    <div class="modal fade" id="modal_processando" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+           
+          </div>
+          <div class="modal-body">
+            <span id="status_erro"></span>
+            <center><img src="/public/images/loader.gif" width="100px"/></center>
+            <center><p>Processando ...</p></center>
+          </div>
+          <div class="modal-footer">
+            
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+  </body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Isistem Painel Cliente</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
+    <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+  </head>
+
+  <body>
+
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Navegação Alternativa</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">CLIsistem</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav side-nav">
+            <li class="active"><a href="index.html"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="tables.html"><i class="fa fa-key"></i> Licenças</a></li>
+            <li><a href="forms.html"><i class="fa fa-dollar"></i> Financeiro</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right navbar-user">
+         
+           
+            <li class="dropdown user-dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Luan <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-user"></i> Perfil</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-power-off"></i> Sair</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div id="page-wrapper">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1>Financeiro <small>Faturas</small></h1>
+            <ol class="breadcrumb">
+              <li class="active"><i class="fa fa-usd"></i> Faturas</li>
+            </ol>
+
+            <!-- ################# LOCAL DE ALERTA ####################### -->
+
+          </div>
+        </div><!-- /.row -->
+
+
+        <div class="row">
+
+          <div class="col-lg-12">
+
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-money"></i> Fatura(s) Aberta(s)</h3>
+              </div>
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped tablesorter">
+                    <thead>
+                      <tr>
+                        <th>Descrição <i class="fa fa-sort"></i></th>
+                        <th>Data de Vencimento <i class="fa fa-sort"></i></th>
+                        <th>Valor(R$) <i class="fa fa-sort"></i></th>
+                        <th>Status <i class="fa fa-sort"></i></th>
+                        <th>Opções<i class="fa fa-sort"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    
+                      <tr>
+                        <td>Fatura referente ao plano Revendedor.</td>
+                        <td>23/05/2016</td>
+                        <td>321,33</td>
+                        <td><span class="label label-danger">Em Aberto</span></td>  
+                        <td><a href="#">Visualizar</a></td>  
+                      </tr>
+
+                      <tr>
+                        <td>Fatura referente ao plano Revendedor.</td>
+                        <td>23/05/2016</td>
+                        <td>321,33</td>
+                        <td><span class="label label-danger">Em Aberto</span></td>  
+                        <td><a href="#">Visualizar</a></td>  
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.row -->
+
+
+        <div class="row">
+        <div class="col-lg-12">
+
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-calendar-o"></i> Hisórico de Faturas</h3>
+              </div>
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover table-striped tablesorter">
+                    <thead>
+                      <tr>
+                        <th># <i class="fa fa-sort"></i></th>
+                        <th>Descrição <i class="fa fa-sort"></i></th>
+                        <th>Data de Vencimento <i class="fa fa-sort"></i></th>
+                        <th>Valor(R$) <i class="fa fa-sort"></i></th>
+                        <th>Status <i class="fa fa-sort"></i></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr>
+                        <td>1</td>
+                        <td>Fatura referente ao plano Revendedor.</td>
+                        <td>23/05/2016</td>
+                        <td>321,33</td>
+                        <td><span class="label label-success">Paga</span></td>
+                      </tr>
+                      <tr>
+                        <td>1</td>
+                        <td>Fatura referente ao plano Usuário.</td>
+                        <td>23/05/2016</td>
+                        <td>321,33</td>
+                        <td><span class="label label-danger">Em Aberto</span></td>
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+        </div>
+        </div>
+
+
+      </div><!-- /#page-wrapper -->
+
+    </div><!-- /#wrapper -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+    <!-- Page Specific Plugins -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+    <script src="js/morris/chart-data-morris.js"></script>
+    <script src="js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="js/tablesorter/tables.js"></script>
+
+  </body>
+</html>

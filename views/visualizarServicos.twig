@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div id="page-wrapper">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Financeiro <small>Visualizar Serviços</small></h1>
+      <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-cogs"></i> Visualizar Serviços</li>
+      </ol>
+
+      <!-- ################# LOCAL DE ALERTA ####################### -->
+
+    </div>
+  </div><!-- /.row -->
+
+<span id="status_volta"></span>
+
+  <div class="row">
+
+    <div class="col-lg-12">
+
+          <ol class="breadcrumb">
+            <li class="active form-inline">
+
+                <div class="form-group">
+                    <select class="form-control" name="opcoes" id="opcoes">
+                      <option value="0" selected="selected"> -- Opções -- </option>
+                      <option value="visualizar">Visualizar</option>
+                      <option value="editar">Editar</option>
+                      <option value="remover">Remover</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="bt_action_servicos">OK</button>
+                </div>
+
+            </li>
+          </ol>
+
+    </div>
+
+  </div><!-- /.row -->
+
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-cogs"></i> Serviços</h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped tablesorter">
+              <thead>
+                <tr>
+                  <th># <i class="fa fa-sort"></i></th>
+                  <th>Responsável <i class="fa fa-sort"></i></th>
+                  <th>Serviços <i class="fa fa-sort"></i></th>
+                  <th>Parcelas <i class="fa fa-sort"></i></th>
+                  <th>Repetir <i class="fa fa-sort"></i></th>
+                  <th>Valor(R$) <i class="fa fa-sort"></i></th>
+                  <th>Status <i class="fa fa-sort"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+
+              {% if servicos|length > 0 %}
+              {% for valor in servicos %}
+                  <tr>
+                    <td>
+                      <input type="checkbox" value="{{ valor.codigo_servico }}" name="codigo_servico" id="codigo_servico">
+                      <input type="hidden" id="id_servico" name="id_servico" value="{{ valor.codigo_servico }}">
+                    </td>
+                    <td>{{ valor.nome_cliente }}</td>
+                    <td>{{ valor.descricao }}</td>
+                    <td>{{ valor.total_parcelas }}</td>
+                    {% if valor.repetir == 'sim' %}
+                      <td><span class="label label-success">Sim</span></td>
+                    {% else %}
+                      <td><span class="label label-danger">Não</span></td>
+                    {% endif %}
+                    <td>{{ valor.valor }}</td>
+                    <td>
+                      {% if valor.status == 1 %}
+                          <span class="label label-success">Ativado</span>
+                      {% elseif valor.status == 0  %}
+                          <span class="label label-danger">Desativado</span>
+                      {% endif %}
+                    </td>
+
+                  </tr>
+
+              {% endfor %}
+              {% else %}
+                   <tr>
+                     <td></td>
+                     <td>Nenhum Registro</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                   </tr>
+              {% endif %}
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.row -->
+
+
+
+</div><!-- /#page-wrapper -->
+
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div id="page-wrapper">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>Financeiro <small>Visualizar Faturas Abertas</small></h1>
+      <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dollar"></i> Visualizar Faturas Abertas</li>
+      </ol>
+
+      <!-- ################# LOCAL DE ALERTA ####################### -->
+
+    </div>
+  </div><!-- /.row -->
+
+<span id="status_volta"></span>  
+
+  <div class="row">
+
+    <div class="col-lg-12">
+
+          <ol class="breadcrumb">
+            <li class="active form-inline">
+
+                <div class="form-group">
+                    <select class="form-control" name="opcoes" id="opcoes">
+                      <option value="0" selected="selected"> -- Opções -- </option>
+                      <option value="visualizar">Visualizar</option>
+                      <option value="quitar">Quitar</option>
+                      <option value="editar">Editar</option>
+                      <option value="remover">Remover</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" id="bt_action_financeiro">OK</button>
+                </div>
+
+            </li>
+          </ol>
+         
+    </div>
+
+  </div><!-- /.row -->
+
+
+  <div class="row">
+
+    <div class="col-lg-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-money"></i> Faturas Abertas</h3>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped tablesorter">
+              <thead>
+                <tr>
+                  <th># <i class="fa fa-sort"></i></th>
+                  <th>Codigo Fatura <i class="fa fa-sort"></i></th>
+                  <th>Cliente <i class="fa fa-sort"></i></th>
+                  <th>Tipo Cliente <i class="fa fa-sort"></i></th>
+                  <th>Valor(R$) <i class="fa fa-sort"></i></th>
+                  <th>Data Vencimento <i class="fa fa-sort"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% if faturas_abertas|length > 0 %}
+                  {% for valor in faturas_abertas %}
+                <tr>
+                  <td>
+                    <input type="checkbox" value="{{ valor.codigo }}" name="codigo_fatura" id="codigo_fatura">
+                    <input type="hidden" id="id_fatura" name="id_fatura" value="{{ valor.codigo }}">
+                  </td>
+                  <td>{{ valor.codigo }}</td>
+                  <td>{{ valor.nome_cliente}}</td>
+                    {% if valor.tipo_cliente == "r" %}
+                       <td>Revendedor</td>
+                    {% else %}
+                       <td>Usuário</td>
+                    {% endif %}
+                  <td>{{ valor.valor }}</td>
+                  <td>{{ valor.data_vencimento }}</td>
+                </tr>
+                  {% endfor %}
+                  {% else %}
+                      <tr>
+                        <td>Nenhuma fatura vencendo hoje </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                  {% endif %}
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.row -->
+
+
+
+</div><!-- /#page-wrapper -->
+
+{% endblock %}

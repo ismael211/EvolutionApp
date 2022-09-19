@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<div id="page-wrapper">
+
+<div class="row">
+  <div class="col-lg-12">
+    <h1>Clientes <small>Editar Cliente</small></h1>
+    <ol class="breadcrumb">
+      <li><a href="index.html"><i class="fa fa-dashboard"></i> Painel</a></li>
+      <li class="active"><i class="fa fa-edit"></i> Editar Cliente</li>
+    </ol>
+   
+  </div>
+</div><!-- /.row -->
+
+
+<div class="row">
+  <div class="col-lg-12">
+
+    <form role="form" id="editarClienteSys">
+    {% if cliente|length == 1 %}
+    {% for valor in cliente %}
+
+      <div class="form-group">
+        <label>Status</label>
+        <input type="hidden" name="codigo" id="codigo" value="{{ valor.codigo }}">
+        <select class="form-control" id="status_cli" name="status_cli">
+          <option value="">Selecione um status</option>
+          <option value="a" {% if valor.status == "a" %} selected="selected" {% endif %}>Ativo</option>
+          <option value="p" {% if valor.status == "p" %} selected="selected" {% endif %}>Prospect</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo de Cliente</label>
+        <select class="form-control" id="tipo_cliente" name="tipo_cliente">
+          <option value="">Selecione uma opção</option>
+          <option value="u"  {% if valor.tipo_cliente == "u" %} selected="selected" {% endif %}>Usuário</option>
+          <option value="r"  {% if valor.tipo_cliente == "r" %} selected="selected" {% endif %}>Revendedor</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nome Responsável</label>
+        <input class="form-control" type="text" name="nome" id="nome" value="{{ valor.nome }}">
+      </div>
+
+      <div class="form-group well">
+         <label class="radio-inline">
+           <input type="radio" name="tipo_pessoa" value="fisica" {% if valor.tipo_pessoa == "fisica" %} checked {% endif %}> Pessoa Física
+         </label>
+         <label class="radio-inline">
+           <input type="radio" name="tipo_pessoa" value="juridica" {% if valor.tipo_pessoa == "juridica" %} checked {% endif %}> Pessoa Jurídica
+         </label>
+      </div>
+
+      <div id="fisica" class="well" {% if valor.tipo_pessoa == "juridica" %} style="display:none;" {% endif %}>
+
+          <div class="form-group">
+            <label>RG:</label>
+            <input class="form-control" type="text" name="rg" id="rg" value="{{ valor.rg }}">
+          </div>
+
+          <div class="form-group">
+            <label>CPF</label>
+            <input class="form-control mask_cpf" type="text" name="cpf" id="cpf" value="{{ valor.cpf }}">
+          </div>
+
+          <div class="form-group">
+            <label>Data de Nascimento</label>
+            <input class="form-control mask_data_br" type="text" name="data_nac" id="data_nac" value="{{ valor.data_nac }}">
+          </div>
+
+      </div>
+
+      <div id="juridica" class="well"  {% if valor.tipo_pessoa == "fisica" %} style="display:none;" {% endif %}>
+
+          <div class="form-group">
+            <label>CNPJ:</label>
+            <input class="form-control mask_cnpj" type="text" name="cnpj" id="cnpj" value="{{ valor.cnpj }}">
+          </div>
+
+          <div class="form-group">
+            <label>Razão Social:</label>
+            <input class="form-control" type="text" name="razao_social" id="razao_social" value="{{ valor.razao_social }}">
+          </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>Telefone:</label>
+        <input class="form-control mask_tel" type="text" name="fone" id="fone" value="{{ valor.fone }}">
+      </div>
+
+      <div class="form-group">
+        <label>Celular:</label>
+        <input class="form-control mask_tel" type="text" name="celular" id="celular" value="{{ valor.celular }}">
+      </div>
+
+      <div class="form-group">
+        <label>Email Principal:</label>
+        <input class="form-control" type="text" name="email1" id="email1" value="{{ valor.email1 }}">
+      </div>
+
+      <div class="form-group">
+        <label>Email Secundário:</label>
+        <input class="form-control" type="text" name="email2" id="email2" value="{{ valor.email2 }}">
+      </div>
+
+      <div class="form-group">
+      <label>Senha: <small class="corCinza">Caso não queira alterar a senha, iguinore</small></label>
+        <input class="form-control" type="password" name="senha" id="senha">
+      </div>
+
+      <div class="form-group">
+        <label>Repetir Senha: <small class="corCinza">Caso não queira alterar a senha, iguinore</small></label>
+        <input class="form-control" type="password" name="r_senha" id="r_senha">
+      </div>
+
+      <div class="form-group">
+        <label>Obs</label>
+        <textarea class="form-control" rows="3" name="obs" id="obs">{{ valor.obs }}</textarea>
+      </div>
+
+      <div class="well">
+
+         <div class="form-group">
+           <label>Tipo de Plano</label>
+           <select class="form-control" id="tipo_plano" name="tipo_plano">
+             <option value="" >Selecione um plano</option>
+             {% for valor in tipo_plano_servicos %}
+                   <option value="{{ valor.codigo }}" {% if plano_cod == valor.codigo %} selected="selected" {% endif %} >{{ valor.nome }}</option>
+             {% endfor %}
+           </select>
+         </div>
+
+         <div class="form-group">
+           <label>Forma de Pagamento</label>
+           <select class="form-control" id="forma_pagamento" name="forma_pagamento">
+             <option value="">Selecione um plano</option>
+             {% for resulpgt in forma_pagamento %}
+                   <option value="{{ resulpgt.codigo }}" {% if forma_cod == resulpgt.codigo %} selected="selected" {% endif %} >{{ resulpgt.nome }}</option>
+             {% endfor %}
+           </select>
+         </div>
+
+         <div class="form-group">
+           <label>Dia de Vencimento:</label>
+           <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento" value="{{ dia_vencimento }}" >
+         </div>
+
+
+      </div>
+      
+      <div class="well">
+        <button type="button" class="btn btn-primary" id="editar_cliente_sys">Editar</button>  
+      </div>
+
+
+    {% endfor %}
+    {% endif %}
+
+    </form>
+
+  </div>
+
+
+</div><!-- /#page-wrapper -->
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'cliente/base_cliente.html' %}
+
+{% block conteudo %}
+
+ <div id="page-wrapper">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h1>Licença <small>Cadastrar Licença</small></h1>
+        <ol class="breadcrumb">
+          <li><a href="/"><i class="fa fa-dashboard"></i> Painel</a></li>
+          <li class="active"><i class="fa fa-edit"></i> Cadastrar Licença</li>
+        </ol>
+       
+      </div>
+    </div><!-- /.row -->
+
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <form role="form" id="enviaNovaLicencaCliente">
+
+          <div class="form-group">
+            <label>Sub-domínio</label>
+            <input class="form-control" type="text" name="sub_dominio" id="sub_dominio">
+          </div>
+
+      
+
+          
+          <div class="well">
+            <button type="button" class="btn btn-primary" id="bt_cadastrar_licenca_cliente">Cadastrar</button>  
+          </div>
+
+        </form>
+
+      </div>
+
+    </div><!-- /#page-wrapper -->
+
+{% endblock %}

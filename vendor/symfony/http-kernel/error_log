@@ -1,0 +1,1 @@
+[02-Feb-2022 02:13:01 America/Sao_Paulo] PHP Fatal error:  Interface 'Symfony\Component\HttpKernel\HttpKernelInterface' not found in /home/controleisistem/public_html/vendor/symfony/http-kernel/HttpKernel.php on line 34
