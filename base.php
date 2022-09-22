@@ -1,8 +1,9 @@
 <?php
 
-include('gerencial.php');
-include('inc/config.php');
+ob_start();
 
+//include('gerencial.php');
+include('inc/config.php');
 
 ?>
 

@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
   
 
   <div id="page-wrapper">
