@@ -1,31 +1,41 @@
 <?php
 
+session_start();
+require_once('config.php');
+
+$core = new IsistemCore();
+$core->Connect();
+
 
 if (isset($_POST['username'])) {
 
+    $return = '';
+
     if ($_POST['username'] == "") {
-        $return = array("error" => "1", "msg" => "Usuário em branco!");
+        $return = "Usuário em branco!";
 
     } elseif ($_POST['password'] == "") {
-        $return = array("error" => "1", "msg" => "Senha em branco!");
+        $return = "Senha em branco!";
     } else {
 
         $user = $_POST['username'];
         $pass = $_POST['password'];
 
-        $query = $this->conn->query("SELECT `codigo`,`nome`,`senha` FROM `operadores` WHERE `login` = '" . $user  . "' LIMIT 1");
-        $cnt = $query->num_rows;
-        if ($cnt == 1) {
-            $linha = $query->fetch_array();
-            if (password_verify($this->pass, $linha["2"])) {
-                $codigo = $linha["0"];
-                $nome = $linha["1"];
-                $return = array("error" => "0", "codigo" => "$codigo", "nome" => "$nome");
+        $qtd = $core->RowCount("SELECT `codigo`,`nome`,`senha` FROM `operadores` WHERE `login` = '" . $user  . "' LIMIT 1");
+
+        if ($qtd == 1) {
+
+            $query = $core->Fetch("SELECT `codigo`,`nome`,`senha` FROM `operadores` WHERE `login` = '" . $user  . "' LIMIT 1");
+
+            if (password_verify($pass, $query['senha'])) {
+                $_SESSION['codigo_adm'] = $query['codigo'];
+                $_SESSION['nome_adm'] = $query['nome'];
+                exit();
             } else {
-                $return = array("error" => "1", "msg" => "Usuário ou Senha Inválido!");
+                $return = "Usuário ou Senha Inválido!";
             }
         } else {
-            $return = array("error" => "1", "msg" => "Usuário ou Senha Inválido!");
+            $return = "Usuário ou Senha Inválido!";
         }
     }
     echo $return;

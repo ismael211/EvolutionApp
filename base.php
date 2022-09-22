@@ -1,3 +1,11 @@
+<?php
+
+include('gerencial.php');
+include('inc/config.php');
+
+
+?>
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -10,28 +18,28 @@
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>Isistem Painel Gerenciavel</title>
-    <link rel="apple-touch-icon" href="../app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="../app-assets/images/ico/favicon.ico">
+    <link rel="apple-touch-icon" href="app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/vendors/css/vendors.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/themes/dark-layout.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/themes/bordered-layout.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/themes/bordered-layout.css">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- END: Custom CSS-->
 
 </head>
@@ -60,7 +68,7 @@
                         <li class="scrollable-container media-list"><a class="d-flex" href="javascript:void(0)">
                                 <div class="media d-flex align-items-start">
                                     <div class="media-left">
-                                        <div class="avatar"><img src="../app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" width="32" height="32"></div>
+                                        <div class="avatar"><img src="app-assets/images/portrait/small/avatar-s-15.jpg" alt="avatar" width="32" height="32"></div>
                                     </div>
                                     <div class="media-body">
                                         <p class="media-heading"><span class="font-weight-bolder">Congratulation Sam 🎉</span>winner!</p><small class="notification-text"> Won the monthly best seller badge.</small>
@@ -69,7 +77,7 @@
                             </a><a class="d-flex" href="javascript:void(0)">
                                 <div class="media d-flex align-items-start">
                                     <div class="media-left">
-                                        <div class="avatar"><img src="../app-assets/images/portrait/small/avatar-s-3.jpg" alt="avatar" width="32" height="32"></div>
+                                        <div class="avatar"><img src="app-assets/images/portrait/small/avatar-s-3.jpg" alt="avatar" width="32" height="32"></div>
                                     </div>
                                     <div class="media-body">
                                         <p class="media-heading"><span class="font-weight-bolder">New message</span>&nbsp;received</p><small class="notification-text"> You have 10 unread messages</small>
@@ -132,7 +140,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name font-weight-bolder">Admin</span></div><span class="avatar"><img class="round" src="../app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
+                        <div class="user-nav d-sm-flex d-none"><span class="user-name font-weight-bolder">Admin</span></div><span class="avatar"><img class="round" src="app-assets/images/portrait/small/avatar-s-11.jpg" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user"><a class="dropdown-item" href="page-profile.html"><i class="mr-50" data-feather="user"></i> Profile</a><a class="dropdown-item" href="page-account-settings.html"><i class="mr-50" data-feather="settings"></i> Settings</a><a class="dropdown-item" href="page-auth-login-v2.html"><i class="mr-50" data-feather="power"></i> Logout</a>
                     </div>
@@ -208,9 +216,9 @@
 
             <div class="app-content content ">
                 <?php
-                include "paginas/" . $_GET['pagina'] . ".php";
+                include "views/" . $_GET['pagina'] . ".php";
 
-                $pagina_atual = "paginas/" . $_GET['pagina'] . ".php";
+                $pagina_atual = "views/" . $_GET['pagina'] . ".php";
 
                 ?>
             </div>
@@ -231,15 +239,15 @@
 
 
     <!-- BEGIN: Vendor JS-->
-    <script src="../app-assets/vendors/js/vendors.min.js"></script>
+    <script src="app-assets/vendors/js/vendors.min.js"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="../app-assets/js/core/app-menu.js"></script>
-    <script src="../app-assets/js/core/app.js"></script>
+    <script src="app-assets/js/core/app-menu.js"></script>
+    <script src="app-assets/js/core/app.js"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

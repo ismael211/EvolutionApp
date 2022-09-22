@@ -1,3 +1,15 @@
+<?php
+
+
+session_start();
+require_once('../inc/config.php');
+
+$core = new IsistemCore();
+$core->Connect();
+
+?>
+
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -32,6 +44,12 @@
   <link rel="stylesheet" type="text/css" href="../app-assets/css/pages/page-auth.css">
   <!-- END: Page CSS-->
 
+
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" href="../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
+  <!-- END: Page CSS-->
+
+
   <!-- BEGIN: Custom CSS-->
   <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
   <!-- END: Custom CSS-->
@@ -51,8 +69,6 @@
   <script src="/public/js/funcoes.js"></script>
   <!-- END: JavaScript-->
 
-  <script src="../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
-  <script src="../app-assets/vendors/js/extensions/polyfill.min.js"></script>
   <script src="../app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>
 
 </head>
@@ -134,6 +150,13 @@
   <script src="../../app-assets/js/scripts/extensions/ext-component-blockui.js"></script>
   <!-- END: Page JS-->
 
+
+  <!-- BEGIN: Page Vendor JS-->
+  <script src="../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+  <script src="../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+  <!-- END: Page Vendor JS-->
+
+
   <script>
     $(window).on('load', function() {
       if (feather) {
@@ -164,11 +187,7 @@
           opacity: 0.8
         }
       });
-      // $('#modal_processando').modal({
-      // 	show: true,
-      // 	backdrop: 'static',
-      // 	keyboard: false
-      // });
+
     }
     if (faca == "0") {
       $.blockUI({
@@ -187,7 +206,9 @@
     }
   }
 
-  // Action Login
+  // Action Login 
+
+
   $("#login_btn").click(function() {
 
     processando(1);
@@ -205,18 +226,21 @@
       },
       success: function(msg) {
         processando(0);
-        let result = data.split(",");
-        Swal.fire({
-          title: 'Atenção',
-          html: result[1],
-          icon: 'error',
-          width: '900px',
-          customClass: {
-            confirmButton: 'btn btn-primary'
-          },
-          buttonsStyling: false,
-          allowOutsideClick: false
-        })
+        if (msg == '') {
+          window.location.replace("/base.php");
+        } else {
+          Swal.fire({
+            title: 'Atenção',
+            html: msg,
+            icon: 'error',
+            width: '900px',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false,
+            allowOutsideClick: false
+          })
+        }
 
       }
     });
