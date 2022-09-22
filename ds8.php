@@ -9,9 +9,9 @@
 
 $dados_conn = array (
 "host" => "localhost",
-"user" => "isistem_control",
-"pass" => ")W=1zH2nmo3{",
-"db" => "isistem_controle"
+"user" => "negoplay_negoplay",
+"pass" => "wPHofwg!VyBJ",
+"db" => "negoplay_isistem_controle"
 );
 
 

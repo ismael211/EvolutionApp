@@ -51,6 +51,10 @@
   <script src="/public/js/funcoes.js"></script>
   <!-- END: JavaScript-->
 
+  <script src="../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+  <script src="../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+  <script src="../app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>
+
 </head>
 <!-- END: Head-->
 
@@ -94,7 +98,7 @@
                       </div>
                     </div>
                   </div>
-                  <button class="btn btn-primary btn-block" id="login_bt" tabindex="4">Entrar</button>
+                  <button class="btn btn-primary btn-block" id="login_btn" tabindex="4">Entrar</button>
                 </form>
 
               </div>
@@ -146,10 +150,11 @@
 </html>
 
 <script>
-    $('#logino').on('click', function () {
+  // funcao abre modal processando
+  function processando(faca) {
+    if (faca == "1") {
       $.blockUI({
-        message: '<div class="spinner-border text-primary" role="status">Processando...</div>',
-        timeout: 1000,
+        message: '<div class="spinner-border text-primary" role="status"></div>',
         css: {
           backgroundColor: 'transparent',
           border: '0'
@@ -159,5 +164,62 @@
           opacity: 0.8
         }
       });
+      // $('#modal_processando').modal({
+      // 	show: true,
+      // 	backdrop: 'static',
+      // 	keyboard: false
+      // });
+    }
+    if (faca == "0") {
+      $.blockUI({
+        message: '<div class="spinner-border text-primary" role="status"></div>',
+        timeout: 10,
+        css: {
+          backgroundColor: 'transparent',
+          border: '0'
+        },
+        overlayCSS: {
+          backgroundColor: '#fff',
+          opacity: 0.8
+        }
+      });
+      // $("#modal_processando").modal("hide");
+    }
+  }
+
+  // Action Login
+  $("#login_btn").click(function() {
+
+    processando(1);
+
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+
+    $.ajax({
+      type: "POST",
+      url: "../inc/login_autentica.php",
+      data: {
+        'username': username,
+        'password': password
+      },
+      success: function(msg) {
+        processando(0);
+        let result = data.split(",");
+        Swal.fire({
+          title: 'Atenção',
+          html: result[1],
+          icon: 'error',
+          width: '900px',
+          customClass: {
+            confirmButton: 'btn btn-primary'
+          },
+          buttonsStyling: false,
+          allowOutsideClick: false
+        })
+
+      }
     });
+
+  });
 </script>
