@@ -1,3 +1,41 @@
+<?php
+
+session_start();
+require_once('../inc/config.php');
+
+$core = new IsistemCore();
+$core->Connect();
+
+$clientes = $core->Fetch("SELECT * FROM `clientes`");
+
+$qtd_clientes_ativos = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'a'");
+
+$qtd_clientes_prop = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'p'
+AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
+
+$licencas = $core->Fetch("SELECT * FROM `licenca`");
+
+$qtd_licencas = $core->RowCount("SELECT * FROM `licenca` WHERE `status` = '1'");
+
+$faturas = $core->Fetch("SELECT * FROM `faturas`");
+
+$dataHoje = date("Y-m-d");
+// $faturas = new App\Model\Faturas($conexao);
+// $faturas->setDataFind($dataHoje);
+// $vencendo_hoje = $faturas->vencendoPorData();
+// $allFaturasAbertas = $faturas->getCountFaturasAberta();
+
+// return $app['twig']->render('painel.twig', array(
+//     'qtd_clientes_ativos'  =>  $qtd_clientes_ativos,
+//     'qtd_licencas'  => $qtd_licencas,
+//     'qtd_clientes_prop' => $qtd_clientes_prop,
+//     'vencendo_hoje' => $vencendo_hoje,
+//     'allFaturasAbertas' => $allFaturasAbertas,
+// ));
+
+
+?>
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -9,7 +47,7 @@
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Basic Card - Vuexy - Bootstrap HTML admin template</title>
+    <title>TESTE</title>
     <link rel="apple-touch-icon" href="../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
@@ -69,156 +107,50 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body">
-                                    <h4 class="card-title text-white">Primary card title</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card bg-secondary text-white">
-                                <div class="card-body">
-                                    <h4 class="card-title text-white">Secondary card title</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
                             <div class="card bg-success text-white">
                                 <div class="card-body">
-                                    <h4 class="card-title text-white">Success card title</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up.</p>
+                                    <h2 class="text-white"><i data-feather='user-plus'></i> <?= $qtd_clientes_prop ?></h2>
+                                    <h6 class="text-white" style="float: right;">+ Clientes</6>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="text-white" href="#">Visualizar</a><i data-feather='arrow-right-circle' style="float: right;"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="card bg-danger text-white">
+                            <div class="card bg-warning text-white">
                                 <div class="card-body">
-                                    <h4 class="card-title text-white">Danger card title</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up.</p>
+                                    <h2 class="text-white"><i data-feather='dollar-sign'></i> 3</h2>
+                                    <h6 class="text-white" style="float: right;"> Faturas</6>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="text-white" href="#">Visualizar</a><i data-feather='arrow-right-circle' style="float: right;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h2 class="text-white"><i data-feather='align-justify'></i> <?= $qtd_licencas ?></h2>
+                                    <h6 class="text-white" style="float: right;">Licenças</6>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="text-white" href="#">Visualizar</a><i data-feather='arrow-right-circle' style="float: right;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h2 class="text-white"><i data-feather='users'></i> <?= $qtd_clientes_ativos ?></h2>
+                                    <h6 class="text-white" style="float: right;">Clientes</6>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="text-white" href="#">Visualizar</a><i data-feather='arrow-right-circle' style="float: right;"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
-
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="panel panel-success">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <i class="fa fa-plus fa-5x"></i>
-                                        </div>
-                                        <div class="col-xs-6 text-right">
-                                            <p class="announcement-heading">{{ qtd_clientes_prop }}</p>
-                                            <p class="announcement-text"> + Clientes</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="/sys/clientes">
-                                    <div class="panel-footer announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                Visualizar
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="panel panel-warning">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <i class="fa fa-barcode fa-5x"></i>
-                                        </div>
-                                        <div class="col-xs-6 text-right">
-                                            <p class="announcement-heading">{{ allFaturasAbertas }}</p>
-                                            <p class="announcement-text">Faturas</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="/sys/faturas">
-                                    <div class="panel-footer announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                Visualizar
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <i class="fa fa-bars fa-5x"></i>
-                                        </div>
-                                        <div class="col-xs-6 text-right">
-                                            <p class="announcement-heading">{{ qtd_licencas }}</p>
-                                            <p class="announcement-text">Licenças</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="/sys/licencas">
-                                    <div class="panel-footer announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                Visualizar
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="panel panel-info">
-                                <div class="panel-heading">
-                                    <div class="row">
-                                        <div class="col-xs-6">
-                                            <i class="fa fa-users fa-5x"></i>
-                                        </div>
-                                        <div class="col-xs-6 text-right">
-                                            <p class="announcement-heading">{{ qtd_clientes_ativos }}</p>
-                                            <p class="announcement-text">Clientes</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="/sys/clientes">
-                                    <div class="panel-footer announcement-bottom">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                Visualizar
-                                            </div>
-                                            <div class="col-xs-6 text-right">
-                                                <i class="fa fa-arrow-circle-right"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div><!-- /.row -->
-
-                    <!-- FINALIZADO PAINEL DE INFORMAÇÔES -->
-
 
                     <div class="row">
 
@@ -229,7 +161,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped tablesorter">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th># <i class="fa fa-sort"></i></th>
@@ -240,10 +172,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php
+                                                ?>
                                                 {% if vencendo_hoje|length > 0 %}
                                                 {% for valor in vencendo_hoje %}
                                                 <tr>
-                                                    <td></td>
                                                     <td>{{ valor.nome}}</td>
                                                     {% if valor.tipo_cliente == "r" %}
                                                     <td>Revendedor</td>
@@ -256,8 +189,7 @@
                                                 {% endfor %}
                                                 {% else %}
                                                 <tr>
-                                                    <td>Nenhuma fatura vencendo hoje </td>
-                                                    <td></td>
+                                                    <td>Nenhuma fatura vencendo hoje </td>                                         
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -276,8 +208,6 @@
 
                     </div><!-- /.row -->
 
-
-
                 </div><!-- /#page-wrapper -->
 
             </div>
@@ -287,3 +217,30 @@
 </body>
 
 </html>
+
+<!-- BEGIN: Vendor JS-->
+<script src="../app-assets/vendors/js/vendors.min.js"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="../app-assets/js/core/app-menu.js"></script>
+<script src="../app-assets/js/core/app.js"></script>
+<!-- END: Theme JS-->
+
+<script>
+    $(window).on('load', function() {
+        if (feather) {
+            feather.replace({
+                width: 14,
+                height: 14
+            });
+        }
+    })
+</script>
+
+<!-- BEGIN: Page JS-->
+<script src="../app-assets/js/scripts/ui/ui-feather.js"></script>
+<!-- END: Page JS-->

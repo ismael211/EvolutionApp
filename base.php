@@ -251,9 +251,6 @@ include('inc/config.php');
     <script src="app-assets/js/core/app.js"></script>
     <!-- END: Theme JS-->
 
-    <!-- BEGIN: Page JS-->
-    <!-- END: Page JS-->
-
     <script>
         $(window).on('load', function() {
             if (feather) {
