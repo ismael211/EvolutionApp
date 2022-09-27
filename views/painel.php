@@ -1,7 +1,12 @@
 <?php
 
+header("Content-type: text/html; charset=utf-8");
+
 session_start();
 require_once('../inc/config.php');
+
+include('nav.php');
+include('side-bar.php');
 
 $core = new IsistemCore();
 $core->Connect();
@@ -19,6 +24,7 @@ $dataHoje = date("Y-m-d");
 
 $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '2022-07-26' AND faturas.status = 'on' ");
 
+
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +38,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>TESTE</title>
+    <title>Isistem Painel Gerenciavel</title>
     <link rel="apple-touch-icon" href="../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
@@ -61,17 +67,15 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
     <script src="../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
     <script src="../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
     <script src="../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+
     <script src="../app-assets/js/scripts/tables/table-datatables-advanced.js"></script>
 
     <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
-
 
 </head>
 <!-- END: Head-->
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="">
-
-
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -156,7 +160,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <h3 class="panel-title"><i class="fa fa-money"></i>Faturas Vencendo Hoje</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="table-responsive">
+                                        <div class="table-responsive-sm">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -236,6 +240,9 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 <!-- BEGIN: Page Vendor JS-->
 <!-- END: Page Vendor JS-->
 
+<script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
 <!-- BEGIN: Theme JS-->
 <script src="../app-assets/js/core/app-menu.js"></script>
 <script src="../app-assets/js/core/app.js"></script>
@@ -254,6 +261,10 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 
 <!-- BEGIN: Page JS-->
 <script src="../app-assets/js/scripts/ui/ui-feather.js"></script>
+<!-- END: Page JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="../app-assets/js/scripts/pagination/components-pagination.js"></script>
 <!-- END: Page JS-->
 
 <script>
