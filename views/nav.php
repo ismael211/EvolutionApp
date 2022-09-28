@@ -2,10 +2,8 @@
     <div class="navbar-container d-flex content">
 
         <ul class="nav navbar-nav align-items-center ml-auto">
-            <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-br"></i><span class="selected-language">Portugês</span></a>
-            </li>
             <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
-            <li class="nav-item dropdown dropdown-notification mr-25"><a class="nav-link" href="javascript:void(0);" data-toggle="dropdown"><i class="ficon" data-feather="bell"></i><span class="badge badge-pill badge-danger badge-up">5</span></a>
+            <li class="nav-item dropdown dropdown-notification mr-25"><a class="nav-link" href="javascript:void(0);" data-toggle="dropdown"><i class="ficon" data-feather="bell"></i></a>
                 <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                     <li class="dropdown-menu-header">
                         <div class="dropdown-header d-flex">
@@ -28,57 +26,6 @@
                                 </div>
                                 <div class="media-body">
                                     <p class="media-heading"><span class="font-weight-bolder">New message</span>&nbsp;received</p><small class="notification-text"> You have 10 unread messages</small>
-                                </div>
-                            </div>
-                        </a><a class="d-flex" href="javascript:void(0)">
-                            <div class="media d-flex align-items-start">
-                                <div class="media-left">
-                                    <div class="avatar bg-light-danger">
-                                        <div class="avatar-content">MD</div>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p class="media-heading"><span class="font-weight-bolder">Revised Order 👋</span>&nbsp;checkout</p><small class="notification-text"> MD Inc. order updated</small>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="media d-flex align-items-center">
-                            <h6 class="font-weight-bolder mr-auto mb-0">System Notifications</h6>
-                            <div class="custom-control custom-control-primary custom-switch">
-                                <input class="custom-control-input" id="systemNotification" type="checkbox" checked="">
-                                <label class="custom-control-label" for="systemNotification"></label>
-                            </div>
-                        </div><a class="d-flex" href="javascript:void(0)">
-                            <div class="media d-flex align-items-start">
-                                <div class="media-left">
-                                    <div class="avatar bg-light-danger">
-                                        <div class="avatar-content"><i class="avatar-icon" data-feather="x"></i></div>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p class="media-heading"><span class="font-weight-bolder">Server down</span>&nbsp;registered</p><small class="notification-text"> USA Server is down due to hight CPU usage</small>
-                                </div>
-                            </div>
-                        </a><a class="d-flex" href="javascript:void(0)">
-                            <div class="media d-flex align-items-start">
-                                <div class="media-left">
-                                    <div class="avatar bg-light-success">
-                                        <div class="avatar-content"><i class="avatar-icon" data-feather="check"></i></div>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p class="media-heading"><span class="font-weight-bolder">Sales report</span>&nbsp;generated</p><small class="notification-text"> Last month sales report generated</small>
-                                </div>
-                            </div>
-                        </a><a class="d-flex" href="javascript:void(0)">
-                            <div class="media d-flex align-items-start">
-                                <div class="media-left">
-                                    <div class="avatar bg-light-warning">
-                                        <div class="avatar-content"><i class="avatar-icon" data-feather="alert-triangle"></i></div>
-                                    </div>
-                                </div>
-                                <div class="media-body">
-                                    <p class="media-heading"><span class="font-weight-bolder">High memory</span>&nbsp;usage</p><small class="notification-text"> BLR Server using high memory</small>
                                 </div>
                             </div>
                         </a>

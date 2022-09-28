@@ -11,25 +11,17 @@ include('side-bar.php');
 $core = new IsistemCore();
 $core->Connect();
 
-$qtd_clientes_ativos = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'a'");
-
-$qtd_clientes_prop = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'p'
-AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
-
-$qtd_licencas = $core->RowCount("SELECT * FROM `licenca` WHERE `status` = '1'");
-
-$allFaturasAbertas = $core->RowCount("SELECT codigo FROM faturas WHERE status = 'on'");
-
-$dataHoje = date("Y-m-d");
+$qtd_vencidas = $core->RowCount("SELECT * FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente
+LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento < NOW() AND faturas.status = 'off'");
 
 $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '2022-07-26' AND faturas.status = 'on' ");
 
 
 ?>
 
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
-<!-- BEGIN: Head-->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -86,12 +78,10 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Home</h2>
+                            <h2 class="content-header-title float-left mb-0">Financeiro</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a>
-                                    </li>
-                                    <li class="breadcrumb-item active">Painel Inicial
+                                    <li class="breadcrumb-item active">Visualizar Faturas
                                     </li>
                                 </ol>
                             </div>
@@ -99,68 +89,51 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                     </div>
                 </div>
             </div>
-            <div class="content-body">
 
-                <div id="card">
+
+            <span id="status_volta"></span>
+
+            <div class="col-xl-12 col-md-12 col-12">
+                <div class="card">
+
                     <div class="card-body">
-                        <!-- INCIALIZADO PAINEL DE INFORMAÇÔES -->
 
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="card bg-success text-white">
-                                    <div class="card-body">
-                                        <h2 class="text-white"><i data-feather='user-plus'></i> <?= $qtd_clientes_prop ?></h2>
-                                        <h6 class="text-white" style="float: right;">+ Clientes</6>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a class="text-white" href="clientes.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
-                                    </div>
-                                </div>
+
+                            <div class="col-lg-12">
+
+                                <ol class="breadcrumb">
+                                    <li class="active form-inline">
+
+                                        <div class="form-group">
+                                            <select class="form-control" name="opcoes" id="opcoes">
+                                                <option value="0" selected="selected"> -- Opções -- </option>
+                                                <option value="visualizar">Visualizar</option>
+                                                <option value="quitar">Quitar</option>
+                                                <option value="editar">Editar</option>
+                                                <option value="remover">Remover</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary" id="bt_action_financeiro">OK</button>
+                                        </div>
+
+                                    </li>
+                                </ol>
+
                             </div>
-                            <div class="col-md-3">
-                                <div class="card bg-warning text-white">
-                                    <div class="card-body">
-                                        <h2 class="text-white"><i data-feather='dollar-sign'></i> <?= $allFaturasAbertas ?></h2>
-                                        <h6 class="text-white" style="float: right;"> Faturas</6>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a class="text-white" href="financeiro.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card bg-primary text-white">
-                                    <div class="card-body">
-                                        <h2 class="text-white"><i data-feather='align-justify'></i> <?= $qtd_licencas ?></h2>
-                                        <h6 class="text-white" style="float: right;">Licenças</6>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a class="text-white" href="licencas.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card bg-primary text-white">
-                                    <div class="card-body">
-                                        <h2 class="text-white"><i data-feather='users'></i> <?= $qtd_clientes_ativos ?></h2>
-                                        <h6 class="text-white" style="float: right;">Clientes</6>
-                                    </div>
-                                    <div class="card-footer">
-                                        <a class="text-white" href="clientes.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+                        </div><!-- /.row -->
 
                         <div class="row">
 
                             <div class="col-lg-12">
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title"><i class="fa fa-money"></i>Faturas Vencendo Hoje</h3>
+                                        <h3 class="panel-title"><i class="fa fa-money"></i> Faturas Vencendo Hoje</h3>
                                     </div>
                                     <div class="panel-body">
-                                        <div class="table-responsive-sm">
+                                        <div class="table-responsive">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
@@ -211,27 +184,96 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="text-right">
-                                            <a href="financeiro.twig" class="btn btn-primary btn-md">Visualizar Todos <i data-feather="arrow-right"></i></a>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                        </div>
+                        </div><!-- /.row -->
+                        <hr>
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-money"></i> Faturas Vencidas</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th># <i class="fa fa-sort"></i></th>
+                                                        <th>Codigo Fatura <i class="fa fa-sort"></i></th>
+                                                        <th>Cliente <i class="fa fa-sort"></i></th>
+                                                        <th>Tipo Cliente <i class="fa fa-sort"></i></th>
+                                                        <th>Valor(R$) <i class="fa fa-sort"></i></th>
+                                                        <th>Data Vencimento <i class="fa fa-sort"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if ($qtd_vencidas > 0) {
+
+                                                        $fat_vencidas = $core->FetchAll("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas
+                                                    LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente
+                                                    LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico
+                                                    WHERE faturas.data_vencimento < NOW() AND faturas.status = 'off'");
+                                                        foreach ($fat_vencidas as $row) {
+                                                            $nome = substr($row['nome'], 0, 30);
+                                                    ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_fatura" id="codigo_fatura">
+                                                                    <input type="hidden" id="id_fatura" name="id_fatura" value="<?= $row['codigo'] ?>">
+                                                                </td>
+                                                                <td><?= $row['codigo'] ?></td>
+                                                                <td><?= $nome ?></td>
+
+                                                                <?php if ($row['tipo_cliente'] = 'r') { ?>
+
+                                                                    <td>Revendedor</td>
+                                                                <?php } else { ?>
+                                                                    <td>Usuário</td>
+
+                                                                <?php } ?>
+
+                                                                <td><?= $row['valor'] ?></td>
+                                                                <td><?= $row['data_vencimento'] ?></td>
+                                                            </tr>
+                                                        <?php
+
+                                                        }
+                                                    } else {
+                                                        ?>
+                                                        <tr>
+                                                            <td>Nenhuma fatura vencendo hoje </td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    <?php
+                                                    } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- /.row -->
+
                     </div>
                     <div class="card-footer">
                         <h6>Painel Licença</h6>
-                    </div>
+                    </div><!-- /#page-wrapper -->
                 </div>
-            </div><!-- /#page-wrapper -->
-
+            </div>
         </div>
     </div>
-
 </body>
-
-</html>
 
 <!-- BEGIN: Vendor JS-->
 <script src="../app-assets/vendors/js/vendors.min.js"></script>

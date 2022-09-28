@@ -13,19 +13,6 @@ $core->Connect();
 
 $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
-$qtd_clientes_ativos = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'a'");
-
-$qtd_clientes_prop = $core->RowCount("SELECT * FROM `clientes` WHERE `status` = 'p'
-AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
-
-$qtd_licencas = $core->RowCount("SELECT * FROM `licenca` WHERE `status` = '1'");
-
-$allFaturasAbertas = $core->RowCount("SELECT codigo FROM faturas WHERE status = 'on'");
-
-$dataHoje = date("Y-m-d");
-
-$qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '2022-07-26' AND faturas.status = 'on' ");
-
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +57,14 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 
     <script src="../app-assets/js/scripts/tables/table-datatables-advanced.js"></script>
 
+    <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
+    
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
     <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+
 
 </head>
 <!-- END: Head-->
@@ -128,6 +122,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 
                                         </li>
                                     </ol>
+
                                     <br>
                                     <div class="table-responsive-sm">
 
@@ -249,8 +244,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 <!-- BEGIN: Page Vendor JS-->
 <!-- END: Page Vendor JS-->
 
-<script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
 
 <!-- BEGIN: Theme JS-->
 <script src="../app-assets/js/core/app-menu.js"></script>
