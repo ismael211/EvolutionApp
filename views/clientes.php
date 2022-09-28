@@ -25,46 +25,35 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>Isistem Painel Gerenciavel</title>
-    <link rel="apple-touch-icon" href="../app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="../app-assets/images/ico/favicon.ico">
+    <title>DataTables</title>
+    <link rel="apple-touch-icon" href="../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/themes/dark-layout.css">
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/themes/bordered-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/themes/bordered-layout.css">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <!-- END: Custom CSS-->
-
-    <script src="../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-    <script src="../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
-    <script src="../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-    <script src="../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-
-    <script src="../app-assets/js/scripts/tables/table-datatables-advanced.js"></script>
-
-    <script src="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css"></script>
-    
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-
-    <script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
-
-    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
-
 
 </head>
 <!-- END: Head-->
@@ -204,20 +193,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                             </tbody>
                                         </table>
 
-                                        <!-- Dynamic Default Pagination starts -->
-                                        <div class="col-lg-6 col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">Defauuul</h4>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div id="page1-content" class="border-grey border-lighten-2 mb-1">You are on paage 1</div>
-                                                    <ul class="pagination page1-links"></ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Dynamic Default Pagination ends -->
-
                                     </div>
                                 </div>
 
@@ -238,18 +213,33 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 </body>
 
 <!-- BEGIN: Vendor JS-->
-<script src="../app-assets/vendors/js/vendors.min.js"></script>
+<script src="../../app-assets/vendors/js/vendors.min.js"></script>
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/jszip.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/pdfmake.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/vfs_fonts.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/buttons.html5.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
+<script src="../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
 <!-- END: Page Vendor JS-->
 
-
-
 <!-- BEGIN: Theme JS-->
-<script src="../app-assets/js/core/app-menu.js"></script>
-<script src="../app-assets/js/core/app.js"></script>
+<script src="../../app-assets/js/core/app-menu.js"></script>
+<script src="../../app-assets/js/core/app.js"></script>
 <!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
+<!-- END: Page JS-->
 
 <script>
     $(window).on('load', function() {
@@ -261,14 +251,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
         }
     })
 </script>
-
-<!-- BEGIN: Page JS-->
-<script src="../app-assets/js/scripts/ui/ui-feather.js"></script>
-<!-- END: Page JS-->
-
-<!-- BEGIN: Page JS-->
-<script src="../app-assets/js/scripts/pagination/components-pagination.js"></script>
-<!-- END: Page JS-->
 
 <script>
     $(document).ready(function() {
