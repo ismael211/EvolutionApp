@@ -19,6 +19,8 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 
+<!-- BEGIN: Head-->
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,18 +28,13 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>DataTables</title>
+    <title>Input Mask - Vuexy - Bootstrap HTML admin template</title>
     <link rel="apple-touch-icon" href="../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="../../app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -73,7 +70,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                             <h2 class="content-header-title float-left mb-0">Clientes</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item active">Visualizar Clientes
+                                    <li class="breadcrumb-item active">Cadastrar Clientes
                                     </li>
                                 </ol>
                             </div>
@@ -90,126 +87,204 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
                         <div class="card-body">
 
-                            <div class="row">
 
-                                <div class="col-lg-12">
+                            <div id="page-wrapper">
 
-                                    <ol class="breadcrumb">
-                                        <li class="active form-inline">
 
-                                            <div class="form-group">
-                                                <select class="form-control" name="opcoes" id="opcoes">
-                                                    <option value="0" selected="selected"> -- Opções -- </option>
-                                                    <option value="ativar">Ativar</option>
-                                                    <option value="desativar">Desativar</option>
-                                                    <option value="editar">Editar</option>
-                                                    <option value="remover">Remover</option>
-                                                </select>
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                        <form role="form">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Status</label>
+                                                    <select class="form-control" id="status_cli" name="status_cli">
+                                                        <option value="" selected="selected">Selecione um status</option>
+                                                        <option value="a">Ativo</option>
+                                                        <option value="p">Prospect</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Tipo de Cliente</label>
+                                                    <select class="form-control" id="tipo_cliente" name="tipo_cliente">
+                                                        <option value="" selected="selected">Selecione uma opção</option>
+                                                        <option value="u">Usuário</option>
+                                                        <option value="r">Revendedor</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <button type="button" class="btn btn-primary btn-sm" id="action_bt_opcoes" style="margin-left: 5px;">OK</button>
+                                                <label>Nome Responsável</label>
+                                                <input class="form-control" type="text" name="nome" id="nome">
                                             </div>
 
-                                        </li>
-                                    </ol>
 
-                                    <br>
-                                    <div class="table-responsive-sm">
+                                            <div class="collapse-margin" id="accordionExample">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="card">
 
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th># <i class="fa fa-sort"></i></th>
-                                                    <th>ID <i class="fa fa-sort"></i></th>
-                                                    <th>Cliente <i class="fa fa-sort"></i></th>
-                                                    <th>Email <i class="fa fa-sort"></i></th>
-                                                    <th>Tipo <i class="fa fa-sort"></i></th>
-                                                    <th>Data Cadastro <i class="fa fa-sort"></i></th>
-                                                    <th>Status <i class="fa fa-sort"></i></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                                            <div class="card-header" id="headingOne" data-toggle="collapse" role="button" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                <span class="lead collapse-title">Fisica</span>
+                                                            </div>
 
-                                                <?php
-                                                if ($qtd_clientes > 0) {
+                                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                                <div class="card-body">
+                                                                    <div id="fisica" class="well">
 
-                                                    $clientes = $core->FetchAll("SELECT codigo, nome, email1, email2, fone, celular, data_cadastro, status,
-                                                    tipo_cliente FROM clientes");
-                                                    foreach ($clientes as $row) {
-                                                        $nome = substr($row['nome'], 0, 30);
-                                                ?>
-                                                        <tr>
-                                                            <td>
-                                                                <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_cli" id="codigo_cli">
-                                                                <input type="hidden" id="idcliente" name="idcliente" value="<?= $row['codigo'] ?>">
-                                                            </td>
-                                                            <td><?= $row['codigo'] ?></td>
-                                                            <td><?= $nome; ?></td>
-                                                            <td><?= $row['email1'] ?></td>
+                                                                        <div class="form-group">
+                                                                            <label>RG:</label>
+                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7">
+                                                                        </div>
 
-                                                            <?php if ($row['tipo_cliente'] = 'u') { ?>
-                                                                <td>Usuário</td>
-                                                            <?php } else { ?>
+                                                                        <div class="form-group">
+                                                                            <label>CPF</label>
+                                                                            <input class="form-control custom-delimiter-mask" type="text" name="cpf" id="cpf">
+                                                                        </div>
 
-                                                                <td>Revendedor</td>
+                                                                        <div class="form-group">
+                                                                            <label>Data de Nascimento</label>
+                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" maxlength="10">
+                                                                        </div>
 
-                                                            <?php } ?>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                            <td><?= $row['data_cadastro'] ?></td>
+                                                    <div class="col-md-6">
+                                                        <div class="card">
+                                                            <div class="card-header" id="headingTwo" data-toggle="collapse" role="button" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                <span class="lead collapse-title">Juridica</span>
+                                                            </div>
+                                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                                <div class="card-body">
+                                                                    <div id="juridica" class="well">
 
-                                                            <?php if ($row['status'] == 'a') {
-                                                            ?>
-                                                                <td>
-                                                                    <a href="#" class="limpa-estilo muda_status" id="<?= $row['codigo'] ?>" vstatus="<?= $row['status'] ?>">
-                                                                        <span class="badge bg-success">Ativado</span>
-                                                                    </a>
-                                                                </td>
-                                                            <?php } else { ?>
-                                                                <td>
-                                                                    <a href="#" class="limpa-estilo muda_status" id="<?= $row['codigo'] ?>" vstatus="<?= $row['status'] ?>">
-                                                                        <span class="badge bg-danger">Desativado</span>
-                                                                    </a>
-                                                                </td>
-                                                            <?php
-                                                            }
+                                                                        <div class="form-group">
+                                                                            <label>CNPJ:</label>
+                                                                            <input class="form-control mask_cnpj" type="text" name="cnpj" id="cnpj" maxlength="18" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
+                                                                        </div>
 
-                                                            ?>
-                                                        </tr>
-                                                    <?php
+                                                                        <div class="form-group">
+                                                                            <label>Razão Social:</label>
+                                                                            <input class="form-control" type="text" name="razao_social" id="razao_social">
+                                                                        </div>
 
-                                                    }
-                                                } else {
-                                                    ?>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td>Nenhum Registro</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                <?php
-                                                } ?>
-                                            </tbody>
-                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Telefone:</label>
+                                                        <input class="form-control mask_tel" type="text" name="fone" id="fone">
+                                                    </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label>Celular:</label>
+                                                        <input class="form-control mask_tel" type="text" name="celular" id="celular">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Email Principal:</label>
+                                                    <input class="form-control" type="text" name="email1" id="email1">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Email Secundário:</label>
+                                                    <input class="form-control" type="text" name="email2" id="email2">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Senha:</label>
+                                                    <input class="form-control" type="password" name="senha" id="senha">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Repetir Senha:</label>
+                                                    <input class="form-control" type="password" name="r_senha" id="r_senha">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Obs</label>
+                                                    <textarea class="form-control" rows="3" name="obs" id="obs"></textarea>
+                                                </div>
+
+                                                <div class="well">
+
+                                                    <div class="form-group">
+                                                        <label>Parceiro</label>
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="1" id="parceiro" name="parceiro">
+                                                                Sim
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Tipo de Plano</label>
+                                                        <select class="form-control" id="tipo_plano" name="tipo_plano">
+                                                            <option value="" selected="selected">Selecione um plano</option>
+                                                            {% for valor in tipo_plano_servicos %}
+                                                            <option value="{{ valor.codigo }}">{{ valor.nome }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Forma de Pagamento</label>
+                                                        <select class="form-control" id="forma_pagamento" name="forma_pagamento">
+                                                            <option value="" selected="selected">Selecione um plano</option>
+                                                            {% for resulpgt in forma_pagamento %}
+                                                            <option value="{{ resulpgt.codigo }}">{{ resulpgt.nome }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Dia de Vencimento:</label>
+                                                        <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento">
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="well">
+                                                    <button type="button" class="btn btn-primary" id="cadastrar_cliente">Cadastrar</button>
+                                                </div>
+
+                                        </form>
 
                                     </div>
-                                </div>
 
-                            </div><!-- /.row -->
-                        </div>
-                        <div class="card-footer">
-                            <h6>Painel Licença</h6>
+
+                                </div><!-- /#page-wrapper -->
+
+
+
+
+
+                            </div>
+                            <div class="card-footer">
+                                <h6>Painel Licença</h6>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
-        </div>
 
-    </div>
+        </div>
 
 </body>
 
@@ -222,19 +297,8 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/datatables.buttons.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/jszip.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/pdfmake.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/vfs_fonts.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/buttons.html5.min.js"></script>
-<script src="../../app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
-<script src="../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
+<script src="../../app-assets/vendors/js/forms/cleave/cleave.min.js"></script>
+<script src="../../app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js"></script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
@@ -243,7 +307,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
-<script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
+<script src="../../app-assets/js/scripts/forms/form-input-mask.js"></script>
 <!-- END: Page JS-->
 
 <script>
@@ -256,36 +320,81 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
         }
     })
 </script>
-
+<!-- mascara da data -->
 <script>
-    $(document).ready(function() {
+    var input = document.querySelectorAll('.mask_data')[0];
 
-        var iconealert = '<i class="bi bi-exclamation-triangle text-warning"></i>';
-        var lupa = '<i class="bi bi-search"></i>';
-        var table = $('.table').DataTable({
-            pageLength: 5,
-            lengthMenu: [
-                [5, 10, 20, -1],
-                [5, 10, 20, 'All']
-            ],
-            paging: true,
-            order: [
-                [3, 'asc'],
-                [0, 'asc']
-            ],
-            language: {
-                "lengthMenu": "Mostrando _MENU_ registros página",
-                "zeroRecords": "Nada encontrado",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": iconealert + " Nenhum registro disponivel",
-                "infoFiltered": "(filtrado de MAX registros no total)",
-                "search": lupa + " Pesquisar",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Proxima"
+    var dateInputMask = function dateInputMask(elm) {
+        elm.addEventListener('keypress', function(e) {
+            if (e.keyCode < 47 || e.keyCode > 57) {
+                e.preventDefault();
+            }
+
+            var len = elm.value.length;
+
+            // If we're at a particular place, let the user type the slash
+            // i.e., 12/12/1212
+            if (len !== 1 || len !== 3) {
+                if (e.keyCode == 47) {
+                    e.preventDefault();
                 }
-            },
-            "autoWidth": true
+            }
+
+            // If they don't add the slash, do it for them...
+            if (len === 2) {
+                elm.value += '/';
+            }
+
+            // If they don't add the slash, do it for them...
+            if (len === 5) {
+                elm.value += '/';
+            }
         });
-    })
+    };
+
+    dateInputMask(input);
+</script>
+
+<!-- mascara do cnpj -->
+<!-- mascara da data -->
+<script>
+    var input = document.querySelectorAll('.mask_cnpj')[0];
+
+    var dateInputMask = function dateInputMask(elm) {
+        elm.addEventListener('keypress', function(e) {
+            // if (e.keyCode < 47 || e.keyCode > 57) {
+            //     e.preventDefault();
+            // }
+
+            var len = elm.value.length;
+
+            // If we're at a particular place, let the user type the slash
+            // i.e., 12/12/1212
+            // if (len !== 1 || len !== 3) {
+            //     if (e.keyCode == 47) {
+            //         e.preventDefault();
+            //     }
+            // }
+
+            // If they don't add the slash, do it for them...
+            if (len === 2) {
+                elm.value += '.';
+            }
+
+            // If they don't add the slash, do it for them...
+            if (len === 6) {
+                elm.value += '.';
+            }
+
+            if (len === 10) {
+                elm.value += '/';
+            }
+
+            if (len === 15) {
+                elm.value += '-';
+            }
+        });
+    };
+
+    dateInputMask(input);
 </script>
