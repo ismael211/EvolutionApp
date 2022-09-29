@@ -87,9 +87,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
                         <div class="card-body">
 
-
                             <div id="page-wrapper">
-
 
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -125,7 +123,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                     <div class="col-md-6">
                                                         <div class="card">
 
-                                                            <div class="card-header" id="headingOne" data-toggle="collapse" role="button" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                            <div class="card-header" id="headingOne" data-toggle="collapse" onclick="limpa_campos()" role="button" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                                                 <span class="lead collapse-title">Fisica</span>
                                                             </div>
 
@@ -135,7 +133,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
                                                                         <div class="form-group">
                                                                             <label>RG:</label>
-                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7">
+                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
                                                                         </div>
 
                                                                         <div class="form-group">
@@ -156,7 +154,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
                                                     <div class="col-md-6">
                                                         <div class="card">
-                                                            <div class="card-header" id="headingTwo" data-toggle="collapse" role="button" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                            <div class="card-header" onclick="limpa_campos()" id="headingTwo" data-toggle="collapse" role="button" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                                 <span class="lead collapse-title">Juridica</span>
                                                             </div>
                                                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
@@ -179,47 +177,56 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <br>
+                                            </div>
+                                            <br>
 
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
-                                                        <label>Telefone:</label>
-                                                        <input class="form-control mask_tel" type="text" name="fone" id="fone">
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>Celular:</label>
-                                                        <input class="form-control mask_tel" type="text" name="celular" id="celular">
-                                                    </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Telefone:</label>
+                                                    <input class="form-control mask_tel" type="text" name="fone" id="fone">
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group col-md-6">
+                                                    <label>Celular:</label>
+                                                    <input class="form-control mask_tel" type="text" name="celular" id="celular">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="form-group col-md-6">
                                                     <label>Email Principal:</label>
                                                     <input class="form-control" type="text" name="email1" id="email1">
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group col-md-6">
                                                     <label>Email Secundário:</label>
                                                     <input class="form-control" type="text" name="email2" id="email2">
                                                 </div>
 
-                                                <div class="form-group">
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="form-group col-md-6">
                                                     <label>Senha:</label>
                                                     <input class="form-control" type="password" name="senha" id="senha">
                                                 </div>
 
-                                                <div class="form-group">
+                                                <div class="form-group col-md-6">
                                                     <label>Repetir Senha:</label>
                                                     <input class="form-control" type="password" name="r_senha" id="r_senha">
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label>Obs</label>
-                                                    <textarea class="form-control" rows="3" name="obs" id="obs"></textarea>
-                                                </div>
+                                            </div>
 
-                                                <div class="well">
+                                            <div class="form-group">
+                                                <label>Obs</label>
+                                                <textarea class="form-control" rows="3" name="obs" id="obs"></textarea>
+                                            </div>
 
+                                            <div class="card border">
+                                                <div class="card-header">
                                                     <div class="form-group">
                                                         <label>Parceiro</label>
                                                         <div class="checkbox">
@@ -229,49 +236,50 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                             </label>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="card-body">
 
-                                                    <div class="form-group">
-                                                        <label>Tipo de Plano</label>
-                                                        <select class="form-control" id="tipo_plano" name="tipo_plano">
-                                                            <option value="" selected="selected">Selecione um plano</option>
-                                                            {% for valor in tipo_plano_servicos %}
-                                                            <option value="{{ valor.codigo }}">{{ valor.nome }}</option>
-                                                            {% endfor %}
-                                                        </select>
+                                                    <div class="row">
+                                                        <div class="form-group col-md-4">
+                                                            <label>Tipo de Plano</label>
+                                                            <select class="form-control" id="tipo_plano" name="tipo_plano">
+                                                                <option value="" selected="selected">Selecione um plano</option>
+                                                                {% for valor in tipo_plano_servicos %}
+                                                                <option value="{{ valor.codigo }}">{{ valor.nome }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+
+
+
+                                                        <div class="form-group col-md-4">
+                                                            <label>Forma de Pagamento</label>
+                                                            <select class="form-control" id="forma_pagamento" name="forma_pagamento">
+                                                                <option value="" selected="selected">Selecione um plano</option>
+                                                                {% for resulpgt in forma_pagamento %}
+                                                                <option value="{{ resulpgt.codigo }}">{{ resulpgt.nome }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group  col-md-4">
+                                                            <label>Dia de Vencimento:</label>
+                                                            <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento">
+                                                        </div>
                                                     </div>
-
-                                                    <div class="form-group">
-                                                        <label>Forma de Pagamento</label>
-                                                        <select class="form-control" id="forma_pagamento" name="forma_pagamento">
-                                                            <option value="" selected="selected">Selecione um plano</option>
-                                                            {% for resulpgt in forma_pagamento %}
-                                                            <option value="{{ resulpgt.codigo }}">{{ resulpgt.nome }}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Dia de Vencimento:</label>
-                                                        <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento">
-                                                    </div>
-
 
                                                 </div>
+                                            </div>
 
-                                                <div class="well">
-                                                    <button type="button" class="btn btn-primary" id="cadastrar_cliente">Cadastrar</button>
-                                                </div>
+                                            <div class="well">
+                                                <button type="button" class="btn btn-primary" id="cadastrar_cliente">Cadastrar</button>
+                                            </div>
 
                                         </form>
 
                                     </div>
 
-
                                 </div><!-- /#page-wrapper -->
-
-
-
-
 
                             </div>
                             <div class="card-footer">
@@ -279,7 +287,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                             </div>
                         </div>
                     </div>
-
 
                 </div>
             </div>
@@ -356,7 +363,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 </script>
 
 <!-- mascara do cnpj -->
-<!-- mascara da data -->
 <script>
     var input = document.querySelectorAll('.mask_cnpj')[0];
 
@@ -397,4 +403,79 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     };
 
     dateInputMask(input);
+</script>
+
+<!-- limpa campos -->
+<script>
+    function limpa_campos() {
+        document.getElementById('rg').value = ""
+        document.getElementById('cpf').value = ""
+        document.getElementById('data_nac').value = ""
+        document.getElementById('cnpj').value = ""
+        document.getElementById('razao_social').value = ""
+
+    }
+</script>
+
+<!-- Action cadastrar cliente  -->
+<script>
+    $("#cadastrar_cliente").click(function() {
+
+        processando(1);
+
+        var tipo_cliente = $("#tipo_cliente").val();
+        var nome = $("#nome").val();
+        var tipo_pessoa = $("input[name=tipo_pessoa]:checked").val();
+        var rg = $("#rg").val();
+        var cpf = $("#cpf").val();
+        var data_nac = $("#data_nac").val();
+        var cnpj = $("#cnpj").val();
+        var razao_social = $("#razao_social").val();
+        var fone = $("#fone").val();
+        var celular = $("#celular").val();
+        var email1 = $("#email1").val();
+        var email2 = $("#email2").val();
+        var senha = $("#senha").val();
+        var r_senha = $("#r_senha").val();
+        var obs = $("#obs").val();
+        var status_cli = $("#status_cli").val();
+        var tipo_plano = $("#tipo_plano").val();
+        var forma_pagamento = $("#forma_pagamento").val();
+        var dia_vencimento = $("#dia_vencimento").val();
+        var parceiro = $("input[name=parceiro]:checked").val();
+
+        $.ajax({
+            type: "POST",
+            url: "cadastra_clientes.php",
+            data: {
+                'tipo_cliente': tipo_cliente,
+                'nome': nome,
+                'tipo_pessoa': tipo_pessoa,
+                'rg': rg,
+                'cpf': cpf,
+                'data_nac': data_nac,
+                'cnpj': cnpj,
+                'razao_social': razao_social,
+                'fone': fone,
+                'celular': celular,
+                'email1': email1,
+                'email2': email2,
+                'senha': senha,
+                'r_senha': r_senha,
+                'obs': obs,
+                'status_cli': status_cli,
+                'tipo_plano': tipo_plano,
+                'forma_pagamento': forma_pagamento,
+                "dia_vencimento": dia_vencimento,
+                'parceiro': parceiro
+            },
+            success: function(msg) {
+
+                processando(0);
+                $('#status').html(msg);
+
+            }
+        });
+
+    });
 </script>
