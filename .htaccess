@@ -11,4 +11,8 @@ RewriteBase /
 ####Redigindo as URL
 
 #Clientes
-RewriteRule ^Login painel/login/singin.php  [NC,QSA,L]
+RewriteRule ^Login views/login.php  [NC,QSA,L]
+RewriteRule ^Clientes views/clientes.php  [NC,QSA,L]
+RewriteRule ^Licencas views/clientes.php  [NC,QSA,L]
+RewriteRule ^Servicos views/clientes.php  [NC,QSA,L]
+RewriteRule ^Financeiro views/clientes.php  [NC,QSA,L]
