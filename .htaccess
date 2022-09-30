@@ -11,8 +11,10 @@ RewriteBase /
 ####Redigindo as URL
 
 #Clientes
-RewriteRule ^Login views/login.php  [NC,QSA,L]
 RewriteRule ^Clientes views/clientes.php  [NC,QSA,L]
-RewriteRule ^Licencas views/clientes.php  [NC,QSA,L]
-RewriteRule ^Servicos views/clientes.php  [NC,QSA,L]
-RewriteRule ^Financeiro views/clientes.php  [NC,QSA,L]
+RewriteRule ^Licencas views/licencas.php  [NC,QSA,L]
+RewriteRule ^Servicos views/visualizarServico.php  [NC,QSA,L]
+RewriteRule ^Financeiro views/financeiro.php  [NC,QSA,L]
+RewriteRule ^Home views/painel.php  [NC,QSA,L]
+RewriteRule ^Login views/login.php  [NC,QSA,L]
+RewriteRule ^Cadastro-Clientes  views/cadastra_clientes.php  [NC,QSA,L]

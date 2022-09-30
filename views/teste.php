@@ -49,6 +49,11 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
+    <!-- END: Page CSS-->
+
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <!-- END: Custom CSS-->
@@ -317,6 +322,11 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 <script src="../../app-assets/js/scripts/forms/form-input-mask.js"></script>
 <!-- END: Page JS-->
 
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
 <script>
     $(window).on('load', function() {
         if (feather) {
@@ -425,7 +435,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
         var tipo_cliente = $("#tipo_cliente").val();
         var nome = $("#nome").val();
-        var tipo_pessoa = $("input[name=tipo_pessoa]:checked").val();
         var rg = $("#rg").val();
         var cpf = $("#cpf").val();
         var data_nac = $("#data_nac").val();
@@ -443,6 +452,12 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
         var forma_pagamento = $("#forma_pagamento").val();
         var dia_vencimento = $("#dia_vencimento").val();
         var parceiro = $("input[name=parceiro]:checked").val();
+
+        if (rg = !'') {
+            var tipo_pessoa = "fisica";
+        } else {
+            var tipo_pessoa = "juridica";
+        }
 
         $.ajax({
             type: "POST",
@@ -472,10 +487,58 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             success: function(msg) {
 
                 processando(0);
-                $('#status').html(msg);
+
+                data = msg.split("||");
+
+                Swal.fire({
+                    title: 'Atenção',
+                    html: data[1],
+                    icon: data[0],
+                    width: '900px',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false,
+                    allowOutsideClick: false
+                })
 
             }
         });
 
     });
+</script>
+
+<script>
+    // funcao abre modal processando
+    function processando(faca) {
+        if (faca == "1") {
+            $.blockUI({
+                message: '<div class="spinner-border text-primary" role="status"></div>',
+                css: {
+                    backgroundColor: 'transparent',
+                    border: '0'
+                },
+                overlayCSS: {
+                    backgroundColor: '#fff',
+                    opacity: 0.8
+                }
+            });
+
+        }
+        if (faca == "0") {
+            $.blockUI({
+                message: '<div class="spinner-border text-primary" role="status"></div>',
+                timeout: 10,
+                css: {
+                    backgroundColor: 'transparent',
+                    border: '0'
+                },
+                overlayCSS: {
+                    backgroundColor: '#fff',
+                    opacity: 0.8
+                }
+            });
+            // $("#modal_processando").modal("hide");
+        }
+    }
 </script>

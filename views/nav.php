@@ -1,6 +1,48 @@
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow">
     <div class="navbar-container d-flex content">
 
+        <div class="bookmark-wrapper d-flex align-items-center">
+            <ul class="nav navbar-nav d-xl-none">
+                <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
+            </ul>
+            <style>
+                #icon_nav_top:hover {
+                    -ms-transform: scale(1.3);
+                    /* IE 9 */
+                    -webkit-transform: scale(1.3);
+                    /* Safari 3-8 */
+                    transform: scale(1.3);
+                }
+            </style>
+            <ul class="nav navbar-nav bookmark-icons">
+                
+                <li class="nav-item d-none d-lg-block" style="margin-top: -5px; margin-left: 30px ;">
+                </li>
+
+                <li class="nav-item d-none d-lg-block" style="margin-top: -5px;">
+                    <ul class="search-list search-list-main" style="position: absolute; display: none ;" id="Resultado_Pesquisa">
+                        <div class="card border border-primary">
+                            <div class="row">
+                                <div class="col-md-12" style="margin-top: 10px; ">
+                                    <div id="descricao" style="width: auto; overflow: auto; max-height:300px; ">
+                                        <br>
+                                        <span id="contador">
+                                        </span>
+                                        <span id="descricao">
+                                        </span>
+                                        <br>
+                                    </div>
+                                    <div id="ver_mas" style="text-align: center; margin-bottom: 10px ; margin-top: 10px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
         <ul class="nav navbar-nav align-items-center ml-auto">
             <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon" data-feather="moon"></i></a></li>
             <li class="nav-item dropdown dropdown-notification mr-25"><a class="nav-link" href="javascript:void(0);" data-toggle="dropdown"><i class="ficon" data-feather="bell"></i></a>

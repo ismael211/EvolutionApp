@@ -26,7 +26,7 @@
                     </li>
                     <li><a class="d-flex align-items-center" href="clientesNovos.php"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Visualizar Novos</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="/sys/cadastrar/clientes"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
+                    <li><a class="d-flex align-items-center" href="Cadastro_Clientes"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
                     </li>
                 </ul>
             </li>

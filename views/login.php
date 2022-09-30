@@ -227,7 +227,7 @@ $core->Connect();
       success: function(msg) {
         processando(0);
         if (msg == '') {
-          window.location.replace("/base.php");
+          window.location.replace("/Home");
         } else {
           Swal.fire({
             title: 'Atenção',

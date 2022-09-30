@@ -22,14 +22,14 @@ if ($_POST['pagina'] == "Login" || $_GET['pagina'] == "Sair") {
 
 
 if($_SESSION["codigo_adm"] == '') {
-	$pagina_inicial = "login.php";
+	$pagina_inicial = "login";
 } else {
-	$pagina_inicial = "painel.php";
+	$pagina_inicial = "home";
 }
 
 
 if (isset($_GET['pagina'])) {
-    include 'base.php';
+    include 'home';
 }else{
-    header("Location: index.php?pagina=".$pagina_inicial);
+    header("Location: ".$pagina_inicial);
 }
