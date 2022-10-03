@@ -15,7 +15,7 @@
                 }
             </style>
             <ul class="nav navbar-nav bookmark-icons">
-                
+
                 <li class="nav-item d-none d-lg-block" style="margin-top: -5px; margin-left: 30px ;">
                 </li>
 
@@ -84,39 +84,3 @@
         </ul>
     </div>
 </nav>
-
-<script>
-    // funcao abre modal processando
-    function processando(faca) {
-        if (faca == "1") {
-            $.blockUI({
-                message: '<div class="spinner-border text-primary" role="status"></div>',
-                css: {
-                    backgroundColor: 'transparent',
-                    border: '0'
-                },
-                overlayCSS: {
-                    backgroundColor: '#fff',
-                    opacity: 0.8
-                }
-            });
-
-        }
-        if (faca == "0") {
-            $.blockUI({
-                message: '<div class="spinner-border text-primary" role="status"></div>',
-                timeout: 10,
-                css: {
-                    backgroundColor: 'transparent',
-                    border: '0'
-                },
-                overlayCSS: {
-                    backgroundColor: '#fff',
-                    opacity: 0.8
-                }
-            });
-            // $("#modal_processando").modal("hide");
-        }
-    }
-    // Action Login 
-</script>
