@@ -1,12 +1,5 @@
 <?php
 
-//////////////////////////////////////////////////////////////////////////
-// Isistem Sistema Financeiro para Host's	   		                    //
-// Descricao: Sistema de Gerenciamento de Clientes		                //
-// Isistem Sistemas Web		                                            //
-// Site: www.Isistem.com.br       										//
-//////////////////////////////////////////////////////////////////////////
-
 
 class IsistemCore
 {

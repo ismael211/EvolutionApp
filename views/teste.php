@@ -12,10 +12,9 @@ include('../config.php');
 $core = new IsistemCore();
 $core->Connect();
 
-$forma_pag = $core->FetchAll("SELECT * FROM `formas_pagamento`");
+$clientes = $core->FetchAll("SELECT `codigo`, `nome` FROM `clientes` WHERE `status` = 'a'");
 
-$planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
-
+$key = generateKey();
 
 ?>
 
@@ -83,10 +82,10 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Clientes</h2>
+                            <h2 class="content-header-title float-left mb-0">Licença</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item active">Cadastrar Clientes
+                                    <li class="breadcrumb-item active">Cadastrar Licença
                                     </li>
                                 </ol>
                             </div>
@@ -105,190 +104,60 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
                             <div id="page-wrapper">
 
+
                                 <div class="row">
                                     <div class="col-lg-12">
 
-                                        <form role="form">
-                                            <div class="row">
-                                                <div class="form-group col-md-6">
-                                                    <label>Status</label>
-                                                    <select class="form-control" id="status_cli" name="status_cli">
-                                                        <option value="" selected="selected">Selecione um status</option>
-                                                        <option value="a">Ativo</option>
-                                                        <option value="p">Prospect</option>
-                                                    </select>
-                                                </div>
+                                        <form role="form" id="enviaNovaLicenca">
 
-                                                <div class="form-group col-md-6">
-                                                    <label>Tipo de Cliente</label>
-                                                    <select class="form-control" id="tipo_cliente" name="tipo_cliente">
-                                                        <option value="" selected="selected">Selecione uma opção</option>
-                                                        <option value="u">Usuário</option>
-                                                        <option value="r">Revendedor</option>
-                                                    </select>
-                                                </div>
-                                            </div>
                                             <div class="form-group">
-                                                <label>Nome Responsável</label>
-                                                <input class="form-control" type="text" name="nome" id="nome">
+                                                <label>Cliente</label>
+                                                <select class="form-control" id="clientef" name="clientef">
+                                                    <option value="" selected="selected">Selecione ...</option>
+                                                    <?php foreach ($clientes as $row) {
+                                                        $nome = substr($row['nome'], 0, 30);
+                                                    ?>
+                                                        <option value="<?= $row['codigo'] ?>"><?= $nome ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
 
-
-                                            <div class="collapse-margin" id="accordionExample">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="card">
-
-                                                            <div class="card-header" id="headingOne" data-toggle="collapse" onclick="limpa_campos()" role="button" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                                <span class="lead collapse-title">Fisica</span>
-                                                            </div>
-
-                                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                                                <div class="card-body">
-                                                                    <div id="fisica" class="well">
-
-                                                                        <div class="form-group">
-                                                                            <label>RG:</label>
-                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
-                                                                        </div>
-
-                                                                        <div class="form-group">
-                                                                            <label>CPF</label>
-                                                                            <input class="form-control custom-delimiter-mask" type="text" name="cpf" id="cpf" onblur="return validarCPF()">
-                                                                        </div>
-
-                                                                        <div class="form-group">
-                                                                            <label>Data de Nascimento</label>
-                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" maxlength="10">
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="card">
-                                                            <div class="card-header" onclick="limpa_campos()" id="headingTwo" data-toggle="collapse" role="button" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                <span class="lead collapse-title">Juridica</span>
-                                                            </div>
-                                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                                                <div class="card-body">
-                                                                    <div id="juridica" class="well">
-
-                                                                        <div class="form-group">
-                                                                            <label>CNPJ:</label>
-                                                                            <input class="form-control mask_cnpj" type="text" name="cnpj" id="cnpj" maxlength="18" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
-                                                                        </div>
-
-                                                                        <div class="form-group">
-                                                                            <label>Razão Social:</label>
-                                                                            <input class="form-control" type="text" name="razao_social" id="razao_social">
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br>
-
-                                            <div class="row">
-                                                <div class="form-group col-md-6">
-                                                    <label>Telefone:</label>
-                                                    <input class="form-control mask_tel" type="text" name="fone" id="fone">
-                                                </div>
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Celular:</label>
-                                                    <input class="form-control mask_tel" type="text" name="celular" id="celular">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Email Principal:</label>
-                                                    <input class="form-control" type="text" name="email1" id="email1">
-                                                </div>
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Email Secundário:</label>
-                                                    <input class="form-control" type="text" name="email2" id="email2">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="row">
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Senha:</label>
-                                                    <input class="form-control" type="password" name="senha" id="senha">
-                                                </div>
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Repetir Senha:</label>
-                                                    <input class="form-control" type="password" name="r_senha" id="r_senha">
-                                                </div>
-
+                                            <div class="form-group" id="tipo_cliente" style="display:none;">
+                                                <span id="resultado_tp_cli"></span>
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Obs</label>
-                                                <textarea class="form-control" rows="3" name="obs" id="obs"></textarea>
+                                                <label>Sub-domínio</label>
+                                                <input class="form-control" type="text" name="sub_dominio" id="sub_dominio">
                                             </div>
 
-                                            <div class="card border">
-                                                <div class="card-header">
-                                                    <div class="form-group">
-                                                        <label>Parceiro</label>
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" value="1" id="parceiro" name="parceiro" onClick="check()">
-                                                                Sim
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
+                                            <div class="form-group">
+                                                <label>Key</label>
+                                                <input class="form-control key_mascara" type="text" name="key_sub" id="key_sub" value="<?= $key ?>">
+                                            </div>
 
-                                                    <div class="row">
-                                                        <div class="form-group col-md-4">
-                                                            <label>Tipo de Plano</label>
-                                                            <select class="form-control" id="tipo_plano" name="tipo_plano">
-                                                                <option value="" selected="selected">Selecione um plano</option>
-                                                                <?php foreach ($planos as $valor) { ?>
-                                                                    <option value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control" id="status_sub" name="status_sub">
+                                                    <option value="0" selected="selected">Desativar</option>
+                                                    <option value="1">Ativar</option>
+                                                </select>
+                                            </div>
 
-
-
-                                                        <div class="form-group col-md-4">
-                                                            <label>Forma de Pagamento</label>
-                                                            <select class="form-control" id="forma_pagamento" name="forma_pagamento">
-                                                                <option value="" selected="selected">Selecione um plano</option>
-                                                                <?php foreach ($forma_pag as $valor) { ?>
-                                                                    <option value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="form-group  col-md-4">
-                                                            <label>Dia de Vencimento:</label>
-                                                            <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento">
-                                                        </div>
-                                                    </div>
-
+                                            <div class="form-group">
+                                                <label>Setup</label>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" value="sim" id="setup" name="setup" type="checkbox">
+                                                        Instalação do Isistem por nosso Suporte no Sub-domínio. (R$ 10,00)
+                                                    </label>
                                                 </div>
                                             </div>
+
+
 
                                             <div class="well">
-                                                <button type="button" class="btn btn-primary" id="cadastrar_cliente">Cadastrar</button>
+                                                <button type="button" class="btn btn-primary" id="bt_cadastrar_licenca">Cadastrar</button>
                                             </div>
 
                                         </form>
@@ -297,17 +166,18 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
                                 </div><!-- /#page-wrapper -->
 
+
                             </div>
                             <div class="card-footer">
                                 <h6>Painel Licença</h6>
                             </div>
+
                         </div>
+
                     </div>
-
                 </div>
-            </div>
 
-        </div>
+            </div>
 
 </body>
 
@@ -350,18 +220,6 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 </script>
 
 
-<!-- limpa campos -->
-<script>
-    function limpa_campos() {
-        document.getElementById('rg').value = ""
-        document.getElementById('cpf').value = ""
-        document.getElementById('data_nac').value = ""
-        document.getElementById('cnpj').value = ""
-        document.getElementById('razao_social').value = ""
-
-    }
-</script>
-
 <!-- captura valor do checkbox -->
 <script>
     function check() {
@@ -378,187 +236,64 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
     }
 </script>
 
-<!-- Action cadastrar cliente  -->
+<!-- Cadastrar Licença  -->
 <script>
-    $("#cadastrar_cliente").click(function() {
-
+    $("#enviaNovaLicenca").submit(function(e) {
         processando(1);
+        var formObj = $(this);
+        var formURL = "cadastraLicenca.php";
 
-        var tipo_cliente = $("#tipo_cliente").val();
-        var nome = $("#nome").val();
-        var rg = $("#rg").val();
-        var cpf = $("#cpf").val();
-        var data_nac = $("#data_nac").val();
-        var cnpj = $("#cnpj").val();
-        var razao_social = $("#razao_social").val();
-        var fone = $("#fone").val();
-        var celular = $("#celular").val();
-        var email1 = $("#email1").val();
-        var email2 = $("#email2").val();
-        var senha = $("#senha").val();
-        var r_senha = $("#r_senha").val();
-        var obs = $("#obs").val();
-        var status_cli = $("#status_cli").val();
-        var tipo_plano = $("#tipo_plano").val();
-        var forma_pagamento = $("#forma_pagamento").val();
-        var dia_vencimento = $("#dia_vencimento").val();
-        var parceiro = check();
+        if (window.FormData !== undefined) // for HTML5 browsers
+        //	if(false)
+        {
 
-        if (rg != '') {
-            var tipo_pessoa = "fisica";
-        } else {
-            var tipo_pessoa = "juridica";
-        }
-
-        if (senha !== r_senha) {
-            processando(0)
-            Swal.fire({
-                title: 'Atenção',
-                html: 'As senhas não são idênticas',
-                icon: 'error',
-                width: '900px',
-                customClass: {
-                    confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false,
-                allowOutsideClick: false
-            })
-        } else {
-
+            var formData = new FormData(this);
             $.ajax({
-                type: "POST",
-                url: "cadastraClientes.php",
-                data: {
-                    'tipo_cliente': tipo_cliente,
-                    'nome': nome,
-                    'tipo_pessoa': tipo_pessoa,
-                    'rg': rg,
-                    'cpf': cpf,
-                    'data_nac': data_nac,
-                    'cnpj': cnpj,
-                    'razao_social': razao_social,
-                    'fone': fone,
-                    'celular': celular,
-                    'email1': email1,
-                    'email2': email2,
-                    'senha': senha,
-                    'r_senha': r_senha,
-                    'obs': obs,
-                    'status_cli': status_cli,
-                    'tipo_plano': tipo_plano,
-                    'forma_pagamento': forma_pagamento,
-                    "dia_vencimento": dia_vencimento,
-                    'parceiro': parceiro
-                },
-                success: function(msg) {
-
+                url: formURL,
+                type: 'POST',
+                data: formData,
+                mimeType: "multipart/form-data",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data, textStatus, jqXHR) {
                     processando(0);
-
-                    data = msg.split("||");
-
-                    Swal.fire({
-                        title: 'Atenção',
-                        html: data[1],
-                        icon: data[0],
-                        width: '900px',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        },
-                        buttonsStyling: false,
-                        allowOutsideClick: false
-                    })
-
+                    $("#status").html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    processando(0);
+                    $("#status").html('');
                 }
             });
+            e.preventDefault();
+            e.unbind();
+        } else //for olden browsers
+        {
+            //generate a random id
+            var iframeId = 'unique' + (new Date().getTime());
+
+            //create an empty iframe
+            var iframe = $('<iframe src="javascript:false;" name="' + iframeId + '" />');
+
+            //hide it
+            iframe.hide();
+
+            //set form target to iframe
+            formObj.attr('target', iframeId);
+
+            //Add iframe to body
+            iframe.appendTo('body');
+            iframe.load(function(e) {
+                var doc = getDoc(iframe[0]);
+                var docRoot = doc.body ? doc.body : doc.documentElement;
+                var data = docRoot.innerHTML;
+                $("#msg").html('');
+            });
+
         }
 
-
     });
-</script>
-
-<!-- mascara da data -->
-<script>
-    var input = document.querySelectorAll('.mask_data')[0];
-
-    var dateInputMask = function dateInputMask(elm) {
-        elm.addEventListener('keypress', function(e) {
-            if (e.keyCode < 47 || e.keyCode > 57) {
-                e.preventDefault();
-            }
-
-            var len = elm.value.length;
-
-            // If we're at a particular place, let the user type the slash
-            // i.e., 12/12/1212
-            if (len !== 1 || len !== 3) {
-                if (e.keyCode == 47) {
-                    e.preventDefault();
-                }
-            }
-
-            // If they don't add the slash, do it for them...
-            if (len === 2) {
-                elm.value += '/';
-            }
-
-            // If they don't add the slash, do it for them...
-            if (len === 5) {
-                elm.value += '/';
-            }
-        });
-    };
-
-    dateInputMask(input);
-</script>
-
-<!-- mascara do cnpj -->
-<script>
-    var input = document.querySelectorAll('.mask_cnpj')[0];
-
-    var dateInputMask = function dateInputMask(elm) {
-        elm.addEventListener('keypress', function(e) {
-            // if (e.keyCode < 47 || e.keyCode > 57) {
-            //     e.preventDefault();
-            // }
-
-            var len = elm.value.length;
-
-            // If we're at a particular place, let the user type the slash
-            // i.e., 12/12/1212
-            // if (len !== 1 || len !== 3) {
-            //     if (e.keyCode == 47) {
-            //         e.preventDefault();
-            //     }
-            // }
-
-            // If they don't add the slash, do it for them...
-            if (len === 2) {
-                elm.value += '.';
-            }
-
-            // If they don't add the slash, do it for them...
-            if (len === 6) {
-                elm.value += '.';
-            }
-
-            if (len === 10) {
-                elm.value += '/';
-            }
-
-            if (len === 15) {
-                elm.value += '-';
-            }
-        });
-    };
-
-    dateInputMask(input);
-</script>
-
-<script>
-    var maskCpfOuCnpj = IMask(document.getElementById('celular'), {
-        mask: [{
-            mask: '(00) 00000-0000',
-            maxLength: 15
-        }]
+    $("#bt_cadastrar_licenca").click(function() {
+        $("#enviaNovaLicenca").submit();
     });
 </script>

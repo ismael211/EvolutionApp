@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Model;
+
 /**
-*
-*/
+ *
+ */
 class Faturas
 {
 	use Ferramentas;
@@ -69,17 +71,17 @@ class Faturas
 		$erro = 0;
 		$msg = "";
 
-			try {
-				$this->conn->query("INSERT INTO faturas (codigo_cliente,codigo_servico,data_vencimento,valor,descricao,tipo)
-					VALUES ('".$this->codigoCliente."','".$this->codigoServico."','".$this->convertDataBD($this->dataVencimento)."',
-					'".$this->moneyFormatBD($this->valor)."','".$this->descricao."','s')") or $erro = 1;
-				$ultimo_gravado = $this->conn->insert_id;
-			} catch(Exception $e){
-				$erro = 1;
-				$msg = "Não foi possivel inserir dados de faturas - $e";
-			}
+		try {
+			$this->conn->query("INSERT INTO faturas (codigo_cliente,codigo_servico,data_vencimento,valor,descricao,tipo)
+					VALUES ('" . $this->codigoCliente . "','" . $this->codigoServico . "','" . $this->convertDataBD($this->dataVencimento) . "',
+					'" . $this->moneyFormatBD($this->valor) . "','" . $this->descricao . "','s')") or $erro = 1;
+			$ultimo_gravado = $this->conn->insert_id;
+		} catch (Exception $e) {
+			$erro = 1;
+			$msg = "Não foi possivel inserir dados de faturas - $e";
+		}
 
-		return array("erro" => $erro , "msg" => $msg, "ultimoId" => $ultimo_gravado);
+		return array("erro" => $erro, "msg" => $msg, "ultimoId" => $ultimo_gravado);
 	}
 
 	public function edita()
@@ -90,16 +92,16 @@ class Faturas
 			try {
 
 				$this->dataVencimento = $this->convertDataBD($this->dataVencimento);
-				$this->conn->query("UPDATE faturas SET status = '".$this->status."', data_vencimento = '".$this->dataVencimento."'
-					, valor = '".$this->valor."', descricao = '".$this->descricao."'
-					WHERE codigo = '".addslashes($this->idFatura)."'") or $erro = 1;
-			} catch(Exception $e){
+				$this->conn->query("UPDATE faturas SET status = '" . $this->status . "', data_vencimento = '" . $this->dataVencimento . "'
+					, valor = '" . $this->valor . "', descricao = '" . $this->descricao . "'
+					WHERE codigo = '" . addslashes($this->idFatura) . "'") or $erro = 1;
+			} catch (Exception $e) {
 				$erro = 1;
 				$msg = "Não foi possivel inserir dados de faturas - $e";
 			}
 		}
 
-		return array("erro" => $erro , "msg" => $msg);
+		return array("erro" => $erro, "msg" => $msg);
 	}
 
 	public function vencendoPorData()
@@ -107,10 +109,10 @@ class Faturas
 		$sql = $this->conn->query("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas
 			LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente
 			LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico
-			WHERE faturas.data_vencimento = '".$this->dataFind."' AND faturas.status = 'off'");
+			WHERE faturas.data_vencimento = '" . $this->dataFind . "' AND faturas.status = 'off'");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["data_vencimento"]) {
 					$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 				}
@@ -131,7 +133,7 @@ class Faturas
 			WHERE faturas.data_vencimento < NOW() AND faturas.status = 'off'");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["data_vencimento"]) {
 					$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 				}
@@ -158,7 +160,7 @@ class Faturas
 		 ORDER BY faturas.data_vencimento DESC");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["data_vencimento"]) {
 					$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 				}
@@ -179,7 +181,7 @@ class Faturas
 		 WHERE faturas.status = 'off' ORDER BY faturas.data_vencimento DESC");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["data_vencimento"]) {
 					$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 				}
@@ -200,7 +202,7 @@ class Faturas
 		 WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["data_vencimento"]) {
 					$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 				}
@@ -215,37 +217,31 @@ class Faturas
 
 	public function actions()
 	{
-		if($this->action == "0"){
+		if ($this->action == "0") {
 
 			$erro = "1";
 			$msg = "Selecione uma opção e fatura";
 			$idFatura = "";
 			$page = "";
-
-		}
-		elseif($this->idFatura == ""){
+		} elseif ($this->idFatura == "") {
 
 			$erro = "1";
 			$msg = "Selecione uma opção e fatura";
 			$idFatura = "";
 			$page = "";
-
-		}
-		else {
+		} else {
 			if ($this->action == "visualizar") {
 				if ($this->idFatura != "" and  count($this->idFatura) == 1) {
 					$idFatura = implode(",", $this->idFatura);
 					$erro = "0";
 					$msg = "";
 					$page  = "visualizar";
-				}
-				else {
+				} else {
 					$erro = "1";
 					$msg = "Selecionar no maxímo uma opção para visualizar!";
 					$page  = "0";
 					$idFatura = "";
 				}
-
 			}
 			if ($this->action == "remover") {
 				$retorno_remove = $this->removeFatura();
@@ -260,8 +256,7 @@ class Faturas
 					$erro = "0";
 					$msg = "";
 					$page  = "editar";
-				}
-				else {
+				} else {
 					$erro = "1";
 					$msg = "Selecionar no maxímo uma opção para editar!";
 					$page  = "0";
@@ -270,15 +265,15 @@ class Faturas
 			}
 
 			if ($this->action == "quitar") {
-					$return_quita = $this->quita();
-					$erro = $return_quita["erro"];
-					$msg = $return_quita["msg"];
-					$page  = "0";
-					$idFatura = "";
+				$return_quita = $this->quita();
+				$erro = $return_quita["erro"];
+				$msg = $return_quita["msg"];
+				$page  = "0";
+				$idFatura = "";
 			}
 		}
 
-		return array("erro" => $erro , "msg" => $msg , "idFatura" => $idFatura, "page" => $page);
+		return array("erro" => $erro, "msg" => $msg, "idFatura" => $idFatura, "page" => $page);
 	}
 
 
@@ -288,10 +283,10 @@ class Faturas
 		if ($this->idFatura != "" and  count($this->idFatura) == 1) {
 			$sql = $this->conn->query("SELECT faturas.codigo, faturas.data_vencimento, faturas.valor, faturas.descricao, clientes.nome as nome_cliente,
 			 clientes.tipo_cliente, faturas.status, faturas.codigo_cliente as codigo_cli FROM faturas LEFT JOIN clientes ON faturas.codigo_cliente = clientes.codigo
-			 WHERE faturas.codigo = '".addslashes($this->idFatura)."'");
+			 WHERE faturas.codigo = '" . addslashes($this->idFatura) . "'");
 			if ($sql->num_rows > 0) {
 				$return = array();
-				while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+				while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 					if ($linha["data_vencimento"]) {
 						$linha["data_vencimento"] = $this->convertDataView($linha["data_vencimento"]);
 					}
@@ -303,7 +298,6 @@ class Faturas
 				return $return;
 			}
 		}
-
 	}
 
 	public function removeFatura()
@@ -312,13 +306,12 @@ class Faturas
 		$msg = "";
 
 		if ($this->idFatura != "" and  count($this->idFatura) > 0) {
-				foreach ($this->idFatura as $value) {
-					$this->conn->query("DELETE FROM faturas WHERE codigo = '".addslashes($value)."'")
+			foreach ($this->idFatura as $value) {
+				$this->conn->query("DELETE FROM faturas WHERE codigo = '" . addslashes($value) . "'")
 					or $erro = "1";
-			 		$msg .= "Erro: $value \n";
-				}
-		}
-		else {
+				$msg .= "Erro: $value \n";
+			}
+		} else {
 			$erro = "1";
 			$msg = "Escolha uma opção";
 		}
@@ -327,7 +320,7 @@ class Faturas
 			$msg = "Excluido com sucesso!";
 		}
 
-		return array("erro" => $erro , "msg" => $msg);
+		return array("erro" => $erro, "msg" => $msg);
 	}
 
 	public function removeFaturaByCliente()
@@ -339,15 +332,12 @@ class Faturas
 
 			if (is_array($this->idCliente)) {
 				foreach ($this->idCliente as $value) {
-					$this->conn->query("DELETE FROM faturas WHERE codigo_cliente = '".addslashes($value)."'");
+					$this->conn->query("DELETE FROM faturas WHERE codigo_cliente = '" . addslashes($value) . "'");
 				}
+			} else {
+				$this->conn->query("DELETE FROM faturas WHERE codigo_cliente = '" . addslashes($this->idCliente) . "'");
 			}
-			else {
-				$this->conn->query("DELETE FROM faturas WHERE codigo_cliente = '".addslashes($this->idCliente)."'");
-			}
-
-		}
-		else {
+		} else {
 			$erro = "1";
 			$msg = "Nenhum fatura";
 		}
@@ -356,7 +346,7 @@ class Faturas
 			$msg = "Excluido com sucesso!";
 		}
 
-		return array("erro" => $erro , "msg" => $msg);
+		return array("erro" => $erro, "msg" => $msg);
 	}
 
 	public function quita()
@@ -365,18 +355,17 @@ class Faturas
 		$msg = "";
 
 		if ($this->idFatura != "" and  count($this->idFatura) > 0) {
-				$fat_quitar = new FaturasQuitar($this->conn);
-				$fat_quitar->idFatura($this->idFatura);
-				$return = $fat_quitar->quita();
-				$erro = $return["erro"];
-				$msg = $return["msg"];
-		}
-		else {
+			$fat_quitar = new FaturasQuitar($this->conn);
+			$fat_quitar->idFatura($this->idFatura);
+			$return = $fat_quitar->quita();
+			$erro = $return["erro"];
+			$msg = $return["msg"];
+		} else {
 			$erro = "1";
 			$msg = "Escolha uma opção";
 		}
 
-		return array("erro" => $erro , "msg" => $msg);
+		return array("erro" => $erro, "msg" => $msg);
 	}
 
 
@@ -400,7 +389,7 @@ class Faturas
 		if ($tipo_cliente == "r") {
 
 			$sql = $this->conn->query("SELECT codigo, valor, codigo_servico FROM faturas
-				WHERE codigo_cliente = '".$this->idCliente."' ORDER BY codigo DESC LIMIT 1");
+				WHERE codigo_cliente = '" . $this->idCliente . "' ORDER BY codigo DESC LIMIT 1");
 			$linha = $sql->fetch_array(MYSQLI_ASSOC);
 
 			if ($quantidade > 10) {
@@ -410,10 +399,9 @@ class Faturas
 				$retorno_pagamento = $pagamento->getFormaAndModelo();
 
 				$novo_valor = $this->calculoLicencas($quantidade, $linha["valor"], $retorno_pagamento[0]["valor"]);
-				$this->conn->query("UPDATE faturas SET valor = '".$novo_valor."' WHERE codigo = '".$linha["codigo"]."' LIMIT 1");
-
+				$this->conn->query("UPDATE faturas SET valor = '" . $novo_valor . "' WHERE codigo = '" . $linha["codigo"] . "' LIMIT 1");
 			}
-			if ($linha["codigo_servico"] != "4" AND $quantidade == "1") {
+			if ($linha["codigo_servico"] != "4" and $quantidade == "1") {
 
 				// Cadastra Fatura
 				$pagamento = new Pagamento($this->conn);
@@ -429,7 +417,6 @@ class Faturas
 				$this->setValor($this->moneyFormatView($return_pagamento[0]["valor"]));
 				$this->setDescricao($return_pagamento[0]["descricao"]);
 				$retorno_cadastra = $this->cadastra();
-
 			}
 		}
 
@@ -444,7 +431,7 @@ class Faturas
 
 			$data_vencimento = $this->dataAumentaDia(1);
 
-			if($quantidade != "1"){
+			if ($quantidade != "1") {
 				// Cadastra Servico Adicional
 				$plano = new Planos($this->conn);
 				$plano->codigoPlano($return_pagamento[0]["codigo_servico"]);
@@ -460,14 +447,13 @@ class Faturas
 			}
 
 			$return_pagamento_atu = $pagamento->getFormaAndModeloWhithWhere();
-     		// Cadastra nova fatura
+			// Cadastra nova fatura
 			$this->setCodigoCliente($this->idCliente);
 			$this->setCodigoServico($return_pagamento_atu[0]["codigo"]);
 			$this->setDataVencimento($data_vencimento);
 			$this->setValor($this->moneyFormatView($return_pagamento_atu[0]["valor"]));
 			$this->setDescricao($return_pagamento_atu[0]["descricao"]);
 			$retorno_cadastra = $this->cadastra();
-
 		}
 
 
@@ -476,5 +462,4 @@ class Faturas
 
 		return array("erro" => $erro, "msg" => $msg, "retorno_cadastra" => $retorno_cadastra["ultimoId"]);
 	}
-
 }

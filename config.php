@@ -1,3 +1,17 @@
+<?php
+
+header("Content-type: text/html; charset=utf-8");
+
+session_start();
+require_once('inc/config.php');
+
+$core = new IsistemCore();
+$core->Connect();
+
+
+?>
+
+
 <!-- funcao abre modal processando -->
 <script>
     function processando(faca) {
@@ -96,3 +110,112 @@
     }
 </script>
 
+<?php
+// Metodo que gera Key
+function generateKey()
+{
+
+    $a = strtoupper(substr(md5(rand(11111,99999)), 5, 5));
+    $b = strtoupper(substr(md5(rand(11111,99999)), 5, 5));
+    $c = strtoupper(substr(md5(rand(11111,99999)), 5, 5));
+    $d = strtoupper(substr(md5(rand(11111,99999)), 5, 5));
+    $e = strtoupper(substr(md5(rand(11111,99999)), 5, 5));
+
+    return "$a-$b-$c-$d-$e";
+}
+
+function novaFatura()
+{
+    $erro = "0";
+    $msg = "";
+    $retorno_cadastra = "";
+
+    // Quantidade de licenca do cliente
+    $licenca->setTable("licenca");
+    $quantidade = $licenca->getCountForIdCliente($this->idCliente);
+
+    // Tipo de Cliente
+    $cliente = new Clientes($this->conn);
+    $cliente->setTable("clientes");
+    $cliente = $cliente->getForId($this->idCliente);
+    $tipo_cliente = $cliente["tipo_cliente"];
+
+    if ($tipo_cliente == "r") {
+
+        $sql = $this->conn->query("SELECT codigo, valor, codigo_servico FROM faturas
+            WHERE codigo_cliente = '" . $this->idCliente . "' ORDER BY codigo DESC LIMIT 1");
+        $linha = $sql->fetch_array(MYSQLI_ASSOC);
+
+        if ($quantidade > 10) {
+
+            $pagamento = new Pagamento($this->conn);
+            $pagamento->setIdUser($this->idCliente);
+            $retorno_pagamento = $pagamento->getFormaAndModelo();
+
+            $novo_valor = $this->calculoLicencas($quantidade, $linha["valor"], $retorno_pagamento[0]["valor"]);
+            $this->conn->query("UPDATE faturas SET valor = '" . $novo_valor . "' WHERE codigo = '" . $linha["codigo"] . "' LIMIT 1");
+        }
+        if ($linha["codigo_servico"] != "4" and $quantidade == "1") {
+
+            // Cadastra Fatura
+            $pagamento = new Pagamento($this->conn);
+            $pagamento->setIdUser($this->idCliente);
+            $pagamento->where("servicos_modelos.codigo <> '4'");
+            $return_pagamento = $pagamento->getFormaAndModeloWhithWhere();
+            // Setup
+            $data_vencimento = $this->dataAumentaDia(1);
+
+            $this->setCodigoCliente($this->idCliente);
+            $this->setCodigoServico($return_pagamento[0]["codigo"]);
+            $this->setDataVencimento($data_vencimento);
+            $this->setValor($this->moneyFormatView($return_pagamento[0]["valor"]));
+            $this->setDescricao($return_pagamento[0]["descricao"]);
+            $retorno_cadastra = $this->cadastra();
+        }
+    }
+
+    // Caso o Cliente seja USUARIO (Uma Licenca e fatura por cadastro)
+    if ($tipo_cliente == "u") {
+
+        // Busca Dados
+        $pagamento = new Pagamento($this->conn);
+        $pagamento->setIdUser($this->idCliente);
+        $pagamento->where("servicos_modelos.codigo <> '4'");
+        $return_pagamento = $pagamento->getFormaAndModeloWhithWhere();
+
+        $data_vencimento = $this->dataAumentaDia(1);
+
+        if ($quantidade != "1") {
+            // Cadastra Servico Adicional
+            $plano = new Planos($this->conn);
+            $plano->codigoPlano($return_pagamento[0]["codigo_servico"]);
+            $plano->codigoCliente($this->idCliente);
+            $plano->codigoFormaPagamento($return_pagamento[0]["codigo_forma"]);
+            $plano->dataPagamento($data_vencimento);
+            $plano->valorPlano($return_pagamento[0]["valor"]);
+            $plano->repetir("sim");
+            $plano->periodo("1");
+            $plano->totalParcelas("0");
+            $plano->descricao($return_pagamento[0]["descricao"]);
+            $plano->save();
+        }
+
+        $return_pagamento_atu = $pagamento->getFormaAndModeloWhithWhere();
+        // Cadastra nova fatura
+        $this->setCodigoCliente($this->idCliente);
+        $this->setCodigoServico($return_pagamento_atu[0]["codigo"]);
+        $this->setDataVencimento($data_vencimento);
+        $this->setValor($this->moneyFormatView($return_pagamento_atu[0]["valor"]));
+        $this->setDescricao($return_pagamento_atu[0]["descricao"]);
+        $retorno_cadastra = $this->cadastra();
+    }
+
+
+    $erro = "0";
+    $msg = "";
+
+    return array("erro" => $erro, "msg" => $msg, "retorno_cadastra" => $retorno_cadastra["ultimoId"]);
+}
+
+
+?>
