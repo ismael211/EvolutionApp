@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Model;
+
 /**
-*
-*/
+ *
+ */
 class Planos
 {
 	use Ferramentas;
@@ -79,22 +81,20 @@ class Planos
 	{
 		$erro = "";
 
-			$query = $this->conn->query("INSERT INTO servicos_adicionais(codigo_servico,codigo_cliente,data_pagto,codigo_forma_pagto,valor,
+		$query = $this->conn->query("INSERT INTO servicos_adicionais(codigo_servico,codigo_cliente,data_pagto,codigo_forma_pagto,valor,
 				repetir,periodo,total_parcelas,descricao)
-				VALUES ('".$this->codigoPlano."', '".$this->codigoCliente."', '".$this->dataPagamento."',
-				'".$this->codigoFormaPagamento."', '".$this->valorPlano."',
-				'".$this->repetir."', '".$this->periodo."', '".$this->totalParcelas."', '".$this->descricao."')")
+				VALUES ('" . $this->codigoPlano . "', '" . $this->codigoCliente . "', '" . $this->dataPagamento . "',
+				'" . $this->codigoFormaPagamento . "', '" . $this->valorPlano . "',
+				'" . $this->repetir . "', '" . $this->periodo . "', '" . $this->totalParcelas . "', '" . $this->descricao . "')")
 			or $erro = $this->conn->error;
 
-		    $this->ruturnUltimoId = $this->conn->insert_id;
+		$this->ruturnUltimoId = $this->conn->insert_id;
 
 		if ($erro != "") {
 			return 0;
-		}
-		else{
+		} else {
 			return 1;
 		}
-
 	}
 
 	public function ultimoId()
@@ -106,10 +106,10 @@ class Planos
 
 	public function getAllPlano()
 	{
-		$sql = $this->conn->query("SELECT * FROM ".$this->table."");
+		$sql = $this->conn->query("SELECT * FROM " . $this->table . "");
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				array_push($return, $linha);
 			}
 			return $return;
@@ -129,7 +129,7 @@ class Planos
 
 		if ($sql->num_rows > 0) {
 			$return = array();
-			while($linha = $sql->fetch_array(MYSQLI_ASSOC)){
+			while ($linha = $sql->fetch_array(MYSQLI_ASSOC)) {
 				if ($linha["valor"]) {
 					$linha["valor"] = $this->moneyFormatView($linha["valor"]);
 				}
@@ -147,7 +147,7 @@ class Planos
 		}
 
 		$sql = $this->conn->query("UPDATE servicos_adicionais SET status = '$status'
-			WHERE codigo_cliente = '".$this->codigoCliente."'") or $erro = $this->conn->error;
+			WHERE codigo_cliente = '" . $this->codigoCliente . "'") or $erro = $this->conn->error;
 
 		if ($erro == "") {
 			return 1;
@@ -166,20 +166,17 @@ class Planos
 
 			if (is_array($this->codigoCliente)) {
 				foreach ($this->codigoCliente as $value) {
-					$this->conn->query("DELETE FROM servicos_adicionais WHERE codigo_cliente = '".addslashes($value)."'")
-					or $erro = "1";
-			 		$msg .= "Erro: $value \n";
+					$this->conn->query("DELETE FROM servicos_adicionais WHERE codigo_cliente = '" . addslashes($value) . "'")
+						or $erro = "1";
+					$msg .= "Erro: $value \n";
 				}
-			}
-			else {
+			} else {
 				$this->conn->query("DELETE FROM servicos_adicionais
-					WHERE codigo_cliente = '".addslashes($this->codigoCliente)."'")
+					WHERE codigo_cliente = '" . addslashes($this->codigoCliente) . "'")
 					or $erro = "1";
-			 		$msg .= "Erro: $value \n";
+				$msg .= "Erro: $value \n";
 			}
-
-		}
-		else {
+		} else {
 			$erro = "1";
 			$msg = "Escolha uma opção";
 		}
@@ -188,7 +185,6 @@ class Planos
 			$msg = "Excluido com sucesso!";
 		}
 
-		return array("erro" => $erro , "msg" => $msg);
+		return array("erro" => $erro, "msg" => $msg);
 	}
-
 }

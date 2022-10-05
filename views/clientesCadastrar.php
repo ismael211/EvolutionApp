@@ -7,7 +7,7 @@ require_once('../inc/config.php');
 
 include('nav.php');
 include('side-bar.php');
-include('../config.php');
+include('../funcoes.php');
 
 $core = new IsistemCore();
 $core->Connect();

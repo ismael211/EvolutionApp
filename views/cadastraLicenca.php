@@ -4,12 +4,12 @@ header("Content-type: text/html; charset=utf-8");
 
 session_start();
 require_once('../inc/config.php');
-require_once('../src/App/Model/Faturas.php');
+// require_once('../src/App/Model/Faturas.php');
+require_once('../funcoes.php');
 
 
 $core = new IsistemCore();
 $core->Connect();
-
 
 
 if ($_POST['clientef'] == '') {
@@ -36,19 +36,16 @@ if ($_POST['clientef'] == '') {
 
     $sql = $core->RowCount("SELECT parceiro FROM clientes WHERE codigo = '" . $cliente . "' AND parceiro = '1'");
 
-    // if ($sql > 0) {
+    if ($sql == 0) {
 
-    //     $novaFatura = new Faturas($this->conn);
-    //     $novaFatura->idCliente($this->cliente);
-    //     $returnFatura = $novaFatura->novaFatura();
+        $returnFatura = $novaFatura->novaFatura($cliente);
 
-    //     $erro = $returnFatura["erro"];
-    //     $msg = $returnFatura["msg"];
-    //     $id_fatura = $returnFatura["retorno_cadastra"];
-    // } else {
-    //     $id_fatura  = 0;
-    // }
-    $id_fatura  = 0;
+        //     $erro = $returnFatura["erro"];
+        //     $msg = $returnFatura["msg"];
+        //     $id_fatura = $returnFatura["retorno_cadastra"];
+    } else {
+        $id_fatura  = 0;
+    }
 
 
 
@@ -95,8 +92,6 @@ if ($_POST['clientef'] == '') {
         $fatura_setup->setDescricao($return_modelo["descricao"]);
         $fatura_setup->cadastra();
     }
-
-    echo 'VASCO';
 
     return array("error" => "1", "msg" => "Não foi possivel registrar. #$e");
 
