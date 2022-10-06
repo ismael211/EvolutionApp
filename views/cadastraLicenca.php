@@ -38,24 +38,27 @@ if ($_POST['clientef'] == '') {
 
     if ($sql == 0) {
 
-        $returnFatura = $novaFatura->novaFatura($cliente);
+        $returnFatura = novaFatura($cliente);
 
-        //     $erro = $returnFatura["erro"];
-        //     $msg = $returnFatura["msg"];
-        //     $id_fatura = $returnFatura["retorno_cadastra"];
+        $erro = $returnFatura["erro"];
+        $msg = $returnFatura["msg"];
+        $id_fatura = $returnFatura["retorno_cadastra"];
+
     } else {
-        $id_fatura  = 0;
+        $erro = '1';
+        $msg = 'Não entrou';
+        $id_fatura = 0;
     }
 
+    // echo 'ERRO = '.$erro .'       ||      MSG = '.$msg.'       ||      ID = '.$id_fatura;
 
-
+    echo  'Retorno Fatura: '.$returnFatura;
 
     $query = $core->Prepare("INSERT INTO licenca(sub_dominio, status, key_licenca, id_cliente, id_fatura, data_cadastro)
 				VALUES('" . $subdominio . "', '" . $status . "','" . strtoupper($key) . "','" . $cliente . "','" . $id_fatura . "', NOW())");
 
     $result = $query->Execute();
 
-    echo 'VASDDASDFDDCO';
 
     // Caso selecionado o Setup
     if ($setup != "") {

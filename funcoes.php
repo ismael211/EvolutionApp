@@ -25,6 +25,8 @@ function generateKey()
 
 function novaFatura($id)
 {
+
+
     $core = new IsistemCore();
     $core->Connect();
 
@@ -32,22 +34,15 @@ function novaFatura($id)
     $msg = "";
     $retorno_cadastra = "";
 
+
+    $cliente = $core->Fetch("SELECT tipo_cliente FROM clientes WHERE codigo = '$id'");
+
+    $tipo_cliente = $cliente['tipo_cliente'];
+
+
     // Quantidade de licenca do cliente
     $quantidade = $core->RowCount("SELECT id FROM licenca WHERE id_cliente = '$id'");
-
-
-
-    // Tipo de Cliente
-    $qtd = $core->RowCount("SELECT * FROM cliente WHERE codigo = '$id'");
-    if ($qtd > 0) {
-        $cliente = $core->Fetch("SELECT codigo, nome, email1, email2, fone, celular, data_cadastro, status, tipo_cliente
-        FROM cliente WHERE codigo = '$id'");
-
-        $tipo_cliente = $cliente['tipo_cliente'];
-    } else {
-        $erro = "1";
-    }
-
+    
 
     if ($tipo_cliente == "r") {
 
@@ -78,10 +73,8 @@ function novaFatura($id)
                 }
                 $retorno_pagamento = $return;
             }
-
-
-
-            $novo_valor = calculoLicencas($quantidade, $linha["valor"], $retorno_pagamento[0]["valor"]);
+            $novo_valor = 23452345;
+            // $novo_valor = calculoLicencas($quantidade, $linha["valor"], $retorno_pagamento[0]["valor"]);
 
             $query = $core->Prepare("UPDATE faturas SET valor = '" . $novo_valor . "' WHERE codigo = '" . $linha["codigo"] . "' LIMIT 1");
             $result = $query->Execute();
@@ -91,75 +84,74 @@ function novaFatura($id)
 
             // Cadastra Fatura
             $return_pagamento = $core->Fetch("SELECT servicos_modelos.codigo as codigo_modelo, servicos_modelos.nome as nome_modelo,
-                formas_pagamento.codigo as codigo_forma, formas_pagamento.nome as formas_nome,
-                servicos_adicionais.data_pagto, servicos_adicionais.codigo_servico as codigo_servico,
-                servicos_adicionais.valor as valor, servicos_adicionais.descricao as descricao,
-                servicos_adicionais.codigo as codigo FROM servicos_adicionais
-                LEFT JOIN servicos_modelos ON servicos_adicionais.codigo_servico = servicos_modelos.codigo
-                LEFT JOIN formas_pagamento ON servicos_adicionais.codigo_forma_pagto = formas_pagamento.codigo
-                WHERE codigo = '$id' AND `servicos_modelos.codigo` <> '4' ORDER BY servicos_adicionais.codigo DESC LIMIT 1");
+            formas_pagamento.codigo as codigo_forma, formas_pagamento.nome as formas_nome,
+            servicos_adicionais.data_pagto, servicos_adicionais.codigo_servico as codigo_servico,
+            servicos_adicionais.valor as valor, servicos_adicionais.descricao as descricao,
+            servicos_adicionais.codigo as codigo
+            FROM servicos_adicionais
+            LEFT JOIN servicos_modelos ON servicos_adicionais.codigo_servico = servicos_modelos.codigo
+            LEFT JOIN formas_pagamento ON servicos_adicionais.codigo_forma_pagto = formas_pagamento.codigo
+            WHERE servicos_adicionais.codigo_cliente = '".$id."' AND servicos_modelos.codigo <> '4'
+            ORDER BY servicos_adicionais.codigo DESC LIMIT 1");
 
             // Setup
             $data_vencimento = dataAumentaDia(1);
 
-            $retorno_cadastra = cadastra($id, $return_pagamento[0]["codigo"], $data_vencimento, $return_pagamento[0]["valor"], $return_pagamento[0]["descricao"]);
-        }
+            $retorno_cadastra ='linha 99';
 
-    }else if ($tipo_cliente == "u") { // Caso o Cliente seja USUARIO (Uma Licenca e fatura por cadastro)
+            // $retorno_cadastra = cadastra($id, $return_pagamento[0]["codigo"], $data_vencimento, $return_pagamento[0]["valor"], $return_pagamento[0]["descricao"]);
+        }
+    } else if ($tipo_cliente == "u") { // Caso o Cliente seja USUARIO (Uma Licenca e fatura por cadastro)
+
 
         // Busca Dados
         $return_pagamento = $core->Fetch("SELECT servicos_modelos.codigo as codigo_modelo, servicos_modelos.nome as nome_modelo,
-                formas_pagamento.codigo as codigo_forma, formas_pagamento.nome as formas_nome,
-                servicos_adicionais.data_pagto, servicos_adicionais.codigo_servico as codigo_servico,
-                servicos_adicionais.valor as valor, servicos_adicionais.descricao as descricao,
-                servicos_adicionais.codigo as codigo FROM servicos_adicionais
-                LEFT JOIN servicos_modelos ON servicos_adicionais.codigo_servico = servicos_modelos.codigo
-                LEFT JOIN formas_pagamento ON servicos_adicionais.codigo_forma_pagto = formas_pagamento.codigo
-                WHERE codigo = '$id' AND `servicos_modelos.codigo` <> '4' ORDER BY servicos_adicionais.codigo DESC LIMIT 1");
+        formas_pagamento.codigo as codigo_forma, formas_pagamento.nome as formas_nome,
+        servicos_adicionais.data_pagto, servicos_adicionais.codigo_servico as codigo_servico,
+        servicos_adicionais.valor as valor, servicos_adicionais.descricao as descricao,
+        servicos_adicionais.codigo as codigo
+        FROM servicos_adicionais
+        LEFT JOIN servicos_modelos ON servicos_adicionais.codigo_servico = servicos_modelos.codigo
+        LEFT JOIN formas_pagamento ON servicos_adicionais.codigo_forma_pagto = formas_pagamento.codigo
+        WHERE servicos_adicionais.codigo_cliente = '".$id."' AND servicos_modelos.codigo <> '4'
+        ORDER BY servicos_adicionais.codigo DESC LIMIT 1");
 
-
-        $return = array();
-        while ($linha = $return_pagamento) {
-            array_push($return, $linha);
-        }
-        $return_pagamento_atu = $return;
 
 
         // Setup
         $data_vencimento = dataAumentaDia(1);
 
-        if ($quantidade != "1") {
+        if ($quantidade > 1) {
 
             // Cadastra Servico Adicional
             $repetir = "sim";
             $periodo = "1";
             $totalParcelas = "0";
-            $descricao = $return_pagamento[0]["descricao"];
+            $descricao = $return_pagamento["descricao"];
 
             $plano = save(
-                $return_pagamento[0]["codigo_servico"],
+                $return_pagamento["codigo_servico"],
                 $id,
-                $return_pagamento[0]["codigo_forma"],
+                $return_pagamento["codigo_forma"],
                 $data_vencimento,
-                $return_pagamento[0]["valor"],
+                $return_pagamento["valor"],
                 $repetir,
                 $periodo,
                 $totalParcelas,
                 $descricao
             );
-            
         }
 
-
         // Cadastra nova fatura
-        $retorno_cadastra = cadastra($id, $return_pagamento_atu[0]["codigo"], $data_vencimento, $return_pagamento_atu[0]["valor"], $return_pagamento_atu[0]["descricao"]);
+        $retorno_cadastra = cadastra($id, $return_pagamento["codigo"], $data_vencimento, $return_pagamento["valor"], $return_pagamento["descricao"]);
     }
 
 
     $erro = "0";
     $msg = "";
 
-    return array("erro" => $erro, "msg" => $msg, "retorno_cadastra" => $retorno_cadastra["ultimoId"]);
+    return $plano;
+    // return array("erro" => $erro, "msg" => $msg, "retorno_cadastra" => $retorno_cadastra["ultimoId"]);
 }
 
 function calculoLicencas($quantidade, $valor, $base)
@@ -219,17 +211,23 @@ function cadastra($codigoCliente, $codigoServico, $dataVencimento, $valor, $desc
     try {
         $query = $core->Prepare("INSERT INTO faturas (codigo_cliente,codigo_servico,data_vencimento,valor,descricao,tipo)
                 VALUES ('" . $codigoCliente . "','" . $codigoServico . "','" . convertDataBD($dataVencimento) . "',
-                '" . moneyFormatBD($valor) . "','" . $descricao . "','s')") or $erro = 1;
+                '" . moneyFormatBD($valor) . "','" . $descricao . "','s')") or $erro = 218;
 
         $result = $query->Execute();
 
-        $ultimo_gravado = $core->Fetch("SELECT Max(codigo) FROM faturas ");
+        if (!$result){
+            $erro = '223';
+        }else{
+            $ultimo_gravado = $core->Fetch("SELECT Max(codigo) FROM faturas ");
+        }
+
+        
     } catch (Exception $e) {
-        $erro = 1;
+        $erro = 230;
         $msg = "Não foi possivel inserir dados de faturas - $e";
     }
-
-    return array("erro" => $erro, "msg" => $msg, "ultimoId" => $ultimo_gravado);
+    return $erro . '/'. $msg;
+    // return array("erro" => $erro, "msg" => $msg, "ultimoId" => $ultimo_gravado);
 }
 
 function convertDataBD($data)
@@ -260,11 +258,10 @@ function save($codigoPlano, $codigoCliente, $dataPagamento, $codigoFormaPagament
 
     $result = $query->Execute();
 
-
-    if ($result != "") {
-        return 0;
-    } else {
+    if (!$result) {
         return 1;
+    } else {
+        return 0;
     }
 }
 
