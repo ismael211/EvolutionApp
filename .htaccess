@@ -13,8 +13,12 @@ RewriteBase /
 #Clientes
 RewriteRule ^Clientes views/clientes.php  [NC,QSA,L]
 RewriteRule ^Licencas views/licencas.php  [NC,QSA,L]
-RewriteRule ^Servicos views/visualizarServico.php  [NC,QSA,L]
+RewriteRule ^Servicos views/visualizarServicos.php  [NC,QSA,L]
 RewriteRule ^Financeiro views/financeiro.php  [NC,QSA,L]
 RewriteRule ^Home views/painel.php  [NC,QSA,L]
 RewriteRule ^Login views/login.php  [NC,QSA,L]
 RewriteRule ^Novo_cliente views/clientesCadastrar.php  [NC,QSA,L]
+RewriteRule ^Cadastra_licenca views/licencaCadastrar.php  [NC,QSA,L]
+RewriteRule ^Abertas views/visualizarFaturasAbertas.php  [NC,QSA,L]
+RewriteRule ^Fechadas views/visualizarFaturasFechadas.php  [NC,QSA,L]
+RewriteRule ^Visualizar_novos views/clientesNovos.php  [NC,QSA,L]

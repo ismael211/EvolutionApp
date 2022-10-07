@@ -24,9 +24,9 @@
                 <ul class="menu-content">
                     <li><a class="d-flex align-items-center" href="Clientes"><i data-feather="circle"></i><span class="menu-item" data-i18n="Account Settings">Visualizar</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="Novos_clientes"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Visualizar Novos</span></a>
+                    <li><a class="d-flex align-items-center" href="Visualizar_novos"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Visualizar Novos</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="Cadastrar_cliente"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
+                    <li><a class="d-flex align-items-center" href="Novo_cliente"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
                     </li>
                 </ul>
             </li>
@@ -34,7 +34,7 @@
                 <ul class="menu-content">
                     <li><a class="d-flex align-items-center" href="Licencas"><i data-feather="circle"></i><span class="menu-item" data-i18n="Account Settings">Visualizar</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="/sys/cadastrar/licenca"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
+                    <li><a class="d-flex align-items-center" href="Cadastra_licenca"><i data-feather="circle"></i><span class="menu-item" data-i18n="todos_tickets">Cadastrar</span></a>
                     </li>
                 </ul>
             </li>
@@ -42,9 +42,9 @@
                 <ul class="menu-content">
                     <li><a class="d-flex align-items-center" href="Financeiro"><i data-feather="circle"></i><span class="menu-item" data-i18n="Account Settings">Visualizar Faturas</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="visualizarFaturasAbertas.php"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Faturas Abertas</span></a>
+                    <li><a class="d-flex align-items-center" href="Abertas"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Faturas Abertas</span></a>
                     </li>
-                    <li><a class="d-flex align-items-center" href="visualizarFaturasFechadas.php"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Faturas Fechadas</span></a>
+                    <li><a class="d-flex align-items-center" href="Fechadas"><i data-feather="circle"></i><span class="menu-item" data-i18n="Authentication">Faturas Fechadas</span></a>
                     </li>
                 </ul>
             </li>

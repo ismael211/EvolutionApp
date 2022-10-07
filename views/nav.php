@@ -1,3 +1,5 @@
+<script src="../funcoes.js"></script>
+
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow">
     <div class="navbar-container d-flex content">
 
