@@ -5,6 +5,8 @@ header("Content-type: text/html; charset=utf-8");
 session_start();
 require_once('../inc/config.php');
 
+include('../index.php');
+
 include('nav.php');
 include('side-bar.php');
 include('../funcoes.php');
@@ -241,7 +243,7 @@ $key = generateKey();
     $("#enviaNovaLicenca").submit(function(e) {
         // processando(1);
         var formObj = $(this);
-        var formURL = "cadastraLicenca.php";
+        var formURL = "/views/cadastraLicenca.php";
 
         if (window.FormData !== undefined) // for HTML5 browsers
         //	if(false)

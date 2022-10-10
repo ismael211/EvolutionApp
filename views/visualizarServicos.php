@@ -5,8 +5,11 @@ header("Content-type: text/html; charset=utf-8");
 session_start();
 require_once('../inc/config.php');
 
+include('../index.php');
+
 include('nav.php');
 include('side-bar.php');
+
 
 $core = new IsistemCore();
 $core->Connect();

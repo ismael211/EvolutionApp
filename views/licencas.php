@@ -5,6 +5,8 @@ header("Content-type: text/html; charset=utf-8");
 session_start();
 require_once('../inc/config.php');
 
+include('../index.php');
+
 include('nav.php');
 include('side-bar.php');
 
@@ -130,7 +132,6 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
                                     </thead>
                                     <tbody>
 
-
                                         <?php
                                         if ($qtd_licenca > 0) {
 
@@ -144,7 +145,7 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
                                                     <td><input type="checkbox" name="id_licenca" id="id_licenca" value="<?= $row['id'] ?>"></td>
                                                     <td><?= $row['id'] ?></td>
                                                     <td><?= $row['sub_dominio'] ?></td>
-                                                    <td><?= $row['nome'] ?></td>
+                                                    <td><?= $nome ?></td>
                                                     <td><?= $row['key_licenca'] ?></td>
 
 

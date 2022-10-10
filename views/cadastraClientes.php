@@ -9,7 +9,6 @@ $core = new IsistemCore();
 $core->Connect();
 
 
-
 if ($_POST['status_cli'] == '') {
     $resposta = 'error||Por favor selecione um status';
     echo $resposta;

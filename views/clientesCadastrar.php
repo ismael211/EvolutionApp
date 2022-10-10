@@ -5,6 +5,8 @@ header("Content-type: text/html; charset=utf-8");
 session_start();
 require_once('../inc/config.php');
 
+include('../index.php');
+
 include('nav.php');
 include('side-bar.php');
 include('../funcoes.php');
@@ -427,7 +429,7 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
             $.ajax({
                 type: "POST",
-                url: "cadastraClientes.php",
+                url: "/views/cadastraClientes.php",
                 data: {
                     'tipo_cliente': tipo_cliente,
                     'nome': nome,

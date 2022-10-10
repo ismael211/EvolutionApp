@@ -5,6 +5,8 @@ header("Content-type: text/html; charset=utf-8");
 session_start();
 require_once('../inc/config.php');
 
+include('../index.php');
+
 include('nav.php');
 include('side-bar.php');
 
@@ -109,7 +111,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <h6 class="text-white" style="float: right;">+ Clientes</6>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="text-white" href="clientes.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
+                                        <a class="text-white" href="/Clientes">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +122,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <h6 class="text-white" style="float: right;"> Faturas</6>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="text-white" href="financeiro.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
+                                        <a class="text-white" href="/Financeiro">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +133,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <h6 class="text-white" style="float: right;">Licenças</6>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="text-white" href="licencas.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
+                                        <a class="text-white" href="/Licencas">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +144,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <h6 class="text-white" style="float: right;">Clientes</6>
                                     </div>
                                     <div class="card-footer">
-                                        <a class="text-white" href="clientes.php">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
+                                        <a class="text-white" href="/Clientes">Visualizar<i data-feather='arrow-right-circle' style="float: right;"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -208,12 +210,11 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                             </table>
                                         </div>
                                         <div class="text-right">
-                                            <a href="financeiro.php" class="btn btn-primary btn-md">Visualizar Todos <i data-feather="arrow-right"></i></a>
+                                            <a href="/Financeiro" class="btn btn-primary btn-md">Visualizar Todos <i data-feather="arrow-right"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="card-footer">
@@ -221,7 +222,6 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                     </div>
                 </div>
             </div><!-- /#page-wrapper -->
-
         </div>
     </div>
 
