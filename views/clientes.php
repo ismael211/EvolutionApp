@@ -60,7 +60,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 </head>
 <!-- END: Head-->
 
-<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="">
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-<?= $menu . ' ' . $tema ?>" data-open="click" data-menu="vertical-menu-modern" data-col="">
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
@@ -94,25 +94,33 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                             <div class="row">
 
                                 <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-3">
 
-                                    <ol class="breadcrumb">
-                                        <li class="active form-inline">
+                                            <div id="menu_opcoes" style="display: block;">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Opções
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <div class="container" style="margin-left: 10px; width: 190px;">
 
-                                            <div class="form-group">
-                                                <select class="form-control" name="opcoes" id="opcoes">
-                                                    <option value="0" selected="selected"> -- Opções -- </option>
-                                                    <option value="ativar">Ativar</option>
-                                                    <option value="desativar">Desativar</option>
-                                                    <option value="editar">Editar</option>
-                                                    <option value="remover">Remover</option>
-                                                </select>
+                                                            <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar Cliente(s) </div>
+                                                            <br>
+                                                            <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar Cliente</div>
+                                                            <br>
+                                                            <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
+                                                            <br>
+                                                            <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
+                                                            <br>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                            <div class="form-group">
-                                                <button type="button" class="btn btn-primary btn-sm" id="action_bt_opcoes" style="margin-left: 5px;">OK</button>
-                                            </div>
-
-                                        </li>
-                                    </ol>
+                                        </div>
+                                    </div>
 
                                     <br>
                                     <div class="table-responsive-sm">
@@ -141,7 +149,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                 ?>
                                                         <tr>
                                                             <td>
-                                                                <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_cli" id="codigo_cli">
+                                                                <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_cli[]" id="codigo_cli">
                                                                 <input type="hidden" id="idcliente" name="idcliente" value="<?= $row['codigo'] ?>">
                                                             </td>
                                                             <td><?= $row['codigo'] ?></td>
@@ -206,7 +214,6 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                     </div>
                 </div>
 
-
             </div>
         </div>
 
@@ -254,6 +261,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     })
 </script>
 
+<!-- Tradução da tabela -->
 <script>
     $(document).ready(function() {
 
@@ -285,4 +293,105 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             "autoWidth": true
         });
     })
+</script>
+
+<script>
+    var itens = '';
+
+    $("input[name='codigo_cli[]']").change(function(e) {
+
+        //$("#opt_editar").first().fadeIn("slow");
+
+        itens = $("input[name='codigo_cli[]']:checked").map(function() {
+            return $(this).val();
+        }).get();
+        console.log(itens)
+
+        if (itens.length == 0) {
+
+            document.getElementById('opt_editar').style.display = 'none'
+            if (isoption == true) {
+                isoption = false;
+
+            }
+
+        } else if (itens.length > 1) {
+
+            document.getElementById('opt_editar').style.display = 'none'
+
+            $("#opt_editar").fadeOut("slow");
+        } else if (itens.length == 1) {
+
+            if (isoption == false) {
+                $("#menu_opcoes").first().fadeIn("slow");
+                isoption = true;
+            }
+        }
+    });
+
+    $("#ativar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
+                processando();
+                $.post("/views/action.php", {
+                    ativa: '0',
+                    tipo: 'ativar',
+                    codigo: itens
+                });
+            }
+        }
+    });
+
+    $("#desativar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
+                processando();
+                $.post("/views/action.php", {
+                    tipo: 'ativar',
+                    codigo: itens
+                })
+            }
+        }
+    });
+
+    $("#editar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+
+        } else if (itens.length == 1) {
+            if (window.confirm("Deseja realmente editar o cliente?")) {
+                processando();
+                $.post("/views/clientesEditar.php", {
+                    codigo: itens
+                })
+            }
+        } else {
+            alert('Você só pode editar um cliente por vez')
+        }
+    });
+
+    $("#remover").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
+                processando();
+                $.post("/views/action.php", {
+                    tipo: 'remover',
+                    codigo: itens
+                }, function(resposta) {
+                    window.location.href = "";
+                });
+            }
+        }
+    });
+
 </script>

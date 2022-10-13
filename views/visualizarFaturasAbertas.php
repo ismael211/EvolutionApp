@@ -61,7 +61,7 @@ WHERE faturas.status = 'off' ORDER BY faturas.data_vencimento DESC");
 </head>
 <!-- END: Head-->
 
-<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-collapsed" data-open="click" data-menu="vertical-menu-modern" data-col="">
+<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-<?= $menu . ' ' . $tema ?>" data-open="click" data-menu="vertical-menu-modern" data-col="">
 
     <!-- BEGIN: Content-->
     <div class="app-content content ">
