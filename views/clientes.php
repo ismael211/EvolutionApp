@@ -53,6 +53,10 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
+    <!-- END: Page CSS-->
+
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <!-- END: Custom CSS-->
@@ -146,6 +150,8 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                     tipo_cliente FROM clientes");
                                                     foreach ($clientes as $row) {
                                                         $nome = substr($row['nome'], 0, 30);
+                                                        $data_formatada = date_create($row['data_cadastro']);
+                                                        $data_formatada = date_format($data_formatada, "d/m/Y");
                                                 ?>
                                                         <tr>
                                                             <td>
@@ -164,7 +170,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
 
                                                             <?php } ?>
 
-                                                            <td><?= $row['data_cadastro'] ?></td>
+                                                            <td><?= $data_formatada ?></td>
 
                                                             <?php if ($row['status'] == 'a') {
                                                             ?>
@@ -295,6 +301,12 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
     })
 </script>
 
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- Ações de opções -->
 <script>
     var itens = '';
 
@@ -305,7 +317,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
         itens = $("input[name='codigo_cli[]']:checked").map(function() {
             return $(this).val();
         }).get();
-        console.log(itens)
+        // console.log(itens)
 
         if (itens.length == 0) {
 
@@ -335,12 +347,52 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             alert('Por favor, selecione algum cliente');
         } else {
             if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
-                processando();
+                processando(1);
                 $.post("/views/action.php", {
-                    ativa: '0',
-                    tipo: 'ativar',
-                    codigo: itens
-                });
+                        ativa: '0',
+                        tipo: 'ativar',
+                        codigo: itens
+                    },
+                    function(resposta) {
+                        processando(0);
+
+                        var data = resposta.split("||");
+
+                        // Quando terminada a requisição
+
+                        // Se a resposta é um erro
+                        if (data[0] == 'error') {
+                            Swal.fire({
+                                title: 'Atenção',
+                                html: 'As alterações não foram concluídas'.data[3],
+                                icon: 'error',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Concluído',
+                                html: 'Alterações feitas com sucesso',
+                                icon: 'success',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                /* Read more about isConfirmed*/
+                                if (result.isConfirmed) {
+                                    window.location.href = '';
+                                }
+                            })
+                        }
+                    }
+                );
             }
         }
     });
@@ -353,9 +405,49 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
                 processando();
                 $.post("/views/action.php", {
-                    tipo: 'ativar',
-                    codigo: itens
-                })
+                        tipo: 'ativar',
+                        codigo: itens
+                    },
+                    function(resposta) {
+                        processando(0);
+
+                        var data = resposta.split("||");
+
+                        // Quando terminada a requisição
+
+                        // Se a resposta é um erro
+                        if (data[0] == 'error') {
+                            Swal.fire({
+                                title: 'Atenção',
+                                html: 'As alterações não foram concluídas'.data[3],
+                                icon: 'error',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Concluído',
+                                html: 'Alterações feitas com sucesso',
+                                icon: 'success',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                /* Read more about isConfirmed*/
+                                if (result.isConfirmed) {
+                                    window.location.href = '';
+                                }
+                            })
+                        }
+                    }
+                );
             }
         }
     });
@@ -387,11 +479,46 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                 $.post("/views/action.php", {
                     tipo: 'remover',
                     codigo: itens
-                }, function(resposta) {
-                    window.location.href = "";
+                },function(resposta) {
+                    processando(0);
+
+                    var data = resposta.split("||");
+
+                    // Quando terminada a requisição
+
+                    // Se a resposta é um erro
+                    if (data[0] == 'error') {
+                        Swal.fire({
+                            title: 'Atenção',
+                            html: data[3],
+                            icon: 'error',
+                            width: '900px',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false,
+                            allowOutsideClick: false
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Concluído',
+                            html: data[3],
+                            icon: 'success',
+                            width: '900px',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false,
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            /* Read more about isConfirmed*/
+                            if (result.isConfirmed) {
+                                window.location.href = '';
+                            }
+                        })
+                    }
                 });
             }
         }
     });
-
 </script>

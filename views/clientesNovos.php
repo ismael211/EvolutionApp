@@ -57,6 +57,10 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
+    <!-- END: Page CSS-->
+
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <!-- END: Custom CSS-->
@@ -92,28 +96,38 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
 
                 <span id="status_volta"></span>
 
+
+                <div class="row">
+
+                    <div class="col-md-3">
+
+                        <div id="menu_opcoes" style="display: block;">
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Opções
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div class="container" style="margin-left: 10px; width: 190px;">
+
+                                        <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar Cliente(s) </div>
+                                        <br>
+                                        <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar Cliente</div>
+                                        <br>
+                                        <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
+                                        <br>
+                                        <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
 
                     <div class="col-lg-12">
-
-                        <ol class="breadcrumb">
-                            <li class="active form-inline">
-
-                                <div class="form-group">
-                                    <select class="form-control" name="opcoes" id="opcoes">
-                                        <option value="0" selected="selected"> -- Opções -- </option>
-                                        <option value="ativar">Ativar</option>
-                                        <option value="desativar">Desativar</option>
-                                        <option value="editar">Editar</option>
-                                        <option value="remover">Remover</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" id="action_bt_opcoes">OK</button>
-                                </div>
-
-                            </li>
-                        </ol>
 
                         <table class="table">
                             <thead>
@@ -137,16 +151,18 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
                                     AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
                                     foreach ($clientes as $row) {
                                         $nome = substr($row['nome'], 0, 30);
+                                        $data_formatada = date_create($row['data_cadastro']);
+                                        $data_formatada = date_format($data_formatada, "d/m/Y");
                                 ?>
 
                                         <tr>
                                             <td>
-                                                <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_cli" id="codigo_cli">
+                                                <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_cli[]" id="codigo_cli">
                                                 <input type="hidden" id="idcliente" name="idcliente" value="<?= $row['codigo'] ?>">
                                             </td>
                                             <td><?= $row['codigo'] ?></td>
                                             <td><?= $nome ?></td>
-                                            <td><?= $row['email'] ?></td>
+                                            <td><?= $row['email1'] ?></td>
 
                                             <?php if ($row['tipo_cliente'] = 'u') { ?>
                                                 <td>Usuário</td>
@@ -154,7 +170,7 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
                                                 <td>Revendedor</td>
                                             <?php } ?>
 
-                                            <td><?= $row['data_cadastro'] ?></td>
+                                            <td><?= $data_formatada ?></td>
 
 
                                             <?php if ($row['status'] == 'a') { ?>
@@ -229,6 +245,11 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
 <script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
 <!-- END: Page JS-->
 
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
 <script>
     $(window).on('load', function() {
         if (feather) {
@@ -271,4 +292,224 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
             "autoWidth": true
         });
     })
+</script>
+
+<!-- Ações de opções -->
+<script>
+    var itens = '';
+
+    $("input[name='codigo_cli[]']").change(function(e) {
+
+        //$("#opt_editar").first().fadeIn("slow");
+
+        itens = $("input[name='codigo_cli[]']:checked").map(function() {
+            return $(this).val();
+        }).get();
+        // console.log(itens)
+
+        if (itens.length == 0) {
+
+            document.getElementById('opt_editar').style.display = 'none'
+            if (isoption == true) {
+                isoption = false;
+
+            }
+
+        } else if (itens.length > 1) {
+
+            document.getElementById('opt_editar').style.display = 'none'
+
+            $("#opt_editar").fadeOut("slow");
+        } else if (itens.length == 1) {
+
+            if (isoption == false) {
+                $("#menu_opcoes").first().fadeIn("slow");
+                isoption = true;
+            }
+        }
+    });
+
+    $("#ativar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
+                processando(1);
+                $.post("/views/action.php", {
+                        pagina: 'clientes',
+                        ativa: '0',
+                        tipo: 'ativar',
+                        codigo: itens
+                    },
+                    function(resposta) {
+                        processando(0);
+
+                        var data = resposta.split("||");
+
+                        // Quando terminada a requisição
+
+                        // Se a resposta é um erro
+                        if (data[0] == 'error') {
+                            Swal.fire({
+                                title: 'Atenção',
+                                html: 'As alterações não foram concluídas'.data[3],
+                                icon: 'error',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Concluído',
+                                html: 'Alterações feitas com sucesso',
+                                icon: 'success',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                /* Read more about isConfirmed*/
+                                if (result.isConfirmed) {
+                                    window.location.href = '';
+                                }
+                            })
+                        }
+                    }
+                );
+            }
+        }
+    });
+
+    $("#desativar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
+                processando();
+                $.post("/views/action.php", {
+                        pagina: 'clientes',
+                        tipo: 'ativar',
+                        codigo: itens
+                    },
+                    function(resposta) {
+                        processando(0);
+
+                        var data = resposta.split("||");
+
+                        // Quando terminada a requisição
+
+                        // Se a resposta é um erro
+                        if (data[0] == 'error') {
+                            Swal.fire({
+                                title: 'Atenção',
+                                html: 'As alterações não foram concluídas'.data[3],
+                                icon: 'error',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            })
+                        } else {
+                            Swal.fire({
+                                title: 'Concluído',
+                                html: 'Alterações feitas com sucesso',
+                                icon: 'success',
+                                width: '900px',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary'
+                                },
+                                buttonsStyling: false,
+                                allowOutsideClick: false
+                            }).then((result) => {
+                                /* Read more about isConfirmed*/
+                                if (result.isConfirmed) {
+                                    window.location.href = '';
+                                }
+                            })
+                        }
+                    }
+                );
+            }
+        }
+    });
+
+    $("#editar").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+
+        } else if (itens.length == 1) {
+            if (window.confirm("Deseja realmente editar o cliente?")) {
+                processando();
+                $.post("/views/clientesEditar.php", {
+                    codigo: itens
+                })
+            }
+        } else {
+            alert('Você só pode editar um cliente por vez')
+        }
+    });
+
+    $("#remover").click(function(e) {
+        //console.log(itens[0]);
+        if (itens.length == 0) {
+            alert('Por favor, selecione algum cliente');
+        } else {
+            if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
+                processando();
+                $.post("/views/action.php", {
+                    pagina: 'clientes',
+                    tipo: 'remover',
+                    codigo: itens
+                }, function(resposta) {
+                    processando(0);
+
+                    var data = resposta.split("||");
+
+                    // Quando terminada a requisição
+
+                    // Se a resposta é um erro
+                    if (data[0] == 'error') {
+                        Swal.fire({
+                            title: 'Atenção',
+                            html: data[3],
+                            icon: 'error',
+                            width: '900px',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false,
+                            allowOutsideClick: false
+                        })
+                    } else {
+                        Swal.fire({
+                            title: 'Concluído',
+                            html: data[3],
+                            icon: 'success',
+                            width: '900px',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            },
+                            buttonsStyling: false,
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            /* Read more about isConfirmed*/
+                            if (result.isConfirmed) {
+                                window.location.href = '';
+                            }
+                        })
+                    }
+                });
+            }
+        }
+    });
 </script>

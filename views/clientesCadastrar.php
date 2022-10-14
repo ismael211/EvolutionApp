@@ -55,7 +55,6 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
-
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
     <!-- END: Page CSS-->
