@@ -10,6 +10,7 @@ $core->Connect();
 
 $quantidade = $core->RowCount("SELECT * FROM licenca");
 
+
 // Metodo que gera Key
 function generateKey()
 {
@@ -309,5 +310,104 @@ function encode_decode($texto, $tipo = "E")
             $decoded = base64_decode($decoded);
         }
         return $decoded;
+    }
+}
+
+function envia_Email($nome_cliente, $email_cliente1, $email_cliente2, $assunto, $mensagem)
+{
+    //include("mailer/class.phpmailer.php");
+    require_once('PHPMailer/PHPMailerAutoload.php');
+
+
+    if (!filter_var(trim($email_cliente1), FILTER_VALIDATE_EMAIL)) {
+        return "Error(1): ($email_cliente1) Email Principal inválido.";
+    }
+
+    require_once('inc/config.php');
+
+    // return 'uepaaaaa';
+
+    $core = new IsistemCore();
+    $core->Connect();
+    $dados_empresa = $core->Fetch("SELECT * FROM empresa");
+    $dados_sistema = $core->Fetch("SELECT * FROM sistema");
+
+    $account = $dados_sistema['servidor_smtp_usuario'];
+    $password = $dados_sistema['servidor_smtp_senha'];
+    $to = '' . trim($email_cliente1);
+    $from = $dados_empresa['email'];
+    $from_name = $dados_empresa['nome'];
+    $msg = $mensagem; // HTML message
+    $subject = $assunto;
+
+    $mail = new PHPMailer();
+
+    $mail->IsSMTP();
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->CharSet = 'iso-8859-1';
+    $mail->Host = $dados_sistema['servidor_smtp'];
+    $mail->SMTPAuth = true;
+    $mail->Username = $account;
+    $mail->Password = $password;
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = $dados_sistema['servidor_smtp_porta']; // Or 587
+
+    $mail->From = $from;
+    $mail->FromName = $from_name;
+
+    $mail->addAddress(trim($email_cliente1), $nome_cliente);     // Add a recipient
+
+    $mail->isHTML(true);
+
+    $mail->Subject = $subject;
+    $mail->Body = $msg;
+
+
+    if ($mail->Send()) {
+        $_SESSION['email_sent_to'] = $email_cliente1;
+        return "ok";
+    } else {
+
+        if (!empty($email_cliente2)) {
+
+            if (filter_var(trim($email_cliente2), FILTER_VALIDATE_EMAIL)) {
+                //$mail->addCC(trim($email_cliente2), $nome_cliente);
+
+
+                $account = $dados_sistema['servidor_smtp_usuario'];
+                $password = $dados_sistema['servidor_smtp_senha'];
+                $to = '' . trim($email_cliente2);
+                $from = $dados_empresa['email'];
+                $from_name = $dados_empresa['nome'];
+                $msg = $mensagem; // HTML message
+                $subject = $assunto;
+
+                $mail = new PHPMailer();
+                $mail->IsSMTP();
+                $mail->CharSet = 'iso-8859-1';
+                $mail->Host = $dados_sistema['servidor_smtp'];
+                $mail->SMTPAuth = true;
+                $mail->Port = $dados_sistema['servidor_smtp_porta']; // Or 587
+                $mail->Username = $account;
+                $mail->Password = $password;
+                $mail->SMTPSecure = $dados_sistema['smtp_enc'];
+                $mail->From = $from;
+                $mail->FromName = $from_name;
+                $mail->isHTML(true);
+                $mail->Subject = $subject;
+                $mail->Body = $msg;
+                $mail->addAddress(trim($email_cliente2), $nome_cliente);
+
+
+                if ($mail->Send()) {
+                    $_SESSION['email_sent_to'] = $email_cliente2;
+                    return "ok";
+                } else {
+                    return "Erro: - " . $mail->ErrorInfo;
+                }
+            }
+        }
+
+        return "Erro: - " . $mail->ErrorInfo;
     }
 }

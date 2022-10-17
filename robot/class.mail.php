@@ -1,14 +1,23 @@
 <?php
 //////////////////////////////////////////////////////////////////////////
 // Isistem Gerenciador Financeiro para Hosts  		                    //
-// Descrição: Sistema de Gerenciamento de Clientes		                //
+// DescriÃ§Ã£o: Sistema de Gerenciamento de Clientes		                //
 // Site: www.isistem.com.br       										//
 //////////////////////////////////////////////////////////////////////////
 
+require_once('phpmailer/src/PHPMailer.php');
+require_once('phpmailer/src/SMTP.php');
+require_once('phpmailer/src/Exception.php');
+
+//require_once 'vendor/autoload.php';
+ 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 require_once('PHPMailer/PHPMailerAutoload.php');
 
-function envia_Email($nome_cliente,$email_cliente1,$email_cliente2,$assunto,$mensagem) {
+function eenvia_Email($nome_cliente,$email_cliente1,$email_cliente2,$assunto,$mensagem) {
 
 	// Uso Geral
 	include('ds8.php');

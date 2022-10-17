@@ -180,10 +180,10 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
 
                                                                     <td><?= 'R$ '.moneyFormatBD($row['valor']) ?></td>
                                                                     <td>
-                                                                        <?php if ($row['status'] = 1) { ?>
+                                                                        <?php if ($row['status'] == '1') { ?>
 
                                                                             <span class="badge bg-success">Ativado</span>
-                                                                        <?php } elseif ($row['status'] = 0) { ?>
+                                                                        <?php } elseif ($row['status'] == '0') { ?>
 
                                                                             <span class="badge bg-danger">Desativado</span>
                                                                         <?php } ?>

@@ -115,13 +115,13 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <div class="container" style="margin-left: 10px; width: 190px;">
 
-                                                        <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar Cliente(s) </div>
+                                                        <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar </div>
                                                         <br>
-                                                        <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar Cliente</div>
+                                                        <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar </div>
                                                         <br>
-                                                        <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
+                                                        <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar </div>
                                                         <br>
-                                                        <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
+                                                        <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover </div>
                                                         <br>
 
                                                     </div>
@@ -156,18 +156,19 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
                                                 $sub_dominio = substr($row['sub_dominio'], 0, 30);
                                         ?>
                                                 <tr>
-                                                    <td><input type="checkbox" name="id_licenca" id="id_licenca" value="<?= $row['id'] ?>"></td>
+                                                    <td><input type="checkbox" name="codigo_lic[]" id="codigo_lic" value="<?= $row['id'] ?>"></td>
                                                     <td><?= $row['id'] ?></td>
                                                     <td><?= $sub_dominio ?></td>
                                                     <td><?= $nome ?></td>
                                                     <td><?= $row['key_licenca'] ?></td>
 
 
-                                                    <?php if ($row['status'] = '1') { ?>
-
-                                                        <td><span class="badge bg-success">Ativo</span></td>
-                                                    <?php } else { ?>
+                                                    <?php if ($row['status'] == '0') { ?>
                                                         <td><span class="badge bg-danger">Desativado</span></td>
+
+                                                    <?php } else { ?>
+                                                        <td><span class="badge bg-success">Ativo</span></td>
+
                                                     <?php } ?>
 
                                                 </tr>
@@ -282,11 +283,11 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
 <script>
     var itens = '';
 
-    $("input[name='codigo_cli[]']").change(function(e) {
+    $("input[name='codigo_lic[]']").change(function(e) {
 
         //$("#opt_editar").first().fadeIn("slow");
 
-        itens = $("input[name='codigo_cli[]']:checked").map(function() {
+        itens = $("input[name='codigo_lic[]']:checked").map(function() {
             return $(this).val();
         }).get();
         // console.log(itens)
@@ -316,9 +317,9 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
     $("#ativar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma licença');
         } else {
-            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
+            if (window.confirm("Deseja realmente ativar a(s) licença(s)?")) {
                 processando(1);
                 $.post("/views/action.php", {
                         pagina: 'licenca',
@@ -373,9 +374,9 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
     $("#desativar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma licença');
         } else {
-            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
+            if (window.confirm("Deseja realmente desativar a(s) licença(s)?")) {
                 processando();
                 $.post("/views/action.php", {
                         pagina: 'licenca',
@@ -429,26 +430,26 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
     $("#editar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma licença');
 
         } else if (itens.length == 1) {
-            if (window.confirm("Deseja realmente editar o cliente?")) {
+            if (window.confirm("Deseja realmente editar a licença?")) {
                 processando();
                 $.post("/views/clientesEditar.php", {
                     codigo: itens
                 })
             }
         } else {
-            alert('Você só pode editar um cliente por vez')
+            alert('Você só pode editar uma licença por vez')
         }
     });
 
     $("#remover").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma licença');
         } else {
-            if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
+            if (window.confirm("Deseja realmente DELETAR a(s) licença(s)?")) {
                 processando();
                 $.post("/views/action.php", {
                     pagina: 'licenca',

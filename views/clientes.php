@@ -349,6 +349,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
                 processando(1);
                 $.post("/views/action.php", {
+                        pagina: 'clientes',
                         ativa: '0',
                         tipo: 'ativar',
                         codigo: itens
@@ -405,6 +406,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
                 processando();
                 $.post("/views/action.php", {
+                        pagina: 'clientes',
                         tipo: 'ativar',
                         codigo: itens
                     },
@@ -477,9 +479,10 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
             if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
                 processando();
                 $.post("/views/action.php", {
+                    pagina: 'clientes',
                     tipo: 'remover',
                     codigo: itens
-                },function(resposta) {
+                }, function(resposta) {
                     processando(0);
 
                     var data = resposta.split("||");
