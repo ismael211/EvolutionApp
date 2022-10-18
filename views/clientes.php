@@ -462,9 +462,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
         } else if (itens.length == 1) {
             if (window.confirm("Deseja realmente editar o cliente?")) {
                 processando();
-                $.post("/views/clientesEditar.php", {
-                    codigo: itens
-                })
+                window.location.href = "/views/clientesEditar.php?i="+itens[0];
             }
         } else {
             alert('Você só pode editar um cliente por vez')

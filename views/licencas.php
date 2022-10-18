@@ -435,10 +435,9 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
         } else if (itens.length == 1) {
             if (window.confirm("Deseja realmente editar a licença?")) {
                 processando();
-                $.post("/views/clientesEditar.php", {
-                    codigo: itens
-                })
+                window.location.href = "/views/licencasEditar.php?i="+itens[0];
             }
+            
         } else {
             alert('Você só pode editar uma licença por vez')
         }

@@ -18,7 +18,8 @@ include('side-bar.php');
 $core = new IsistemCore();
 $core->Connect();
 
-$codigo = '11';
+
+$codigo = $_GET['i'];
 
 $dados_licenca = $core->Fetch("SELECT * FROM `licenca` WHERE `id` = '" . $codigo . "'");
 
@@ -115,11 +116,12 @@ $dados_cliente = $core->Fetch("SELECT * FROM `clientes` WHERE `codigo` = '" . $d
                 <div class="col-lg-12">
 
                   <form role="form" id="enviaNovaLicenca">
+                    <!-- Diferencia o editar do criar licença -->
+                    <input type="hidden" name="cod_licenca" id="cod_licenca" value="<?= $codigo ?>">
 
                     <div class="form-group">
                       <label>Cliente</label>
                       <select class="form-control" id="clientef" name="clientef">
-                        <option value="" selected="selected">Selecione ...</option>
                         <option value="<?= $dados_cliente['codigo'] ?>"><?= $dados_cliente['nome'] ?></option>
                       </select>
                     </div>
@@ -157,7 +159,7 @@ $dados_cliente = $core->Fetch("SELECT * FROM `clientes` WHERE `codigo` = '" . $d
                     </div>
 
                     <div class="well">
-                      <button type="button" class="btn btn-primary" id="bt_cadastrar_licenca">Editar</button>
+                      <button type="button" class="btn btn-primary" id="bt_editar_licenca">Editar</button>
                     </div>
 
                   </form>
@@ -220,4 +222,93 @@ $dados_cliente = $core->Fetch("SELECT * FROM `clientes` WHERE `codigo` = '" . $d
       });
     }
   })
+</script>
+
+<!-- Editar Licença  -->
+<script>
+  $("#enviaNovaLicenca").submit(function(e) {
+    // processando(1);
+    var formObj = $(this);
+    var formURL = "/views/cadastraLicenca.php";
+
+    if (window.FormData !== undefined) // for HTML5 browsers
+    //	if(false)
+    {
+
+      var formData = new FormData(this);
+      $.ajax({
+        url: formURL,
+        type: 'POST',
+        data: formData,
+        mimeType: "multipart/form-data",
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+
+          // processando(0);
+          data = data.split("||");
+
+          if (data[0] != 'error') {
+            Swal.fire({
+              title: 'Concluído',
+              html: data[1],
+              icon: 'success',
+              width: '900px',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false,
+              allowOutsideClick: false
+            }).then((result) => {
+              /* Read more about isConfirmed*/
+              if (result.isConfirmed) {
+                window.location.href = '/Licencas';
+              }
+            })
+          } else {
+            Swal.fire({
+              title: 'Atenção',
+              html: data[1],
+              icon: 'error',
+              width: '900px',
+              customClass: {
+                confirmButton: 'btn btn-primary'
+              },
+              buttonsStyling: false,
+              allowOutsideClick: false
+            })
+          }
+        }
+      });
+      e.preventDefault();
+      e.unbind();
+    } else //for olden browsers
+    {
+      //generate a random id
+      var iframeId = 'unique' + (new Date().getTime());
+
+      //create an empty iframe
+      var iframe = $('<iframe src="javascript:false;" name="' + iframeId + '" />');
+
+      //hide it
+      iframe.hide();
+
+      //set form target to iframe
+      formObj.attr('target', iframeId);
+
+      //Add iframe to body
+      iframe.appendTo('body');
+      iframe.load(function(e) {
+        var doc = getDoc(iframe[0]);
+        var docRoot = doc.body ? doc.body : doc.documentElement;
+        var data = docRoot.innerHTML;
+        $("#msg").html('');
+      });
+    }
+
+  });
+  $("#bt_editar_licenca").click(function() {
+    $("#enviaNovaLicenca").submit();
+  });
 </script>

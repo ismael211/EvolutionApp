@@ -14,9 +14,15 @@ include('../funcoes.php');
 $core = new IsistemCore();
 $core->Connect();
 
+$codigo_cliente = $_GET['i'];
+
+$dados_cliente = $core->Fetch("SELECT * FROM `clientes` WHERE `codigo` = '" . $codigo_cliente . "'");
+
 $forma_pag = $core->FetchAll("SELECT * FROM `formas_pagamento`");
 
 $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
+
+$serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cliente` ='" . $codigo_cliente . "'");
 
 
 ?>
@@ -114,6 +120,7 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                             <div class="row">
                                                 <div class="form-group col-md-6">
                                                     <label>Status</label>
+                                                    <input type="hidden" name="codigo" id="codigo" value="<?= $codigo_cliente ?>">
                                                     <select class="form-control" id="status_cli" name="status_cli">
                                                         <option value="" selected="selected">Selecione um status</option>
                                                         <option value="a">Ativo</option>
@@ -124,15 +131,14 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                                 <div class="form-group col-md-6">
                                                     <label>Tipo de Cliente</label>
                                                     <select class="form-control" id="tipo_cliente" name="tipo_cliente">
-                                                        <option value="" selected="selected">Selecione uma opção</option>
-                                                        <option value="u">Usuário</option>
-                                                        <option value="r">Revendedor</option>
+                                                        <option <?php echo $dados_cliente['tipo_cliente'] == 'u' ? 'selected' : '' ?> value="u">Usuário</option>
+                                                        <option <?php echo $dados_cliente['tipo_cliente'] == 'r' ? 'selected' : '' ?> value="r">Revendedor</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Nome Responsável</label>
-                                                <input class="form-control" type="text" name="nome" id="nome">
+                                                <input class="form-control" type="text" name="nome" id="nome" value="<?= $dados_cliente['nome'] ?>">
                                             </div>
 
 
@@ -145,23 +151,23 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                                                 <span class="lead collapse-title">Fisica</span>
                                                             </div>
 
-                                                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                            <div id="collapseOne" class="collapse <?php echo $dados_cliente['tipo_pessoa'] == 'fisica' ? 'show' : '' ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
                                                                 <div class="card-body">
                                                                     <div id="fisica" class="well">
 
                                                                         <div class="form-group">
                                                                             <label>RG:</label>
-                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
+                                                                            <input class="form-control" type="text" name="rg" id="rg" maxlength="7" value="<?= $dados_cliente['rg'] ?>" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label>CPF</label>
-                                                                            <input class="form-control custom-delimiter-mask" type="text" name="cpf" id="cpf" onblur="return validarCPF()">
+                                                                            <input class="form-control custom-delimiter-mask" type="text" name="cpf" id="cpf" value="<?= $dados_cliente['cpf'] ?>" onblur="return validarCPF()">
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label>Data de Nascimento</label>
-                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" maxlength="10">
+                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" value="<?= $dados_cliente['data_nac'] ?>" maxlength="10">
                                                                         </div>
 
                                                                     </div>
@@ -175,20 +181,18 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                                             <div class="card-header" onclick="limpa_campos()" id="headingTwo" data-toggle="collapse" role="button" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                                                 <span class="lead collapse-title">Juridica</span>
                                                             </div>
-                                                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                            <div id="collapseTwo" class="collapse <?php echo $dados_cliente['tipo_pessoa'] == 'juridica' ? 'show' : '' ?>" aria-labelledby="headingTwo" data-parent="#accordionExample">
                                                                 <div class="card-body">
                                                                     <div id="juridica" class="well">
-
                                                                         <div class="form-group">
                                                                             <label>CNPJ:</label>
-                                                                            <input class="form-control mask_cnpj" type="text" name="cnpj" id="cnpj" maxlength="18" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
+                                                                            <input class="form-control mask_cnpj" type="text" name="cnpj" id="cnpj" maxlength="18" value="<?= $dados_cliente['cnpj'] ?>" onkeypress="if (!isNaN(String.fromCharCode(window.event.keyCode))) return true; else return false;">
                                                                         </div>
 
                                                                         <div class="form-group">
                                                                             <label>Razão Social:</label>
-                                                                            <input class="form-control" type="text" name="razao_social" id="razao_social">
+                                                                            <input class="form-control" type="text" name="razao_social" id="razao_social" value="<?= $dados_cliente['razao_social'] ?>">
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -201,12 +205,12 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                             <div class="row">
                                                 <div class="form-group col-md-6">
                                                     <label>Telefone:</label>
-                                                    <input class="form-control mask_tel" type="text" name="fone" id="fone">
+                                                    <input class="form-control mask_tel" type="text" name="fone" id="fone" value="<?= $dados_cliente['fone'] ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Celular:</label>
-                                                    <input class="form-control mask_tel" type="text" name="celular" id="celular">
+                                                    <input class="form-control mask_tel" type="text" name="celular" id="celular" value="<?= $dados_cliente['celular'] ?>">
                                                 </div>
                                             </div>
 
@@ -214,12 +218,12 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
                                                 <div class="form-group col-md-6">
                                                     <label>Email Principal:</label>
-                                                    <input class="form-control" type="text" name="email1" id="email1">
+                                                    <input class="form-control" type="text" name="email1" id="email1" value="<?= $dados_cliente['email1'] ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Email Secundário:</label>
-                                                    <input class="form-control" type="text" name="email2" id="email2">
+                                                    <input class="form-control" type="text" name="email2" id="email2" value="<?= $dados_cliente['email2'] ?>">
                                                 </div>
 
                                             </div>
@@ -227,12 +231,12 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                             <div class="row">
 
                                                 <div class="form-group col-md-6">
-                                                    <label>Senha:</label>
+                                                    <label>Senha: <small><b>Caso não queira alterar a senha, ignore</b></small></label>
                                                     <input class="form-control" type="password" name="senha" id="senha">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
-                                                    <label>Repetir Senha:</label>
+                                                    <label>Repetir Senha: <small><b>Caso não queira alterar a senha, ignore</b></small></label>
                                                     <input class="form-control" type="password" name="r_senha" id="r_senha">
                                                 </div>
 
@@ -240,49 +244,34 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
                                             <div class="form-group">
                                                 <label>Obs</label>
-                                                <textarea class="form-control" rows="3" name="obs" id="obs"></textarea>
+                                                <textarea class="form-control" rows="3" name="obs" id="obs" value="<?= $dados_cliente['obs'] ?>"></textarea>
                                             </div>
 
                                             <div class="card border">
-                                                <div class="card-header">
-                                                    <div class="form-group">
-                                                        <label>Parceiro</label>
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox" value="1" id="parceiro" name="parceiro" onClick="check()">
-                                                                Sim
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="card-body">
 
                                                     <div class="row">
                                                         <div class="form-group col-md-4">
                                                             <label>Tipo de Plano</label>
                                                             <select class="form-control" id="tipo_plano" name="tipo_plano">
-                                                                <option value="" selected="selected">Selecione um plano</option>
                                                                 <?php foreach ($planos as $valor) { ?>
-                                                                    <option value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
+                                                                    <option <?php echo $serv_adic['codigo_servico'] == $valor['codigo'] ? 'selected' : '' ?> value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
 
-
-
                                                         <div class="form-group col-md-4">
                                                             <label>Forma de Pagamento</label>
                                                             <select class="form-control" id="forma_pagamento" name="forma_pagamento">
-                                                                <option value="" selected="selected">Selecione um plano</option>
                                                                 <?php foreach ($forma_pag as $valor) { ?>
-                                                                    <option value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
+                                                                    <option <?php $serv_adic['codigo_forma_pagto'] == $valor['codigo'] ? 'selected' : ''; ?> value="<?= $valor['codigo'] ?>"><?= $valor['nome'] ?></option>
                                                                 <?php } ?>
                                                             </select>
                                                         </div>
 
                                                         <div class="form-group  col-md-4">
                                                             <label>Dia de Vencimento:</label>
-                                                            <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento">
+                                                            <input class="form-control" type="text" name="dia_vencimento" id="dia_vencimento" value="<?= $serv_adic['data_pagto'] ?>">
                                                         </div>
                                                     </div>
 
@@ -290,7 +279,7 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
                                             </div>
 
                                             <div class="well">
-                                                <button type="button" class="btn btn-primary" id="cadastrar_cliente">Cadastrar</button>
+                                                <button type="button" class="btn btn-primary" id="cadastrar_cliente">Editar</button>
                                             </div>
 
                                         </form>
@@ -310,6 +299,7 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
             </div>
 
         </div>
+    </div>
 
 </body>
 
@@ -339,6 +329,7 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 <script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 <script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
 <!-- END: Page Vendor JS-->
+
 
 <script>
     $(window).on('load', function() {
@@ -386,24 +377,26 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
         processando(1);
 
-        var tipo_cliente = $("#tipo_cliente").val();
-        var nome = $("#nome").val();
-        var rg = $("#rg").val();
-        var cpf = $("#cpf").val();
-        var data_nac = $("#data_nac").val();
-        var cnpj = $("#cnpj").val();
-        var razao_social = $("#razao_social").val();
-        var fone = $("#fone").val();
-        var celular = $("#celular").val();
-        var email1 = $("#email1").val();
-        var email2 = $("#email2").val();
-        var senha = $("#senha").val();
-        var r_senha = $("#r_senha").val();
-        var obs = $("#obs").val();
-        var status_cli = $("#status_cli").val();
-        var tipo_plano = $("#tipo_plano").val();
-        var forma_pagamento = $("#forma_pagamento").val();
-        var dia_vencimento = $("#dia_vencimento").val();
+        var CodCliente = $('#codigo').val();
+        var status = $('#status_cli').val();
+        var tipoCliente = $('#tipo_cliente').val();
+        var nome = $('#nome').val();
+        var rg = $('#rg').val();
+        var cpf = $('#cpf').val();
+        var dataNascimento = $('#data_nac').val();
+        var cnpj = $('#cnpj').val();
+        var razaoSocial = $('#razao_social').val();
+        var telefone = $('#fone').val();
+        var celular = $('#celular').val();
+        var email = $('#email1').val();
+        var emailSecundario = $('#email2').val();
+        var senha = $('#senha').val();
+        var r_senha = $('#r_senha').val();
+        var obs = $('#obs').val();
+        var tipoPlano = $('#tipo_plano').val();
+        var formaPagamento = $('#forma_pagamento').val();
+        var diaVencimento = $('#dia_vencimento').val();
+
         var parceiro = check();
 
         if (rg != '') {
@@ -429,8 +422,9 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
             $.ajax({
                 type: "POST",
-                url: "/views/cadastraClientes.php",
+                url: "/views/EditaCliente.php",
                 data: {
+                    'CodCliente': CodCliente,
                     'tipo_cliente': tipo_cliente,
                     'nome': nome,
                     'tipo_pessoa': tipo_pessoa,
@@ -574,6 +568,8 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
     dateInputMask(input);
 </script>
+
+
 
 <script>
     var maskCpfOuCnpj = IMask(document.getElementById('celular'), {

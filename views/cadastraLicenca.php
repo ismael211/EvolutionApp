@@ -45,13 +45,20 @@ if ($_POST['clientef'] == '') {
             $msg = $returnFatura["msg"];
             $id_fatura = $returnFatura["retorno_cadastra"];
         } else {
-            $erro = '1';
-            $msg = 'Não entrou';
             $id_fatura = 0;
         }
 
+
+        if(isset($_POST['cod_licenca'])){
+
+            $codigo = $_POST['cod_licenca'];
+
+            $query = $core->Prepare("UPDATE licenca SET `sub_dominio`='".$subdominio."', `status`='".$status."', `key_licenca`='".$key."' WHERE `id` = '".$codigo."'");
+
+        }else{
         $query = $core->Prepare("INSERT INTO licenca(sub_dominio, status, key_licenca, id_cliente, id_fatura, data_cadastro)
 				VALUES('" . $subdominio . "', '" . $status . "','" . strtoupper($key) . "','" . $cliente . "','" . $id_fatura . "', NOW())");
+        }
 
         $result = $query->Execute();
 
@@ -100,12 +107,12 @@ if ($_POST['clientef'] == '') {
             $fatura_setup = cadastra($CodigoCliente, $CodigoServico, $DataVencimento, $Valor, $Descricao);
         }
     } catch (Exception $e) {
-        $resposta = "error||Não foi possivel registrar. #$e";
+        $resposta = "error||Não foi possivel editar licença. #$e";
         echo $resposta;
         exit();
     }
 
-    $resposta = "success||Cadastro realizado com sucesso";
+    $resposta = "success||Editado com sucesso";
     echo $resposta;
     exit();
 }
