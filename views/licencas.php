@@ -117,8 +117,8 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
 
                                                         <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar </div>
                                                         <br>
-                                                        <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar </div>
-                                                        <br>
+                                                        <!-- <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar </div> -->
+                                                        <!-- <br> -->
                                                         <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar </div>
                                                         <br>
                                                         <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover </div>
@@ -371,61 +371,61 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
         }
     });
 
-    $("#desativar").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione alguma licença');
-        } else {
-            if (window.confirm("Deseja realmente desativar a(s) licença(s)?")) {
-                processando();
-                $.post("/views/action.php", {
-                        pagina: 'licenca',
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
+    // $("#desativar").click(function(e) {
+    //     //console.log(itens[0]);
+    //     if (itens.length == 0) {
+    //         alert('Por favor, selecione alguma licença');
+    //     } else {
+    //         if (window.confirm("Deseja realmente desativar a(s) licença(s)?")) {
+    //             processando();
+    //             $.post("/views/action.php", {
+    //                     pagina: 'licenca',
+    //                     tipo: 'ativar',
+    //                     codigo: itens
+    //                 },
+    //                 function(resposta) {
+    //                     processando(0);
 
-                        var data = resposta.split("||");
+    //                     var data = resposta.split("||");
 
-                        // Quando terminada a requisição
+    //                     // Quando terminada a requisição
 
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
-        }
-    });
+    //                     // Se a resposta é um erro
+    //                     if (data[0] == 'error') {
+    //                         Swal.fire({
+    //                             title: 'Atenção',
+    //                             html: 'As alterações não foram concluídas'.data[3],
+    //                             icon: 'error',
+    //                             width: '900px',
+    //                             customClass: {
+    //                                 confirmButton: 'btn btn-primary'
+    //                             },
+    //                             buttonsStyling: false,
+    //                             allowOutsideClick: false
+    //                         })
+    //                     } else {
+    //                         Swal.fire({
+    //                             title: 'Concluído',
+    //                             html: 'Alterações feitas com sucesso',
+    //                             icon: 'success',
+    //                             width: '900px',
+    //                             customClass: {
+    //                                 confirmButton: 'btn btn-primary'
+    //                             },
+    //                             buttonsStyling: false,
+    //                             allowOutsideClick: false
+    //                         }).then((result) => {
+    //                             /* Read more about isConfirmed*/
+    //                             if (result.isConfirmed) {
+    //                                 window.location.href = '';
+    //                             }
+    //                         })
+    //                     }
+    //                 }
+    //             );
+    //         }
+    //     }
+    // });
 
     $("#editar").click(function(e) {
         //console.log(itens[0]);

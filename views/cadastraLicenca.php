@@ -107,12 +107,12 @@ if ($_POST['clientef'] == '') {
             $fatura_setup = cadastra($CodigoCliente, $CodigoServico, $DataVencimento, $Valor, $Descricao);
         }
     } catch (Exception $e) {
-        $resposta = "error||Não foi possivel editar licença. #$e";
+        $resposta = "error||Não foi possivel concluir ação. #$e";
         echo $resposta;
         exit();
     }
 
-    $resposta = "success||Editado com sucesso";
+    $resposta = "success||Concluído com sucesso";
     echo $resposta;
     exit();
 }

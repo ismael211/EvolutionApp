@@ -7,15 +7,15 @@ require_once('../inc/config.php');
 
 include('../index.php');
 
-include('../funcoes.php');
-
 include('nav.php');
 include('side-bar.php');
+
+include('../funcoes.php');
 
 $core = new IsistemCore();
 $core->Connect();
 
-$qtd_fechadas = $core->RowCount("SELECT * FROM faturas LEFT JOIN clientes ON faturas.codigo_cliente = clientes.codigo
+$qtd_fechadas = $core->RowCount("SELECT * FROM `faturas` LEFT JOIN `clientes` ON faturas.codigo_cliente = clientes.codigo
 WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
 
 
@@ -55,6 +55,10 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <!-- END: Page CSS-->
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
@@ -109,13 +113,13 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <div class="container" style="margin-left: 10px; width: 190px;">
 
-                                                    <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar Cliente(s) </div>
+                                                    <div class="dropdown-item" style="cursor:pointer;" id="visualizar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Visualizar </div>
                                                     <br>
-                                                    <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar Cliente</div>
+                                                    <!-- <div class="dropdown-item" style="cursor: pointer;" id="quitar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Quitar </div>
+                                                    <br> -->
+                                                    <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar </div>
                                                     <br>
-                                                    <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
-                                                    <br>
-                                                    <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
+                                                    <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover </div>
                                                     <br>
 
                                                 </div>
@@ -160,10 +164,10 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
                                                         ?>
                                                                 <tr>
                                                                     <td>
-                                                                        <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_fatura" id="codigo_fatura">
+                                                                        <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_fat[]" id="codigo_fat">
                                                                         <input type="hidden" id="id_fatura" name="id_fatura" value="<?= $row['codigo'] ?>">
                                                                     </td>
-                                                                    <td><?= $row['codigo'] ?></td>
+                                                                    <td><a href="/views/financeiroVisualizar.php?i=<?= $row['codigo'] ?>"><?= $row['codigo'] ?></a></td>
                                                                     <td><?= $nome ?></td>
                                                                     <?php if ($row['tipo_cliente'] = 'r') { ?>
 
@@ -239,6 +243,11 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
 <script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
 <!-- END: Page JS-->
 
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
 <script>
     $(window).on('load', function() {
         if (feather) {
@@ -288,11 +297,11 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
 <script>
     var itens = '';
 
-    $("input[name='codigo_cli[]']").change(function(e) {
+    $("input[name='codigo_fat[]']").change(function(e) {
 
         //$("#opt_editar").first().fadeIn("slow");
 
-        itens = $("input[name='codigo_cli[]']:checked").map(function() {
+        itens = $("input[name='codigo_fat[]']:checked").map(function() {
             return $(this).val();
         }).get();
         // console.log(itens)
@@ -319,116 +328,74 @@ WHERE faturas.status = 'on' ORDER BY faturas.data_vencimento DESC");
         }
     });
 
-    $("#ativar").click(function(e) {
+    $("#visualizar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
             alert('Por favor, selecione algum cliente');
+        } else if (itens.length == 1) {
+            processandoo(1);
+            window.location.href = "/views/financeiroVisualizar.php?i=" + itens[0];
+
         } else {
-            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
-                processando(1);
-                $.post("/views/action.php", {
-                        ativa: '0',
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
-
-                        var data = resposta.split("||");
-
-                        // Quando terminada a requisição
-
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
+            alert('Você só pode editar um cliente por vez')
         }
     });
 
-    $("#desativar").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
-        } else {
-            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
-                processando();
-                $.post("/views/action.php", {
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
+    // $("#quitar").click(function(e) {
+    //     //console.log(itens[0]);
+    //     if (itens.length == 0) {
+    //         alert('Por favor, selecione alguma fatura');
+    //     } else {
+    //         if (window.confirm("Deseja realmente quitar a(s) fatura(s)?")) {
+    //             processando();
+    //             $.post("/views/action.php", {
+    //                     pagina: 'financeiro',
+    //                     tipo: 'quitar',
+    //                     codigo: itens
+    //                 },
+    //                 function(resposta) {
+    //                     processando(0);
 
-                        var data = resposta.split("||");
+    //                     var data = resposta.split("||");
 
-                        // Quando terminada a requisição
+    //                     // Quando terminada a requisição
 
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
-        }
-    });
+    //                     // Se a resposta é um erro
+    //                     if (data[0] == 'error') {
+    //                         Swal.fire({
+    //                             title: 'Atenção',
+    //                             html: 'As alterações não foram concluídas'.data[3],
+    //                             icon: 'error',
+    //                             width: '900px',
+    //                             customClass: {
+    //                                 confirmButton: 'btn btn-primary'
+    //                             },
+    //                             buttonsStyling: false,
+    //                             allowOutsideClick: false
+    //                         })
+    //                     } else {
+    //                         Swal.fire({
+    //                             title: 'Concluído',
+    //                             html: 'Alterações feitas com sucesso',
+    //                             icon: 'success',
+    //                             width: '900px',
+    //                             customClass: {
+    //                                 confirmButton: 'btn btn-primary'
+    //                             },
+    //                             buttonsStyling: false,
+    //                             allowOutsideClick: false
+    //                         }).then((result) => {
+    //                             /* Read more about isConfirmed*/
+    //                             if (result.isConfirmed) {
+    //                                 window.location.href = '';
+    //                             }
+    //                         })
+    //                     }
+    //                 }
+    //             );
+    //         }
+    //     }
+    // });
 
     $("#editar").click(function(e) {
         //console.log(itens[0]);

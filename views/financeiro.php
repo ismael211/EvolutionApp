@@ -7,10 +7,10 @@ session_start();
 require_once('../inc/config.php');
 include('../index.php');
 
-include('../funcoes.php');
-
 include('nav.php');
 include('side-bar.php');
+
+include('../funcoes.php');
 
 $core = new IsistemCore();
 $core->Connect();
@@ -21,7 +21,6 @@ LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_ser
 $dataHoje = date("Y-m-d");
 
 $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '" . $dataHoje . "' AND faturas.status = 'off' ");
-
 
 ?>
 
@@ -64,12 +63,15 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
     <link rel="stylesheet" type="text/css" href="../../app-assets/css/core/menu/menu-types/vertical-menu.css">
     <!-- END: Page CSS-->
 
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../app-assets/css/plugins/extensions/ext-component-sweet-alerts.css">
+    <!-- END: Page CSS-->
+
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../assets/css/style.css">
     <!-- END: Custom CSS-->
 
 </head>
-<!-- END: Head-->
 <!-- END: Head-->
 
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static   menu-<?= $menu . ' ' . $tema ?>" data-open="click" data-menu="vertical-menu-modern" data-col="">
@@ -115,13 +117,13 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <div class="container" style="margin-left: 10px; width: 190px;">
 
-                                                <div class="dropdown-item" style="cursor:pointer;" id="ativar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Ativar Cliente(s) </div>
+                                                <div class="dropdown-item" style="cursor:pointer;" id="visualizar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Visualizar </div>
                                                 <br>
-                                                <div class="dropdown-item" style="cursor: pointer;" id="desativar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Desativar Cliente</div>
+                                                <div class="dropdown-item" style="cursor: pointer;" id="quitar" class="opcoes"><i class="bi bi-circle-fill" style="color: orange;"></i> Quitar </div>
                                                 <br>
-                                                <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
+                                                <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar </div>
                                                 <br>
-                                                <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
+                                                <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover </div>
                                                 <br>
 
                                             </div>
@@ -141,7 +143,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table table-bordered table-hover table-striped tablesorter">
                                                 <thead>
                                                     <tr>
                                                         <th># <i class="fa fa-sort"></i></th>
@@ -155,7 +157,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                     <?php
                                                     if ($qtd_vencendo_hj > 0) {
 
-                                                        $vencendo_hj = $core->FetchAll("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '2022-07-26' AND faturas.status = 'on'");
+                                                        $vencendo_hj = $core->FetchAll("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '" . $dataHoje . "' AND faturas.status = 'off'");
                                                         foreach ($vencendo_hj as $row) {
                                                             $nome = substr($row['nome'], 0, 30);
                                                             $data_formatada = date_create($row['data_vencimento']);
@@ -164,11 +166,11 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                             <tr>
                                                                 <td>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input type="checkbox" class="custom-control-input" id="<?= $row['codigo'] ?>" />
+                                                                        <input type="checkbox" class="custom-control-input" name="codigo_fat[]" id="codigo_fat" value="<?= $row['codigo'] ?>" />
                                                                         <label class="custom-control-label" for="<?= $row['codigo'] ?>"></label>
                                                                     </div>
                                                                 </td>
-                                                                <td><?= utf8_encode($nome) ?></td>
+                                                                <td><?= $nome ?></td>
                                                                 <?php if ($row['tipo_cliente'] == 'r') {
                                                                 ?>
                                                                     <td>Revendedor</td>
@@ -210,7 +212,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                     </div>
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <table class="table">
+                                            <table class="table table-bordered table-hover table-striped tablesorter">
                                                 <thead>
                                                     <tr>
                                                         <th># <i class="fa fa-sort"></i></th>
@@ -236,10 +238,10 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                     ?>
                                                             <tr>
                                                                 <td>
-                                                                    <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_fatura" id="codigo_fatura">
+                                                                    <input type="checkbox" value="<?= $row['codigo'] ?>" name="codigo_fat[]" id="codigo_fat">
                                                                     <input type="hidden" id="id_fatura" name="id_fatura" value="<?= $row['codigo'] ?>">
                                                                 </td>
-                                                                <td><?= $row['codigo'] ?></td>
+                                                                <td><a href="/views/financeiroVisualizar.php?i=<?= $row['codigo'] ?>"><?= $row['codigo'] ?></a></td>
                                                                 <td><?= $nome ?></td>
 
                                                                 <?php if ($row['tipo_cliente'] = 'r') { ?>
@@ -313,6 +315,11 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 <script src="../../app-assets/js/core/app.js"></script>
 <!-- END: Theme JS-->
 
+<!-- BEGIN: Page Vendor JS-->
+<script src="../../app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="../../app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
 <!-- BEGIN: Page JS-->
 <script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
 <!-- END: Page JS-->
@@ -328,7 +335,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
     })
 </script>
 
-<!-- Traduzindo tabela -->
+<!-- Traduzindo a tabela -->
 <script>
     $(document).ready(function() {
 
@@ -366,11 +373,11 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
 <script>
     var itens = '';
 
-    $("input[name='codigo_cli[]']").change(function(e) {
+    $("input[name='codigo_fat[]']").change(function(e) {
 
         //$("#opt_editar").first().fadeIn("slow");
 
-        itens = $("input[name='codigo_cli[]']:checked").map(function() {
+        itens = $("input[name='codigo_fat[]']:checked").map(function() {
             return $(this).val();
         }).get();
         // console.log(itens)
@@ -397,71 +404,28 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
         }
     });
 
-    $("#ativar").click(function(e) {
+    $("#visualizar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
             alert('Por favor, selecione algum cliente');
+        } else if (itens.length == 1) {
+            window.location.href = "/views/financeiroVisualizar.php?i=" + itens[0];
+
         } else {
-            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
-                processando(1);
-                $.post("/views/action.php", {
-                        ativa: '0',
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
-
-                        var data = resposta.split("||");
-
-                        // Quando terminada a requisição
-
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
+            alert('Você só pode editar um cliente por vez')
         }
     });
 
-    $("#desativar").click(function(e) {
+    $("#quitar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma fatura');
         } else {
-            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
+            if (window.confirm("Deseja realmente quitar a(s) fatura(s)?")) {
                 processando();
                 $.post("/views/action.php", {
-                        tipo: 'ativar',
+                        pagina: 'financeiro',
+                        tipo: 'quitar',
                         codigo: itens
                     },
                     function(resposta) {
@@ -511,26 +475,25 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
     $("#editar").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma fatura');
 
         } else if (itens.length == 1) {
-            if (window.confirm("Deseja realmente editar o cliente?")) {
-                processando();
-                $.post("/views/clientesEditar.php", {
-                    codigo: itens
-                })
+            if (window.confirm("Deseja realmente editar a fatura?")) {
+
+                window.location.href = "/views/financeiroEditar.php?i=" + itens[0];
+
             }
         } else {
-            alert('Você só pode editar um cliente por vez')
+            alert('Você só pode editar uma fatura por vez')
         }
     });
 
     $("#remover").click(function(e) {
         //console.log(itens[0]);
         if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
+            alert('Por favor, selecione alguma fatura');
         } else {
-            if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
+            if (window.confirm("Deseja realmente DELETAR a(s) fatura(s)?")) {
                 processando();
                 $.post("/views/action.php", {
                     tipo: 'remover',

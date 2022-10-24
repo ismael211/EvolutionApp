@@ -24,6 +24,8 @@ $planos = $core->FetchAll("SELECT * FROM `servicos_modelos`");
 
 $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cliente` ='" . $codigo_cliente . "'");
 
+$data_formatada = date_create($dados_cliente['data_nac']);
+$data_formatada = date_format($data_formatada, "d/m/Y");
 
 ?>
 
@@ -122,9 +124,8 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
                                                     <label>Status</label>
                                                     <input type="hidden" name="codigo" id="codigo" value="<?= $codigo_cliente ?>">
                                                     <select class="form-control" id="status_cli" name="status_cli">
-                                                        <option value="" selected="selected">Selecione um status</option>
-                                                        <option value="a">Ativo</option>
-                                                        <option value="p">Prospect</option>
+                                                        <option <?php echo $dados_cliente['status'] == 'a' ? 'selected' : '' ?> value="a">Ativo</option>
+                                                        <option <?php echo $dados_cliente['status'] == 'p' ? 'selected' : '' ?> value="p">Prospect</option>
                                                     </select>
                                                 </div>
 
@@ -167,7 +168,7 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
 
                                                                         <div class="form-group">
                                                                             <label>Data de Nascimento</label>
-                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" value="<?= $dados_cliente['data_nac'] ?>" maxlength="10">
+                                                                            <input class="form-control mask_data" type="text" name="data_nac" id="data_nac" value="<?= $data_formatada ?>" maxlength="10">
                                                                         </div>
 
                                                                     </div>
@@ -244,7 +245,7 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
 
                                             <div class="form-group">
                                                 <label>Obs</label>
-                                                <textarea class="form-control" rows="3" name="obs" id="obs" value="<?= $dados_cliente['obs'] ?>"></textarea>
+                                                <textarea class="form-control" rows="3" name="obs" id="obs"><?= $dados_cliente['obs'] ?></textarea>
                                             </div>
 
                                             <div class="card border">
@@ -279,13 +280,11 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
                                             </div>
 
                                             <div class="well">
-                                                <button type="button" class="btn btn-primary" id="cadastrar_cliente">Editar</button>
+                                                <button type="button" class="btn btn-primary" id="editar_cliente">Editar</button>
                                             </div>
 
                                         </form>
-
                                     </div>
-
                                 </div><!-- /#page-wrapper -->
 
                             </div>
@@ -371,9 +370,9 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
     }
 </script>
 
-<!-- Action cadastrar cliente  -->
+<!-- Action editar cliente  -->
 <script>
-    $("#cadastrar_cliente").click(function() {
+    $("#editar_cliente").click(function() {
 
         processando(1);
 
@@ -388,8 +387,8 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
         var razaoSocial = $('#razao_social').val();
         var telefone = $('#fone').val();
         var celular = $('#celular').val();
-        var email = $('#email1').val();
-        var emailSecundario = $('#email2').val();
+        var email1 = $('#email1').val();
+        var email2 = $('#email2').val();
         var senha = $('#senha').val();
         var r_senha = $('#r_senha').val();
         var obs = $('#obs').val();
@@ -425,25 +424,25 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
                 url: "/views/EditaCliente.php",
                 data: {
                     'CodCliente': CodCliente,
-                    'tipo_cliente': tipo_cliente,
+                    'status_cli': status,
+                    'tipo_cliente': tipoCliente,
                     'nome': nome,
                     'tipo_pessoa': tipo_pessoa,
                     'rg': rg,
                     'cpf': cpf,
-                    'data_nac': data_nac,
+                    'data_nac': dataNascimento,
                     'cnpj': cnpj,
-                    'razao_social': razao_social,
-                    'fone': fone,
+                    'razao_social': razaoSocial,
+                    'fone': telefone,
                     'celular': celular,
                     'email1': email1,
                     'email2': email2,
                     'senha': senha,
                     'r_senha': r_senha,
                     'obs': obs,
-                    'status_cli': status_cli,
-                    'tipo_plano': tipo_plano,
-                    'forma_pagamento': forma_pagamento,
-                    "dia_vencimento": dia_vencimento,
+                    'tipo_plano': tipoPlano,
+                    'forma_pagamento': formaPagamento,
+                    "dia_vencimento": diaVencimento,
                     'parceiro': parceiro
                 },
                 success: function(msg) {
@@ -478,15 +477,12 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
                         }).then((result) => {
                             /* Read more about isConfirmed*/
                             if (result.isConfirmed) {
-                                window.location.href = '/Cadastra_licenca';
+                                window.location.href = '';
                             }
                         })
-
                     };
                 }
-
             })
-
         };
     })
 </script>
@@ -568,8 +564,6 @@ $serv_adic = $core->Fetch("SELECT * FROM `servicos_adicionais` WHERE `codigo_cli
 
     dateInputMask(input);
 </script>
-
-
 
 <script>
     var maskCpfOuCnpj = IMask(document.getElementById('celular'), {

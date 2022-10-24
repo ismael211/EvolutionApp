@@ -26,6 +26,7 @@ $menu = $operador['menu'];
 
 
 <script src="../funcoes.js"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow">
     <div class="navbar-container d-flex content">

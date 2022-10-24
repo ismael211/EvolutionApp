@@ -148,15 +148,6 @@ $dados_cliente = $core->Fetch("SELECT * FROM `clientes` WHERE `codigo` = '" . $d
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label>Setup</label>
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="sim" id="setup" name="setup" type="checkbox">
-                          Instalação do Isistem por nosso Suporte no Sub-domínio. (R$ 10,00)
-                        </label>
-                      </div>
-                    </div>
 
                     <div class="well">
                       <button type="button" class="btn btn-primary" id="bt_editar_licenca">Editar</button>

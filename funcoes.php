@@ -325,7 +325,6 @@ function envia_Email($nome_cliente, $email_cliente1, $email_cliente2, $assunto, 
 
     require_once('inc/config.php');
 
-    // return 'uepaaaaa';
 
     $core = new IsistemCore();
     $core->Connect();
@@ -343,8 +342,9 @@ function envia_Email($nome_cliente, $email_cliente1, $email_cliente2, $assunto, 
     $mail = new PHPMailer();
 
     $mail->IsSMTP();
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->CharSet = 'iso-8859-1';
+    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->Encoding = 'base64';
+    $mail->CharSet = 'UTF-8';
     $mail->Host = $dados_sistema['servidor_smtp'];
     $mail->SMTPAuth = true;
     $mail->Username = $account;
@@ -409,5 +409,62 @@ function envia_Email($nome_cliente, $email_cliente1, $email_cliente2, $assunto, 
         }
 
         return "Erro: - " . $mail->ErrorInfo;
+    }
+}
+
+function esqueletoFormaPagamento($forma_pagto, $fatura)
+{
+
+    require_once('inc/config.php');
+
+
+    $core = new IsistemCore();
+    $core->Connect();
+
+    $dados_empresa = $core->Fetch("SELECT * FROM empresa");
+
+    $dados_forma_pagamento = $core->Fetch("SELECT * FROM formas_pagamento WHERE codigo = '" . $forma_pagto . "'");
+
+    if ($dados_forma_pagamento["tipo_pagamento"] == 'deposito') {
+        return "
+    Banco: $dados_forma_pagamento[banco]<br>
+    Agência: $dados_forma_pagamento[agencia]<br>
+    Conta: $dados_forma_pagamento[conta]<br>
+    Tipo: $dados_forma_pagamento[tipo_conta]<br>
+    Documento: $dados_forma_pagamento[cpf_cnpj]<br>
+    Titular: $dados_forma_pagamento[cedente]<br>
+    ";
+    } elseif ($dados_forma_pagamento["tipo_pagamento"] == 'pagseguro') {
+
+        // Codifica código da fatura
+        $fatura = encode_decode($fatura, "E");
+
+        return "Clique no botão/link abaixo, você será direcionado para o site PagSeguro.com.br para completar seu pagamento em ambiente seguro.<br><br><a href=\"" . $dados_empresa["url_sistema"] . "/public/pagamentos/pagseguro.php?codigo=" . $fatura . "\" target=\"_blank\"><img src=\"https://pagseguro.uol.com.br/Security/Imagens/btnPagarBR.jpg\" border=\"0\" alt=\"Pague com PagSeguro - é rápido, grátis e seguro!\" /></a>";
+    } elseif ($dados_forma_pagamento["tipo_pagamento"] == 'f2b') {
+
+        // Codifica código da fatura
+        $fatura = encode_decode($fatura, "E");
+
+        return "Clique no botão abaixo, você será direcionado para o site F2B.com.br para completar seu pagamento em ambiente seguro.<br><br><a href=\"" . $dados_empresa["url_sistema"] . "/public/pagamentos/f2b.php?codigo=" . $fatura . "\" target=\"_blank\"><img src=\"" . $dados_empresa["url_sistema"] . "/img/botoes/Botao_F2B.jpg\" border=\"0\" alt=\"Pagamento Eletrônico Facilitado\" /></a>";
+    } elseif ($dados_forma_pagamento["tipo_pagamento"] == 'paypal') {
+
+        // Codifica código da fatura
+        $fatura = encode_decode($fatura, "E");
+
+        return "Clique no botão abaixo, você será direcionado para o site PayPal.com para completar seu pagamento em ambiente seguro.<br><br><a href=\"" . $dados_empresa["url_sistema"] . "/public/pagamentos/paypal.php?codigo=" . $fatura . "\" target=\"_blank\"><img src=".'/img/botoes/Botao_PayPal.jpg'." border=\"0\" alt=\"Pagamento Eletrônico PayPal\" /></a>";
+    } elseif ($dados_forma_pagamento["tipo_pagamento"] == 'moip') {
+
+        // Codifica código da fatura
+        $fatura = encode_decode($fatura, "E");
+
+        return "Clique no botão abaixo, você será direcionado para o site MoIP.com para completar seu pagamento em ambiente seguro.<br><br><a href=\"" . $dados_empresa["url_sistema"] . "/public/pagamentos/moip.php?codigo=" . $fatura . "\" target=\"_blank\"><img style='border-radius: 10px;width: 100px;' src=".'/img/botoes/Botao_MoIP.png'." border=\"0\" alt=\"MoIP\" /></a>";
+    } else {
+
+        // Codifica código da fatura
+        $fatura = encode_decode($fatura, "E");
+
+        $botao_boleto = $dados_empresa["url_sistema"] . "/img/botoes/" . str_replace("php", "jpg", $dados_forma_pagamento["tipo_pagamento"]);
+
+        return "<a href=\"" . $dados_empresa["url_sistema"] . "/public/pagamentos/boleto.php?codigo=" . $fatura . "\" target=\"_blank\"><img src=\"" . $botao_boleto . "\" border=\"0\" alt=\"Visualizar Boleto\" /></a>";
     }
 }

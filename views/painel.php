@@ -175,7 +175,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                     <?php
                                                     if ($qtd_vencendo_hj > 0) {
 
-                                                        $vencendo_hj = $core->FetchAll("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '2022-07-26' AND faturas.status = 'on'");
+                                                        $vencendo_hj = $core->FetchAll("SELECT clientes.nome, clientes.tipo_cliente, faturas.valor, faturas.data_vencimento, faturas.codigo FROM faturas LEFT JOIN clientes ON clientes.codigo = faturas.codigo_cliente LEFT JOIN servicos_adicionais ON servicos_adicionais.codigo = faturas.codigo_servico WHERE faturas.data_vencimento = '".$dataHoje."' AND faturas.status = 'off'");
                                                         foreach ($vencendo_hj as $row) {
                                                             $nome = substr($row['nome'], 0, 30);
                                                             $data_formatada = date_create($row['data_vencimento']);
@@ -188,7 +188,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                                         <label class="custom-control-label" for="<?= $row['codigo'] ?>"></label>
                                                                     </div>
                                                                 </td>
-                                                                <td><?= utf8_encode($nome) ?></td>
+                                                                <td><?= $nome ?></td>
                                                                 <?php if ($row['tipo_cliente'] == 'r') {
                                                                 ?>
                                                                     <td>Revendedor</td>

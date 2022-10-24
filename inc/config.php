@@ -18,8 +18,6 @@ class IsistemCore
 
 		try{
 		    $this->PDO = new PDO( 'mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD );
-		    $this->PDO->exec("SET character_set_results = 'UTF-8'");
-		    $this->PDO->exec("SET names = 'UTF-8'");
 		    $this->PDO->exec("SET SQL_MODE='ALLOW_INVALID_DATES';");
 		    //$this->PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		}
