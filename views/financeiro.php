@@ -496,6 +496,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
             if (window.confirm("Deseja realmente DELETAR a(s) fatura(s)?")) {
                 processando();
                 $.post("/views/action.php", {
+                    pagina: 'financeiro',
                     tipo: 'remover',
                     codigo: itens
                 }, function(resposta) {

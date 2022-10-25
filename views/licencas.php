@@ -14,7 +14,7 @@ $core = new IsistemCore();
 $core->Connect();
 
 
-$qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clientes.codigo = licenca.id_cliente ");
+$qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clientes.codigo = licenca.id_cliente");
 
 ?>
 
@@ -205,7 +205,7 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+<!-- <script src="../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
 <script src="../../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
 <script src="../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
 <script src="../../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
@@ -217,7 +217,7 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
 <script src="../../app-assets/vendors/js/tables/datatable/vfs_fonts.js"></script>
 <script src="../../app-assets/vendors/js/tables/datatable/buttons.html5.min.js"></script>
 <script src="../../app-assets/vendors/js/tables/datatable/buttons.print.min.js"></script>
-<script src="../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
+<script src="../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script> -->
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
@@ -231,7 +231,7 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Page JS-->
-<script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script>
+<!-- <script src="../../app-assets/js/scripts/tables/table-datatables-basic.js"></script> -->
 <!-- END: Page JS-->
 
 <script>
@@ -435,9 +435,9 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
         } else if (itens.length == 1) {
             if (window.confirm("Deseja realmente editar a licença?")) {
                 processando();
-                window.location.href = "/views/licencasEditar.php?i="+itens[0];
+                window.location.href = "/views/licencasEditar.php?i=" + itens[0];
             }
-            
+
         } else {
             alert('Você só pode editar uma licença por vez')
         }
@@ -497,3 +497,17 @@ $qtd_licenca = $core->RowCount("SELECT * FROM licenca LEFT JOIN clientes ON clie
         }
     });
 </script>
+
+
+
+<!--Importando as DataTables-->
+<script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/4.1.0/js/dataTables.fixedColumns.min.js"></script>
+<!--##########-->
+
+
+<script src="../../app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
+<script src="../../app-assets/vendors/js/tables/datatable/responsive.bootstrap4.js"></script>
+<script src="../../app-assets/js/scripts/tables/table-datatables-advanced.js"></script>

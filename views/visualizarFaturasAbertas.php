@@ -407,10 +407,9 @@ WHERE faturas.status = 'off' ORDER BY faturas.data_vencimento DESC");
 
         } else if (itens.length == 1) {
             if (window.confirm("Deseja realmente editar o cliente?")) {
-                processandoo();
-                $.post("/views/clientesEditar.php", {
-                    codigo: itens
-                })
+
+                window.location.href = "/views/financeiroEditar.php?i=" + itens[0];
+
             }
         } else {
             alert('Você só pode editar um cliente por vez')
@@ -425,6 +424,7 @@ WHERE faturas.status = 'off' ORDER BY faturas.data_vencimento DESC");
             if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
                 processandoo();
                 $.post("/views/action.php", {
+                    pagina: 'financeiro',
                     tipo: 'remover',
                     codigo: itens
                 }, function(resposta) {

@@ -31,7 +31,7 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
     <meta name="description" content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
-    <title>DataTables</title>
+    <title>Isistem Painel Gerenciavel</title>
     <link rel="apple-touch-icon" href="../../app-assets/images/ico/apple-icon-120.png">
     <link rel="shortcut icon" type="image/x-icon" href="../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
@@ -75,7 +75,7 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Financeiro</h2>
+                            <h2 class="content-header-title float-left mb-0">Serviços</h2>
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item active">Visualizar Serviços
@@ -96,47 +96,15 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
 
                         <div id="page-wrapper">
 
-                            <span id="status_volta"></span>
-
-                            <div class="row">
-                                <div class="col-md-3">
-
-                                    <div id="menu_opcoes" style="display: block;">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Opções
-                                            </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <div class="container" style="margin-left: 10px; width: 190px;">
-
-                                                    <div class="dropdown-item" style="cursor:pointer;" id="visualizar" class="opcoes"><i class="bi bi-circle-fill" style="color: green;"></i> Visualizar </div>
-                                                    <br>                                                   
-                                                    <div class="dropdown-item" style="cursor: pointer;" id="editar" class="opcoes"><i class="bi bi-circle-fill" style="color: yellow;"></i> Editar Fatura</div>
-                                                    <br>
-                                                    <div class="dropdown-item" style="cursor: pointer;" id="remover" class="opcoes"><i class="bi bi-circle-fill" style="color: red;"></i> Remover Cliente(s)</div>
-                                                    <br>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="row">
 
                                 <div class="col-lg-12">
                                     <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title"><i class="fa fa-cogs"></i>Serviços</h3>
-                                        </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
-                                                            <th># <i class="fa fa-sort"></i></th>
                                                             <th>Responsável <i class="fa fa-sort"></i></th>
                                                             <th>Serviços <i class="fa fa-sort"></i></th>
                                                             <th>Parcelas <i class="fa fa-sort"></i></th>
@@ -163,10 +131,6 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
                                                                 $nome = substr($row['nome_cliente'], 0, 30);
                                                         ?>
                                                                 <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" value="<?= $row['codigo_servico'] ?>" name="codigo_servico" id="codigo_servico">
-                                                                        <input type="hidden" id="id_servico" name="id_servico" value="<?= $row['codigo_servico'] ?>">
-                                                                    </td>
                                                                     <td><?= $nome ?></td>
                                                                     <td><?= utf8_encode($row['descricao']) ?></td>
                                                                     <td><?= $row['total_parcelas'] ?></td>
@@ -304,221 +268,4 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
             "autoWidth": true
         });
     })
-</script>
-
-<!-- Ações de opções -->
-<script>
-    var itens = '';
-
-    $("input[name='codigo_cli[]']").change(function(e) {
-
-        //$("#opt_editar").first().fadeIn("slow");
-
-        itens = $("input[name='codigo_cli[]']:checked").map(function() {
-            return $(this).val();
-        }).get();
-        // console.log(itens)
-
-        if (itens.length == 0) {
-
-            document.getElementById('opt_editar').style.display = 'none'
-            if (isoption == true) {
-                isoption = false;
-
-            }
-
-        } else if (itens.length > 1) {
-
-            document.getElementById('opt_editar').style.display = 'none'
-
-            $("#opt_editar").fadeOut("slow");
-        } else if (itens.length == 1) {
-
-            if (isoption == false) {
-                $("#menu_opcoes").first().fadeIn("slow");
-                isoption = true;
-            }
-        }
-    });
-
-    $("#ativar").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
-        } else {
-            if (window.confirm("Deseja realmente ativar o(s) cliente(s)?")) {
-                processando(1);
-                $.post("/views/action.php", {
-                        ativa: '0',
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
-
-                        var data = resposta.split("||");
-
-                        // Quando terminada a requisição
-
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
-        }
-    });
-
-    $("#desativar").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
-        } else {
-            if (window.confirm("Deseja realmente desativar o(s) cliente(s)?")) {
-                processando();
-                $.post("/views/action.php", {
-                        tipo: 'ativar',
-                        codigo: itens
-                    },
-                    function(resposta) {
-                        processando(0);
-
-                        var data = resposta.split("||");
-
-                        // Quando terminada a requisição
-
-                        // Se a resposta é um erro
-                        if (data[0] == 'error') {
-                            Swal.fire({
-                                title: 'Atenção',
-                                html: 'As alterações não foram concluídas'.data[3],
-                                icon: 'error',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            })
-                        } else {
-                            Swal.fire({
-                                title: 'Concluído',
-                                html: 'Alterações feitas com sucesso',
-                                icon: 'success',
-                                width: '900px',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                /* Read more about isConfirmed*/
-                                if (result.isConfirmed) {
-                                    window.location.href = '';
-                                }
-                            })
-                        }
-                    }
-                );
-            }
-        }
-    });
-
-    $("#editar").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
-
-        } else if (itens.length == 1) {
-            if (window.confirm("Deseja realmente editar o cliente?")) {
-                processando();
-                $.post("/views/clientesEditar.php", {
-                    codigo: itens
-                })
-            }
-        } else {
-            alert('Você só pode editar um cliente por vez')
-        }
-    });
-
-    $("#remover").click(function(e) {
-        //console.log(itens[0]);
-        if (itens.length == 0) {
-            alert('Por favor, selecione algum cliente');
-        } else {
-            if (window.confirm("Deseja realmente DELETAR o(s) cliente(s)?")) {
-                processando();
-                $.post("/views/action.php", {
-                    tipo: 'remover',
-                    codigo: itens
-                }, function(resposta) {
-                    processando(0);
-
-                    var data = resposta.split("||");
-
-                    // Quando terminada a requisição
-
-                    // Se a resposta é um erro
-                    if (data[0] == 'error') {
-                        Swal.fire({
-                            title: 'Atenção',
-                            html: data[3],
-                            icon: 'error',
-                            width: '900px',
-                            customClass: {
-                                confirmButton: 'btn btn-primary'
-                            },
-                            buttonsStyling: false,
-                            allowOutsideClick: false
-                        })
-                    } else {
-                        Swal.fire({
-                            title: 'Concluído',
-                            html: data[3],
-                            icon: 'success',
-                            width: '900px',
-                            customClass: {
-                                confirmButton: 'btn btn-primary'
-                            },
-                            buttonsStyling: false,
-                            allowOutsideClick: false
-                        }).then((result) => {
-                            /* Read more about isConfirmed*/
-                            if (result.isConfirmed) {
-                                window.location.href = '';
-                            }
-                        })
-                    }
-                });
-            }
-        }
-    });
 </script>

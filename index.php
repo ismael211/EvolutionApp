@@ -9,5 +9,5 @@ require 'vendor/autoload.php';
 
 if($_SESSION["codigo_adm"] == '') {
 	$pagina_inicial = "/Login";
-	header("Location: ".$pagina_inicial);
+	// header("Location: ".$pagina_inicial);
 }

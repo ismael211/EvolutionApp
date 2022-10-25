@@ -99,7 +99,6 @@ $data_formatada = date_format($data_formatada, "d/m/Y");
                     </div>
                 </div>
             </div>
-            <span id="status_volta"></span>
 
             <div class="col-xl-12 col-md-12 col-12">
                 <div class="card">
@@ -115,7 +114,7 @@ $data_formatada = date_format($data_formatada, "d/m/Y");
                                     <form role="form">
                                         <div class="form-group">
                                             <label>Cliente</label>
-                                            <input type="hidden" name="id_fatura" id="id_fatura" value="<?= $cliente['codigo'] ?>">
+                                            <input type="hidden" name="id_fatura" id="id_fatura" value="<?= $fatura['codigo'] ?>">
                                             <p><strong> <?= $cliente['nome'] ?> </strong></p>
                                         </div>
 
@@ -134,7 +133,7 @@ $data_formatada = date_format($data_formatada, "d/m/Y");
 
                                         <div class="form-group">
                                             <label>Obs</label>
-                                            <textarea class="form-control" rows="3" name="descricao" id="descricao"> <?= utf8_encode($fatura['descricao']) ?> </textarea>
+                                            <textarea class="form-control" rows="3" name="obs" id="obs"><?= $fatura['descricao'] ?></textarea>
                                         </div>
 
                                         <div class="form-group">
@@ -207,4 +206,68 @@ $data_formatada = date_format($data_formatada, "d/m/Y");
             });
         }
     })
+</script>
+
+<script>
+    $("#bt_editar_fatura").click(function() {
+
+        processando(1);
+        var id_fatura = $("#id_fatura").val();
+        var status = $("#status").val();
+        var data_vencimento = $("#data_vencimento").val();
+        var valor = $("#valor").val();
+        var descricao = $("#obs").val();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/views/EditaFatura.php",
+            data: {
+                'id_fatura': id_fatura,
+                'status': status,
+                'data_vencimento': data_vencimento,
+                'valor': valor,
+                'descricao': descricao
+            },
+            success: function(msg) {
+
+                processando(0);
+
+                data = msg.split("||");
+
+                if (data[0] == 'error') {
+                    Swal.fire({
+                        title: 'Atenção',
+                        html: data[1],
+                        icon: 'error',
+                        width: '900px',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false,
+                        allowOutsideClick: false
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Concluído',
+                        html: data[1],
+                        icon: 'success',
+                        width: '900px',
+                        customClass: {
+                            confirmButton: 'btn btn-primary'
+                        },
+                        buttonsStyling: false,
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        /* Read more about isConfirmed*/
+                        if (result.isConfirmed) {
+                            window.location.href = '';
+                        }
+                    })
+                };
+
+            }
+        });
+
+    });
 </script>

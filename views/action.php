@@ -7,7 +7,6 @@ require_once('../inc/config.php');
 require_once('../funcoes.php');
 
 
-
 $core = new IsistemCore();
 $core->Connect();
 
@@ -242,9 +241,7 @@ if ($_POST['pagina'] == 'licenca') {
     }
 } else if ($_POST['pagina'] == 'financeiro') {
 
-    if ($_POST['tipo'] == 'ativar') {
-        
-    } else if ($_POST['tipo'] == 'quitar') {
+    if ($_POST['tipo'] == 'quitar') {
 
         $array_cod = array();
         foreach ($_POST['codigo'] as $codigo) {
@@ -387,6 +384,38 @@ if ($_POST['pagina'] == 'licenca') {
             exit();
         }
     } else if ($_POST['tipo'] == 'remover') {
+
+        $erro = "0";
+        $msg = "";
+
+        $array_cod = array();
+        foreach ($_POST['codigo'] as $codigo) {
+            array_push($array_cod, $codigo);
+        }
+
+        $array_errors = array();
+        foreach ($array_cod as $value) {
+
+            try{
+                $query = $core->Prepare("DELETE FROM faturas WHERE codigo = '" .$value. "'");
+                $result = $query->Execute();
+            }catch (Exception $e){
+                $erro = '1';
+                $msg = 'Não foi possível deletar fatura. ' . $e;
+                $return = "error||" . $erro . "||msg||" . $msg;
+                echo $return;
+                return $return;
+                exit();
+            }
+        }
+
+        $erro = '0';
+        $msg = 'Excluido com sucesso.';
+        $return = "success||" . $erro . "||msg||" . $msg;
+        echo $return;
+        return $return;
+        exit();
+
     }
 } else {
     echo "<h1>Você não tem permissão para acessar esta página!</h1>";

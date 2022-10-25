@@ -13,7 +13,7 @@ class IsistemCore
 
 		define( 'MYSQL_HOST', 'localhost' );
 		define( 'MYSQL_USER', 'negoplay_isistem_controle' );
-		define( 'MYSQL_PASSWORD', 'DXQGsk7m' );
+		define( 'MYSQL_PASSWORD', 'iuXTE9sy7S' );
 		define( 'MYSQL_DB_NAME', 'negoplay_isistem_controle' );
 
 		try{
