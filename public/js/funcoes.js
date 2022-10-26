@@ -553,6 +553,7 @@ $(function ($) {
 	$("#login_bt_cliente").click(function () {
 
 		processando(1);
+		
 
 		var username = $("#username").val();
 		var password = $("#password").val();

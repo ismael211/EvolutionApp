@@ -164,7 +164,7 @@ AND data_cadastro BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()");
                                             <td><?= $nome ?></td>
                                             <td><?= $row['email1'] ?></td>
 
-                                            <?php if ($row['tipo_cliente'] = 'u') { ?>
+                                            <?php if ($row['tipo_cliente'] == 'u') { ?>
                                                 <td>Usuário</td>
                                             <?php } else { ?>
                                                 <td>Revendedor</td>

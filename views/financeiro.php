@@ -167,7 +167,7 @@ $qtd_vencendo_hj = $core->RowCount("SELECT clientes.nome, clientes.tipo_cliente,
                                                                 <td>
                                                                     <div class="custom-control custom-checkbox">
                                                                         <input type="checkbox" class="custom-control-input" name="codigo_fat[]" id="codigo_fat" value="<?= $row['codigo'] ?>" />
-                                                                        <label class="custom-control-label" for="<?= $row['codigo'] ?>"></label>
+                                                                        <input type="hidden" id="id_fatura" name="id_fatura" value="<?= $row['codigo'] ?>">
                                                                     </div>
                                                                 </td>
                                                                 <td><?= $nome ?></td>

@@ -162,7 +162,7 @@ $qtd_clientes = $core->RowCount("SELECT * FROM `clientes`");
                                                             <td><?= $nome; ?></td>
                                                             <td><?= $row['email1'] ?></td>
 
-                                                            <?php if ($row['tipo_cliente'] = 'u') { ?>
+                                                            <?php if ($row['tipo_cliente'] == 'u') { ?>
                                                                 <td>Usuário</td>
                                                             <?php } else { ?>
 

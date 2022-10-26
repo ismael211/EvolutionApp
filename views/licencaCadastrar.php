@@ -265,6 +265,11 @@ $key = generateKey();
                             },
                             buttonsStyling: false,
                             allowOutsideClick: false
+                        }).then((result) => {
+                            /* Read more about isConfirmed*/
+                            if (result.isConfirmed) {
+                                window.location.href = '/Licencas';
+                            }
                         })
                     } else {
                         Swal.fire({

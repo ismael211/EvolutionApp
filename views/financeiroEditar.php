@@ -25,6 +25,8 @@ $retorno = esqueletoFormaPagamento($formapagto['codigo_forma_pagto'], $codigo);
 $data_formatada = date_create($fatura['data_vencimento']);
 $data_formatada = date_format($data_formatada, "d/m/Y");
 
+$descricao = iconv("ISO-8859-1", "UTF-8",  $fatura['descricao']);
+
 ?>
 
 
@@ -133,7 +135,7 @@ $data_formatada = date_format($data_formatada, "d/m/Y");
 
                                         <div class="form-group">
                                             <label>Obs</label>
-                                            <textarea class="form-control" rows="3" name="obs" id="obs"><?= $fatura['descricao'] ?></textarea>
+                                            <textarea class="form-control" rows="3" name="obs" id="obs"><?= $descricao ?></textarea>
                                         </div>
 
                                         <div class="form-group">

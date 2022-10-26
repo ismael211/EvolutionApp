@@ -144,13 +144,13 @@ $menu = $operador['menu'];
                             </div>
                         </a>
                     </li>
-                    <li class="dropdown-menu-footer"><a class="btn btn-primary btn-block" href="#">Visualizar todos</a></li>
+                    <li class="dropdown-menu-footer"><a class="btn btn-primary btn-block" href="javascript:void(0);" >Visualizar todos</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown dropdown-user"><a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="user-nav d-sm-flex d-none"><span class="user-name font-weight-bolder">Admin</span></div><span class="avatar"><img class="round" src="../app-assets/images/portrait/small/user.png" alt="avatar" height="40" width="40"><span class="avatar-status-online"></span></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user"><a class="dropdown-item" href="#"><i class="mr-50" data-feather="user"></i> Perfil</a><a class="dropdown-item" href="#"><i class="mr-50" data-feather="settings"></i> Configurações</a><a class="dropdown-item" href="/Sair"><i class="mr-50" data-feather="power"></i> Sair</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user"><a class="dropdown-item" href="javascript:void(0);"><i class="mr-50" data-feather="user"></i> Perfil</a><a class="dropdown-item" href="javascript:void(0);"><i class="mr-50" data-feather="settings"></i> Configurações</a><a class="dropdown-item" href="/Sair"><i class="mr-50" data-feather="power"></i> Sair</a>
                 </div>
             </li>
         </ul>
