@@ -20,8 +20,8 @@ if (isset($_POST['username'])) {
 
         $user = $_POST['username'];
         $pass = $_POST['password'];
-
-        $qtd = $core->RowCount("SELECT * FROM `clientes` WHERE `login` = '" . $user  . "' LIMIT 1");
+        
+        $qtd = $core->RowCount("SELECT * FROM `clientes` WHERE `email1` = '" . $user  . "' OR `email2` = '" . $user  . "' LIMIT 1");
 
         if ($qtd == 1) {
 

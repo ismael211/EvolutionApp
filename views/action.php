@@ -49,11 +49,7 @@ if ($_POST['pagina'] == 'licenca') {
 
                     $erro = "0";
 
-                    $fjlhdgaks = 'ccccccccccccccccc';
-
                     if ($erro == "0" and $desativa == "1") {
-
-                        $fjlhdgaks = 'bbbbbbbbbbbbbbbbbbb';
 
                         // $licencaEnvios->boasVindas();
 

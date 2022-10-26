@@ -132,7 +132,7 @@ LEFT JOIN clientes as cli ON sa.codigo_cliente = cli.codigo");
                                                         ?>
                                                                 <tr>
                                                                     <td><?= $nome ?></td>
-                                                                    <td><?= utf8_encode($row['descricao']) ?></td>
+                                                                    <td><?= $row['descricao'] ?></td>
                                                                     <td><?= $row['total_parcelas'] ?></td>
 
                                                                     <?php if ($row['repetir'] = 'sim') { ?>
