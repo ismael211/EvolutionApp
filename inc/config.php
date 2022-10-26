@@ -17,7 +17,7 @@ class IsistemCore
 		define( 'MYSQL_DB_NAME', 'negoplay_isistem_controle' );
 
 		try{
-		    $this->PDO = new PDO( 'mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB_NAME, MYSQL_USER, MYSQL_PASSWORD );
+		    $this->PDO = new PDO( 'mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB_NAME.';charset=utf8', MYSQL_USER, MYSQL_PASSWORD );
 		    $this->PDO->exec("SET SQL_MODE='ALLOW_INVALID_DATES';");
 		    //$this->PDO->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		}

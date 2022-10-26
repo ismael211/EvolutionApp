@@ -219,7 +219,7 @@ $core->Connect();
 
         $.ajax({
             type: "POST",
-            url: "../../inc/login_autentica.php",
+            url: "../../views/cliente/login_autentica_cli.php",
             data: {
                 'username': username,
                 'password': password
@@ -227,7 +227,7 @@ $core->Connect();
             success: function(msg) {
                 processando(0);
                 if (msg == '') {
-                    window.location.replace("/Home");
+                    // window.location.replace("/views/cliente/painel_cliente.twig");
                 } else {
                     Swal.fire({
                         title: 'Atenção',

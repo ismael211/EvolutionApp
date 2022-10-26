@@ -23,7 +23,6 @@ WHERE codigo_cliente = '".$fatura['codigo_cliente']."' LIMIT 1");
 
 $retorno = esqueletoFormaPagamento($formapagto['codigo_forma_pagto'], $codigo);
 
-$descricao = iconv("ISO-8859-1", "UTF-8",  $fatura['descricao']);
 
 ?>
 
@@ -141,7 +140,7 @@ $descricao = iconv("ISO-8859-1", "UTF-8",  $fatura['descricao']);
                                                 <div class="form-group form-group-sm">
                                                     <label class="badge bg-primary bg-md">Descrição: </label>
                                                     <div class="col-sm-10" style="margin-top:6px;">
-                                                        <p> <?= $descricao ?> </p>
+                                                        <p> <?= $fatura['descricao'] ?> </p>
                                                     </div>
                                                 </div>
                                             </div>

@@ -274,7 +274,10 @@ if ($_POST['pagina'] == 'licenca') {
 
                     $dados_formas_pagamento = $core->Fetch("SELECT * FROM `formas_pagamento` WHERE `codigo` = '" . $dados_servicos["codigo_forma_pagto"] . "'");
 
-                    $dados_textos = $core->Fetch("SELECT * FROM `textos` WHERE `codigo` = '" . $dados_formas_pagamento["texto_confirmacao"] . "'");
+                    // $dados_textos = $core->Fetch("SELECT * FROM `textos` WHERE `codigo` = '" . $dados_formas_pagamento["texto_confirmacao"] . "'");
+
+                    $dados_textos = $core->Fetch("SELECT * FROM `textos` WHERE `codigo` = '10'");
+
 
                     if ($dados_servicos["repetir"] == 'sim') {
                         if ($dados_servicos["parcela_atual"] < $dados_servicos["total_parcelas"] || $dados_servicos["total_parcelas"] == 0) {
