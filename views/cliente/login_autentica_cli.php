@@ -20,18 +20,14 @@ if (isset($_POST['username'])) {
 
         $user = $_POST['username'];
         $pass = $_POST['password'];
-    
 
         $qtd = $core->RowCount("SELECT * FROM `clientes` WHERE `email1` = '" . $user  . "' OR `email2` = '" . $user  . "' LIMIT 1");
-
 
         if ($qtd == 1) {
 
             $query = $core->Fetch("SELECT `codigo`,`nome`,`senha` FROM `clientes` WHERE `email1` = '" . $user  . "' OR `email2` = '" . $user  . "' LIMIT 1");
 
-
-            $senha = password_hash(
-                $pass,
+            $senha = password_hash($pass,
                 PASSWORD_DEFAULT,
                 ['cost' => 12]
             );
